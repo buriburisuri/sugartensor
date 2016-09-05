@@ -4,7 +4,7 @@ import tensorflow as tf
 __author__ = 'njkim@jamonglab.com'
 
 
-class AdamaxOptimizer(tf.train.Optimizer):
+class AdaMaxOptimizer(tf.train.Optimizer):
     """Optimizer that implements the Adamax algorithm.
     See [Kingma et. al., 2014](http://arxiv.org/abs/1412.6980)
     ([pdf](http://arxiv.org/pdf/1412.6980.pdf)).
@@ -15,7 +15,7 @@ class AdamaxOptimizer(tf.train.Optimizer):
     """
 
     def __init__(self, learning_rate=0.001, beta1=0.9, beta2=0.999, use_locking=False, name="Adamax"):
-        super(AdamaxOptimizer, self).__init__(use_locking, name)
+        super(AdaMaxOptimizer, self).__init__(use_locking, name)
         self._lr = learning_rate
         self._beta1 = beta1
         self._beta2 = beta2

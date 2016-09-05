@@ -24,6 +24,9 @@ sg_eps = 1e-8
 # global step
 _global_step = tf.Variable(0, name='global_step', trainable=False)
 
+# global learning rate
+_learning_rate = tf.Variable(0., name='learning_rate', trainable=False)
+
 # global phase(train or infer) flag
 _phase = tf.Variable(False, name='phase', trainable=False, collections=[])
 
@@ -37,6 +40,14 @@ def sg_global_step(as_tensor=True):
         return _global_step
     else:
         return tf.get_default_session().run(_global_step)
+
+
+def sg_learning_rate(as_tensor=True):
+    global _learning_rate
+    if as_tensor:
+        return _learning_rate
+    else:
+        return tf.get_default_session().run(_learning_rate)
 
 
 def sg_phase(phase=None):

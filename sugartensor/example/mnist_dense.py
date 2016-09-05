@@ -7,40 +7,26 @@ __author__ = 'njkim@jamonglab.com'
 
 if __name__ == '__main__':
 
-    mnist = tf.sg_data.Mnist()
-
-    x = mnist.train.image.sg_float()
-    y = mnist.train.label
-
+    # set log level to debug
     tf.sg_verbosity(10)
 
-    with tf.sg_context(act='relu', bn=True):
-        logit = (x.sg_conv(dim=16).sg_pool().sg_conv(dim=16).sg_pool()  # encoding
-                 .sg_upconv(dim=16).sg_upconv(dim=16).sg_conv(size=1, dim=1, act='sigmoid', bn=False))  # decoding
+    # MNIST input tensor ( with QueueRunner )
+    mnist = tf.sg_data.Mnist()
 
-    loss = logit.sg_mse(target=x/255)
+    # inputs
+    x = mnist.train.image.sg_float()
+    y = mnist.train.label.sg_int()
 
-    tf.sg_summary_image(tf.cast(logit*255, tf.uint8))
-    # loss = logit.ce(target=y)
+    # create training graph
+    logit = (x.sg_flatten()
+             .sg_dense(dim=400, act='relu', bn=True)
+             .sg_dense(dim=200, act='relu', bn=True)
+             .sg_dense(dim=100))
 
-    # # accuracy
-    # acc = logit.accuracy(target=y)
+    # loss
+    loss = logit.sg_ce(target=y)
 
-    optim = tf.sg_optimize.MaxPropOptimizer().minimize(loss, global_step=tf.sg_global_step())
-
-    summary = tf.merge_all_summaries()
-    writer = tf.train.SummaryWriter('/data/mnist/log')
-
-    with tf.Session() as sess:
-        sess.run(tf.initialize_all_variables())
-        tf.train.start_queue_runners(sess)
-        tf.sg_phase(phase='train')
-        while True:
-            # print sess.run(logit, {x: img, y: label}).shape
-            sess.run(optim)
-        tf.sg_phase(phase='infer')
-        stat = sess.run(summary)
-        writer.add_summary(stat, global_step=tf.sg_global_step(as_tensor=False))
-
+    # train
+    tf.sg_train(loss=loss, save_dir='asset/train/mnist', total_batch=mnist.train.total_batch)
 
 

@@ -15,7 +15,7 @@ def sg_ce(self, opt):
         out = tf.nn.sparse_softmax_cross_entropy_with_logits(self, opt.target)
 
     # add summary
-    tf.sg_summary(out)
+    tf.sg_summary_loss(out)
 
     return out
 

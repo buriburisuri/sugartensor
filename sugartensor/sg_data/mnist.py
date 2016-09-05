@@ -6,23 +6,23 @@ __author__ = 'mansour'
 
 
 # constant sg_data to tensor conversion with queue support
-def _data_to_tensor(data_list, batch_size, num_epochs):
+def _data_to_tensor(data_list, batch_size, name=None):
 
     # convert to constant tensor
     const_list = [tf.constant(data) for data in data_list]
 
     # create queue from constant tensor
-    queue_list = tf.train.slice_input_producer(const_list, num_epochs=num_epochs, capacity=128)
+    queue_list = tf.train.slice_input_producer(const_list, capacity=128, name=name)
 
     # create batch queue
-    return tf.train.batch(queue_list, batch_size, capacity=128, num_threads=4)
+    return tf.train.batch(queue_list, batch_size, capacity=128, num_threads=4, name=name)
 
 
 class Mnist(object):
 
     _data_dir = './asset/data/mnist'
 
-    def __init__(self, batch_size=128, reshape=False, one_hot=False, num_epochs=None):
+    def __init__(self, batch_size=128, reshape=False, one_hot=False):
 
         # load sg_data set
         data_set = input_data.read_data_sets(Mnist._data_dir, reshape=reshape, one_hot=one_hot)
@@ -39,11 +39,11 @@ class Mnist(object):
 
         # convert to tensor queue
         self.train.image, self.train.label = \
-            _data_to_tensor([_train.images, _train.labels], batch_size, num_epochs)
+            _data_to_tensor([_train.images, _train.labels], batch_size, name='train')
         self.valid.image, self.valid.label = \
-            _data_to_tensor([_valid.images, _valid.labels], batch_size, num_epochs)
+            _data_to_tensor([_valid.images, _valid.labels], batch_size, name='valid')
         self.test.image, self.test.label = \
-            _data_to_tensor([_test.images, _test.labels], batch_size, num_epochs)
+            _data_to_tensor([_test.images, _test.labels], batch_size, name='test')
 
         # calc total batch count
         self.train.total_batch = _train.labels.shape[0] // self.batch_size
