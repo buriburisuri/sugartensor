@@ -41,6 +41,17 @@ def sg_summary_loss(tensor, prefix='10. loss'):
         tf.histogram_summary(name, tensor)
 
 
+def sg_summary_metric(tensor, name, prefix='20. metric'):
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + name
+    # summary statistics
+    with tf.name_scope('summary'):
+        tf.scalar_summary(name + '/avg', tf.reduce_mean(tensor))
+        tf.histogram_summary(name, tensor)
+
+
 def sg_summary_activation(tensor, prefix='30. activation'):
     return sg_summary(tensor, prefix)
 

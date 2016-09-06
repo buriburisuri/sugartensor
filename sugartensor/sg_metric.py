@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import tensorflow as tf
-import sugartensor as st
+import sugartensor as tf
 
 __author__ = 'njkim@jamonglab.com'
 
@@ -9,17 +8,18 @@ __author__ = 'njkim@jamonglab.com'
 # evaluation layer
 #
 
-def accuracy(self, **kwargs):
-    opt = st.opt(kwargs) + st.opt(k=1, one_hot=False)
+
+@tf.sg_sugar_func
+def sg_accuracy(tensor, opt):
     assert opt.target is not None, 'target is mandatory.'
+    opt += tf.sg_opt(k=1)
 
-    # get top k prediction
-    hit = tf.nn.in_top_k(self, opt.target, opt.k)
-
-    # calc accuracy
-    out = tf.reduce_sum(tf.cast(hit, st.sg_floatx)) / tf.reduce_sum(tf.cast(tf.ones_like(opt.target), st.sg_floatx))
+    # # calc accuracy
+    out = tf.equal(tensor.sg_argmax(), tf.cast(opt.target, tf.int64)).sg_float()
+    # out = tf.nn.in_top_k(tensor, opt.target, opt.k).sg_float()
 
     # add summary
-    st.summary(out, prefix='2.accuracy')
+    name = 'acc' + '_' + opt.name if opt.name else 'acc'
+    tf.sg_summary_metric(out, name)
 
     return out

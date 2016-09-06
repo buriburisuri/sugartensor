@@ -28,7 +28,7 @@ _global_step = tf.Variable(0, name='global_step', trainable=False)
 _learning_rate = tf.Variable(0., name='learning_rate', trainable=False)
 
 # global phase(train or infer) flag
-_phase = tf.Variable(False, name='phase', trainable=False, collections=[])
+_phase = tf.Variable(False, name='phase', trainable=False, collections=[tf.GraphKeys.LOCAL_VARIABLES])
 
 # context options
 _context = tf.sg_opt()
@@ -123,25 +123,26 @@ def sg_layer_func(func):
         finally:
             pass
 
-        # layer function name will be used as layer name
-        opt += tf.sg_opt(name=func.__name__)
+        if opt.name is None:
+            # layer function name will be used as layer name
+            opt.name = func.__name__
 
-        # find existing layer names
-        exist_layers = []
-        for t in tf.get_collection(tf.GraphKeys.VARIABLES):
-            i = t.name.rfind('layers/' + opt.name)
-            if i >= 0:
-                exist_layers.append(t.name[i:].split('/')[1])
-        exist_layers = list(set(exist_layers))
+            # find existing layer names
+            exist_layers = []
+            for t in tf.get_collection(tf.GraphKeys.VARIABLES):
+                i = t.name.rfind('layers/' + opt.name)
+                if i >= 0:
+                    exist_layers.append(t.name[i:].split('/')[1])
+            exist_layers = list(set(exist_layers))
 
-        # layer name numbering
-        if len(exist_layers) == 0:
-            opt.name += '_1'
-        else:
-            opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
+            # layer name numbering
+            if len(exist_layers) == 0:
+                opt.name += '_1'
+            else:
+                opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
         # all layer variables start with 'layers/' prefix
-        with tf.variable_scope('layers'):
+        with tf.variable_scope('layers', reuse=opt.reuse):
 
             with tf.variable_scope(opt.name):
 
@@ -151,12 +152,12 @@ def sg_layer_func(func):
                 # apply batch normalization
                 if opt.bn:
                     # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1])
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
+                    beta = init.constant('beta', out.get_shape().as_list()[-1], reuse=opt.reuse)
+                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
 
                     # offset, scale parameter
-                    mean_running = init.constant('mean', out.get_shape().as_list()[-1])
-                    variance_running = init.constant('variance', out.get_shape().as_list()[-1], value=1)
+                    mean_running = init.constant('mean', out.get_shape().as_list()[-1], reuse=opt.reuse)
+                    variance_running = init.constant('variance', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
 
                     # calc batch mean, variance
                     mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))
@@ -180,8 +181,8 @@ def sg_layer_func(func):
                 # apply layer normalization
                 if opt.ln:
                     # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1])
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
+                    beta = init.constant('beta', out.get_shape().as_list()[-1], reuse=opt.reuse)
+                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
 
                     # calc layer mean, variance for final axis
                     mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1])
@@ -198,7 +199,8 @@ def sg_layer_func(func):
                 if opt.act:
                     out = getattr(sg_activation, 'sg_' + opt.act.lower())(out)
                     # add post-activation summary
-                    tf.sg_summary_activation(out)
+                    if opt.reuse is None or not opt.reuse:
+                        tf.sg_summary_activation(out)
 
                 # apply dropout
                 if opt.dout:
@@ -215,25 +217,32 @@ def sg_layer_func(func):
 # sugar template functions
 #
 
-def sg_template():
+def sg_port():
     return _sugar_node(None, None, None)
 
 
-def _sugar_build(template, tensor):
-    assert hasattr(template, '_sugar'), 'This tensor is not template.'
+def _sugar_build(port, tensor):
+    assert hasattr(port, '_sugar'), 'This tensor is not template.'
+
+    # check already built
+    if port._sugar.built:
+        reuse = True
+    else:
+        reuse = None
+        port._sugar.built = True
 
     # get all nodes in this template graph
-    nodes, prev = [template], template._sugar.prev
+    nodes, prev = [port], port._sugar.prev
     while prev is not None:
         nodes = [prev] + nodes
         prev = prev._sugar.prev
 
     # create real tensor graph
     res = tensor
-    for node in nodes[1:]:  # exclude head node
+    for i, node in enumerate(nodes[1:]):  # exclude head node
         if node._sugar.type == 'layer':
             fn = sg_layer_func(node._sugar.func)
-            res = fn(res, **node._sugar.arg)
+            res = fn(res, **(node._sugar.arg + tf.sg_opt(reuse=reuse)))
         else:
             res = node._sugar.func(res, node._sugar.arg)
 
@@ -243,7 +252,7 @@ def _sugar_build(template, tensor):
 def _sugar_node(func, arg, prev, type=None):
     node = tf.constant(-10, name='template')
     node._sugar = tf.sg_opt(func=func, arg=arg, prev=prev, type=type)
-    node.build = types.MethodType(_sugar_build, node)
+    node.sg_plug = types.MethodType(_sugar_build, node)
     return node
 
 
@@ -267,7 +276,7 @@ def sg_inject(path, mod_name):
     # import module
     import sys
     if path not in list(sys.path):
-        sys.path.append(path[0])
+        sys.path.append(path)
     globals()[mod_name] = importlib.import_module(mod_name)
     # find functions
     for func_name in dir(globals()[mod_name]):
@@ -278,3 +287,24 @@ def sg_inject(path, mod_name):
                 # inject to tf.Tensor type
                 exec ('tf.Tensor.%s = types.MethodType(%s.%s, None, tf.Tensor)' % (func_name, mod_name, func_name))
 
+
+#
+# Queue Wrapper Annotator
+#
+
+@contextmanager
+def sg_queue_context(sess=None):
+
+    # default session
+    sess = tf.get_default_session() if sess is None else sess
+
+    # thread coordinator
+    coord = tf.train.Coordinator()
+    try:
+        # start queue thread
+        threads = tf.train.start_queue_runners(sess, coord)
+        yield
+    finally:
+        # stop queue thread
+        coord.request_stop()
+        coord.join(threads, stop_grace_period_secs=120)

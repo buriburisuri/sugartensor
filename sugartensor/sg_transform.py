@@ -10,43 +10,49 @@ __author__ = 'njkim@jamonglab.com'
 #
 
 @tf.sg_sugar_func
-def sg_cast(self, opt):
+def sg_cast(tensor, opt):
     assert opt.dtype is not None, 'dtype is mandatory.'
-    return tf.cast(self, opt.dtype)
+    return tf.cast(tensor, opt.dtype)
 
 
 @tf.sg_sugar_func
-def sg_float(self, opt):
-    return tf.cast(self, tf.sg_floatx)
+def sg_float(tensor, opt):
+    return tf.cast(tensor, tf.sg_floatx)
 
 
 @tf.sg_sugar_func
-def sg_int(self, opt):
-    return tf.cast(self, tf.sg_intx)
+def sg_int(tensor, opt):
+    return tf.cast(tensor, tf.sg_intx)
 
 
 @tf.sg_sugar_func
-def sg_expand_dims(self, opt):
+def sg_expand_dims(tensor, opt):
     opt += tf.sg_opt(dim=-1)
-    return tf.expand_dims(self, opt.dim)
+    return tf.expand_dims(tensor, opt.dim)
 
 
 @tf.sg_sugar_func
-def sg_squeeze(self, opt):
+def sg_squeeze(tensor, opt):
     opt += tf.sg_opt(dim=-1)
-    return tf.squeeze(self, [opt.dim])
+    return tf.squeeze(tensor, [opt.dim])
 
 
 @tf.sg_sugar_func
-def sg_flatten(self, opt):
-    dim = np.prod(self.get_shape().as_list()[1:])
-    return tf.reshape(self, [-1, dim])
+def sg_flatten(tensor, opt):
+    dim = np.prod(tensor.get_shape().as_list()[1:])
+    return tf.reshape(tensor, [-1, dim])
 
 
 @tf.sg_sugar_func
-def sg_reshape(self, opt):
+def sg_reshape(tensor, opt):
     assert opt.shape is not None, 'shape is mandatory.'
-    return tf.reshape(self, opt.shape)
+    return tf.reshape(tensor, opt.shape)
+
+
+@tf.sg_sugar_func
+def sg_argmax(tensor, opt):
+    opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
+    return tf.argmax(tensor, opt.dim, opt.name)
 
 
 @tf.sg_sugar_func

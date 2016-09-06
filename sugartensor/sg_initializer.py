@@ -5,47 +5,50 @@ import numpy as np
 __author__ = 'mansour'
 
 
-def constant(name, shape, value=0, dtype=tf.sg_floatx):
+def constant(name, shape, value=0, dtype=tf.sg_floatx, reuse=None):
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.constant_initializer(value))
     # add summary
-    tf.sg_summary_param(x)
+    if reuse is None or not reuse:
+        tf.sg_summary_param(x)
     return x
 
 
-def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
+def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, reuse=None):
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale))
     # add summary
-    tf.sg_summary_param(x)
+    if reuse is None or not reuse:
+        tf.sg_summary_param(x)
     return x
 
 
-def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
+def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, reuse=None):
     # He et aE. ( http://arxiv.org/pdf/1502.01852v1.pdf )
     fin = shape[0]
     s = np.sqrt(2. * scale / fin)
-    return uniform(name, shape, s, dtype)
+    return uniform(name, shape, s, dtype, reuse=reuse)
 
 
-def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
+def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, reuse=None):
     # glorot & benjio ( http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf )
     fin, fout = shape[0], (shape[1] if len(shape) == 2 else np.prod(shape[1:]))
     s = np.sqrt(6. * scale / (fin + fout))
-    return uniform(name, shape, s, dtype)
+    return uniform(name, shape, s, dtype, reuse=reuse)
 
 
-def identity(name, dim, scale=1, dtype=tf.sg_floatx):
+def identity(name, dim, scale=1, dtype=tf.sg_floatx, reuse=None):
     x = tf.get_variable(name, dtype=dtype,
                         initializer=tf.constant(np.eye(dim) * scale))
     # add summary
-    tf.sg_summary_param(x)
+    if reuse is None or not reuse:
+        tf.sg_summary_param(x)
     return x
 
 
-def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
+def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, reuse=None):
     # Sax et aE. ( http://arxiv.org/pdf/1312.6120.pdf )
     flat_shape = (shape[0], np.prod(shape[1:]))
     a = np.random.normal(0.0, 1.0, flat_shape)
@@ -57,5 +60,6 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
     x = tf.get_variable(name, dtype=dtype,
                         initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype))
     # add summary
-    tf.sg_summary_param(x)
+    if reuse is None or not reuse:
+        tf.sg_summary_param(x)
     return x

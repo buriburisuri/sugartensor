@@ -17,9 +17,9 @@ def sg_train(**kwargs):
 
     # default training options
     opt += tf.sg_opt(optim='MaxPropOptimizer', lr=0.001, beta1=0.9, beta2=0.99,
-                     early_stop=True,   # learning rate decay
                      max_ep=500, total_batch=100000000,
-                     save_interval=600, log_interval=60)
+                     save_interval=600, log_interval=60,
+                     early_stop=True,  lr_reset=False, eval_metric=[])
 
     # make directory if not exist
     if not os.path.exists(opt.save_dir + '/log'):
@@ -43,7 +43,8 @@ def sg_train(**kwargs):
     with tf.Session() as sess:
 
         # initialize variables
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.group(tf.initialize_all_variables(),
+                          tf.initialize_local_variables()))
 
         # summary writer
         summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=sess.graph)
@@ -55,7 +56,7 @@ def sg_train(**kwargs):
             saver.restore(sess, last_file)
             start_ep = int(last_file.split('-')[1])
             start_step = int(last_file.split('-')[2])
-            # early stopping chekcing
+            # early stopping checking
             if tf.sg_learning_rate(as_tensor=False) < 5e-6:
                 tf.sg_info('Early stopped at epoch[%d]-step[%d].' % (start_ep, start_step))
                 return
@@ -63,82 +64,147 @@ def sg_train(**kwargs):
             start_ep = 1
             start_step = tf.sg_global_step(as_tensor=False)
 
-        # start data queue runner
-        coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(sess, coord)
+        # set learning rate
+        if start_step == 0 or opt.lr_reset:
+            sess.run(tf.sg_learning_rate().assign(opt.lr))
 
         # logging
         tf.sg_info('Training started from epoch[%03d]-step[%d].' % (start_ep, start_step))
 
-        # set mode to train
-        tf.sg_phase(phase='train')
+        # start data queue runner
+        with tf.sg_queue_context(sess):
 
-        # set learning rate
-        sess.run(tf.sg_learning_rate().assign(opt.lr))
+            # set mode to train
+            tf.sg_phase(phase='train')
 
-        #
-        # loop all epochs
-        #
+            #
+            # loop all epochs
+            #
 
-        # loss_history for learning rate decay
-        loss_prev, early_stopped = None, False
+            # loss history for learning rate decay
+            loss_prev, loss, early_stopped = None, None, False
 
-        # time stamp
-        last_saved = last_logged = time.time()
+            # time stamp
+            last_saved = last_logged = time.time()
 
-        for ep in range(1, opt.max_ep + 1):
+            for ep in range(1, opt.max_ep + 1):
 
-            # loop each epoch
-            loss = None
-            for _ in tqdm(range(opt.total_batch),
-                          desc='train', ncols=70, unit='b', leave=False):
+                # loop each epoch
+                for _ in tqdm(range(opt.total_batch),
+                              desc='train', ncols=70, unit='b', leave=False):
 
-                # run training steps
-                loss_prev = loss
-                if loss is None:
-                    loss = np.mean(sess.run([train_op, opt.loss])[1])
-                else:
-                    loss = loss * 0.9 + np.mean(sess.run([train_op, opt.loss])[1]) * 0.1
+                    # run training steps
+                    if loss is None:
+                        loss = np.mean(sess.run([train_op, opt.loss])[1])
+                    else:
+                        loss = loss * 0.9 + np.mean(sess.run([train_op, opt.loss])[1]) * 0.1
 
-                # save parameters
-                if time.time() - last_saved > opt.save_interval:
-                    saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
-                               write_meta_graph=False,
-                               global_step=tf.sg_global_step(as_tensor=False))
-                    last_saved = time.time()
+                    # save parameters
+                    if time.time() - last_saved > opt.save_interval:
+                        saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
+                                   write_meta_graph=False,
+                                   global_step=tf.sg_global_step(as_tensor=False))
+                        last_saved = time.time()
 
-                # logging summary
-                if time.time() - last_logged > opt.log_interval:
-                    summary_writer.add_summary(sess.run(summary_op),
-                                               global_step=tf.sg_global_step(as_tensor=False))
-                    last_logged = time.time()
+                    # logging summary
+                    if time.time() - last_logged > opt.log_interval:
 
-                    # learning rate decay
-                    if opt.early_stop and loss_prev:
-                        # if loss stalling
-                        if loss >= 0.95 * loss_prev:
-                            # early stopping
-                            current_lr = tf.sg_learning_rate(as_tensor=False)
-                            if current_lr < 5e-6:
-                                early_stopped = True
-                                break
-                            else:
-                                # decrease learning rate by half
-                                sess.run(tf.sg_learning_rate().assign(current_lr / 2.))
+                        # run evaluation operations
+                        if len(opt.eval_metric) > 0:
+                            sess.run(opt.eval_metric)
 
-            if early_stopped:
-                tf.sg_info('\tTraining early stopped at epoch[%d]-step[%d].' % (ep, tf.sg_global_step(as_tensor=False)))
-                # save last epoch
-                saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
-                           write_meta_graph=False,
-                           global_step=tf.sg_global_step(as_tensor=False))
-                break
+                        # logging ops
+                        summary_writer.add_summary(sess.run(summary_op),
+                                                   global_step=tf.sg_global_step(as_tensor=False))
+                        last_logged = time.time()
 
-            # log epoch information
-            tf.sg_info('\tEpoch[%03d:lr=%7.5f] - loss = %8.6f' % (ep, tf.sg_learning_rate(as_tensor=False), loss))
+                        # learning rate decay
+                        if opt.early_stop and loss_prev:
+                            # if loss stalling
+                            if loss >= 0.95 * loss_prev:
+                                # early stopping
+                                current_lr = tf.sg_learning_rate(as_tensor=False)
+                                if current_lr < 5e-6:
+                                    early_stopped = True
+                                    break
+                                else:
+                                    # decrease learning rate by half
+                                    sess.run(tf.sg_learning_rate().assign(current_lr / 2.))
 
-        # weight data queue runner
-        coord.request_stop()
-        coord.join(threads)
+                        # update loss history
+                        loss_prev = loss
 
+                if early_stopped:
+                    break
+
+                # log epoch information
+                tf.sg_info('\tEpoch[%03d:lr=%7.5f] - loss = %8.6f' % (ep, tf.sg_learning_rate(as_tensor=False), loss))
+
+            # save last epoch
+            saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
+                       write_meta_graph=False,
+                       global_step=tf.sg_global_step(as_tensor=False))
+
+        # logging
         tf.sg_info('Training finished at epoch[%d]-step[%d].' % (ep, tf.sg_global_step(as_tensor=False)))
+
+
+# def sg_eval(**kwargs):
+#     opt = tf.sg_opt(kwargs)
+#     assert opt.eval_metric is not None, 'eval_metric is mandatory.'
+#     assert opt.save_dir, 'save_dir is mandatory.'
+#
+#     # default training options
+#     opt += tf.sg_opt(total_batch=100000000, eval_interval=1)
+#
+#     # make directory if not exist
+#     if not os.path.exists(opt.save_dir + '/log'):
+#         os.makedirs(opt.save_dir + '/log')
+#
+#     # summary op
+#     summary_op = tf.merge_all_summaries()
+#
+#     # run as default session
+#     with tf.Session() as sess:
+#
+#         # initialize variables
+#         sess.run(tf.group(tf.initialize_all_variables(),
+#                           tf.initialize_local_variables()))
+#
+#         # summary writer
+#         summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=sess.graph)
+#
+#         # saver
+#         saver = tf.train.Saver(keep_checkpoint_every_n_hours=1)
+#         last_file = tf.train.latest_checkpoint(opt.save_dir + '/ckpt') if opt.last_file is None else opt.last_file
+#         assert os.path.isfile(str(last_file)), 'Trained parameter file not found.'
+#
+#         # load saved parameters
+#         saver.restore(sess, last_file)
+#         start_ep = int(last_file.split('-')[1])
+#         start_step = int(last_file.split('-')[2])
+#
+#         # logging
+#         tf.sg_info('Evaluating started from epoch[%03d]-step[%d].' % (start_ep, start_step))
+#
+#         # start data queue runner
+#         with tf.sg_queue_context(sess):
+#
+#             # set mode to train
+#             tf.sg_phase(phase='train')
+#
+#             # loop epoch
+#             for i in tqdm(range(opt.total_batch),
+#                           desc='eval', ncols=70, unit='b', leave=False):
+#
+#                 # logging summary
+#                 if (i + 1) % opt.eval_interval == 0:
+#
+#                     # run evaluation operations
+#                     if len(opt.eval_metric) > 0:
+#                         sess.run(opt.eval_metric)
+#
+#                     # logging ops
+#                     summary_writer.add_summary(sess.run(summary_op), global_step=i)
+#
+#         tf.sg_info('Evaluation finished.')
