@@ -85,7 +85,7 @@ def sg_sugar_func(func):
         # call sugar function
         out = func(tensor, tf.sg_opt(kwargs))
         # save node info for reuse
-        out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs), prev=tensor)
+        out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs)+_context, prev=tensor)
         # inject reuse function
         out.sg_reuse = types.MethodType(sg_reuse, out)
         return out
@@ -212,7 +212,8 @@ def sg_layer_func(func):
                     tf.sg_summary_activation(out)
 
                 # save node info for reuse
-                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs), prev=tensor, is_layer=True, name=opt.name)
+                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs)+_context,
+                                       prev=tensor, is_layer=True, name=opt.name)
                 # inject reuse function
                 out.sg_reuse = types.MethodType(sg_reuse, out)
 

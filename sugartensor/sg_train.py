@@ -139,12 +139,13 @@ def sg_train(**kwargs):
                         # update loss history
                         loss_prev = loss
 
-                if early_stopped:
-                    break
-
                 # log epoch information
                 tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %8.6f' %
                            (ep, tf.sg_learning_rate(as_tensor=False), tf.sg_global_step(as_tensor=False), loss))
+
+                if early_stopped:
+                    tf.sg_info('\tEarly stopped.')
+                    break
 
             # save last epoch
             saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,

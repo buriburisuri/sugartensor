@@ -12,10 +12,13 @@ x = data.train.image
 y = data.train.label
 
 # create training graph
-logit = (x.sg_flatten()
-         .sg_dense(dim=400, act='relu', bn=True)
-         .sg_dense(dim=200, act='relu', bn=True)
-         .sg_dense(dim=100))
+with tf.sg_context(act='relu', bn=True):
+    logit = (x.sg_conv(dim=16).sg_pool()
+             .sg_conv(dim=32).sg_pool()
+             .sg_conv(dim=32).sg_pool()
+             .sg_flatten()
+             .sg_dense(dim=256)
+             .sg_dense(dim=10, act='linear', bn=False))
 
 # cross entropy loss with logit ( for training set )
 loss = logit.sg_ce(target=y)
