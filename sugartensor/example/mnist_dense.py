@@ -19,15 +19,15 @@ if __name__ == '__main__':
 
     # create training graph
     logit = (x.sg_flatten()
-             .sg_dense(dim=400, act='relu', bn=True, name='fc_1')
-             .sg_dense(dim=200, act='relu', bn=True, name='fc_2')
-             .sg_dense(dim=100, name='fc_3'))
+             .sg_dense(dim=400, act='relu', bn=True)
+             .sg_dense(dim=200, act='relu', bn=True)
+             .sg_dense(dim=100))
 
     # cross entropy loss with logit ( for training set )
     loss = logit.sg_ce(target=y)
 
     # accuracy evaluation ( for validation set )
-    acc = (tf.sg_reuse(logit, input=data.valid.image).sg_softmax()
+    acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
            .sg_accuracy(target=data.valid.label, name='val'))
 
     # train

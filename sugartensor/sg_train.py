@@ -95,7 +95,7 @@ def sg_train(**kwargs):
             for ep in range(1, opt.max_ep + 1):
 
                 # loop each epoch
-                for _ in tqdm(range(opt.total_batch),
+                for _ in tqdm(range(opt.ep_size),
                               desc='train', ncols=70, unit='b', leave=False):
 
                     # run training steps
