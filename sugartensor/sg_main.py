@@ -82,12 +82,11 @@ def sg_context(**kwargs):
 def sg_sugar_func(func):
     @wraps(func)
     def wrapper(tensor, **kwargs):
-        if hasattr(tensor, '_sugar'):
-            # template chaining
-            return _sugar_node(func, tf.sg_opt(kwargs), tensor)
-        else:
-            # call sugar function
-            return func(tensor, tf.sg_opt(kwargs))
+        # call sugar function
+        out = func(tensor, tf.sg_opt(kwargs))
+        # save node info for reuse
+        out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs), prev=tensor)
+        return out
 
     return wrapper
 
@@ -104,11 +103,6 @@ def sg_layer_func(func):
         import sg_initializer as init
         import sg_activation
 
-        # template process
-        if hasattr(tensor, '_sugar'):
-            # template chaining
-            return _sugar_node(func, tf.sg_opt(kwargs), tensor, 'layer')
-
         # kwargs parsing
         opt = tf.sg_opt(kwargs) + _context
 
@@ -118,12 +112,15 @@ def sg_layer_func(func):
             # batch normalization off, layer normalization off, dropout off
             opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1], bn=False, ln=False, dout=0)
             assert not (opt.bn and opt.ln), 'one of batch normalization and layer normalization is available.'
+
             # disable bias when normalization on
             opt += tf.sg_opt(bias=not (opt.bn or opt.ln))
         finally:
             pass
 
+        # automatic layer naming
         if opt.name is None:
+
             # layer function name will be used as layer name
             opt.name = func.__name__
 
@@ -152,12 +149,12 @@ def sg_layer_func(func):
                 # apply batch normalization
                 if opt.bn:
                     # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1], reuse=opt.reuse)
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
+                    beta = init.constant('beta', out.get_shape().as_list()[-1])
+                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
 
                     # offset, scale parameter
-                    mean_running = init.constant('mean', out.get_shape().as_list()[-1], reuse=opt.reuse)
-                    variance_running = init.constant('variance', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
+                    mean_running = init.constant('mean', out.get_shape().as_list()[-1])
+                    variance_running = init.constant('variance', out.get_shape().as_list()[-1], value=1)
 
                     # calc batch mean, variance
                     mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))
@@ -181,8 +178,8 @@ def sg_layer_func(func):
                 # apply layer normalization
                 if opt.ln:
                     # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1], reuse=opt.reuse)
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1, reuse=opt.reuse)
+                    beta = init.constant('beta', out.get_shape().as_list()[-1])
+                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
 
                     # calc layer mean, variance for final axis
                     mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1])
@@ -208,52 +205,41 @@ def sg_layer_func(func):
                                   lambda: tf.nn.dropout(out, 1 - opt.dout),
                                   lambda: out)
 
+                # save node info for reuse
+                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs), prev=tensor, is_layer=True, name=opt.name)
+
         return out
 
     return wrapper
 
 
 #
-# sugar template functions
+# reuse functions for graph cloning
 #
 
-def sg_port():
-    return _sugar_node(None, None, None)
 
+# noinspection PyProtectedMember
+def sg_reuse(tensor, **opt):
+    opt = tf.sg_opt(opt)
+    assert hasattr(tensor, '_sugar'), 'cannot reuse this node.'
+    assert opt.input is not None, 'input is mandatory.'
 
-def _sugar_build(port, tensor):
-    assert hasattr(port, '_sugar'), 'This tensor is not template.'
-
-    # check already built
-    if port._sugar.built:
-        reuse = True
-    else:
-        reuse = None
-        port._sugar.built = True
-
-    # get all nodes in this template graph
-    nodes, prev = [port], port._sugar.prev
+    # get all nodes in this graph
+    nodes, prev = [tensor], tensor._sugar.prev
     while prev is not None:
         nodes = [prev] + nodes
-        prev = prev._sugar.prev
+        prev = prev._sugar.prev if hasattr(prev, '_sugar') else None
 
-    # create real tensor graph
-    res = tensor
-    for i, node in enumerate(nodes[1:]):  # exclude head node
-        if node._sugar.type == 'layer':
-            fn = sg_layer_func(node._sugar.func)
-            res = fn(res, **(node._sugar.arg + tf.sg_opt(reuse=reuse)))
+    # create graph again for this input
+    out = opt.input
+    for node in nodes[1:]:  # exclude head node
+        if node._sugar.is_layer:
+            fn = tf.sg_layer_func(node._sugar.func)
+            out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
         else:
-            res = node._sugar.func(res, node._sugar.arg)
+            out = node._sugar.func(out, node._sugar.arg)
 
-    return res
-
-
-def _sugar_node(func, arg, prev, type=None):
-    node = tf.constant(-10, name='template')
-    node._sugar = tf.sg_opt(func=func, arg=arg, prev=prev, type=type)
-    node.sg_plug = types.MethodType(_sugar_build, node)
-    return node
+    return out
 
 
 #
@@ -267,6 +253,7 @@ def sg_input(shape=None, dtype=sg_floatx, name=None):
         if not isinstance(shape, (list, tuple)):
             shape = [shape]
         return tf.placeholder(dtype, shape=[None] + list(shape), name=name)
+
 
 #
 # helper function for sugar and layer function injection
@@ -307,4 +294,5 @@ def sg_queue_context(sess=None):
     finally:
         # stop queue thread
         coord.request_stop()
-        coord.join(threads, stop_grace_period_secs=120)
+        # wait thread to exit.
+        coord.join(threads)

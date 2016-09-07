@@ -41,11 +41,11 @@ def sg_summary_loss(tensor, prefix='10. loss'):
         tf.histogram_summary(name, tensor)
 
 
-def sg_summary_metric(tensor, name, prefix='20. metric'):
+def sg_summary_metric(tensor, prefix='20. metric'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + name
+    name = prefix + _pretty_name(tensor)
     # summary statistics
     with tf.name_scope('summary'):
         tf.scalar_summary(name + '/avg', tf.reduce_mean(tensor))

@@ -15,11 +15,7 @@ def sg_accuracy(tensor, opt):
     opt += tf.sg_opt(k=1)
 
     # # calc accuracy
-    out = tf.equal(tensor.sg_argmax(), tf.cast(opt.target, tf.int64)).sg_float()
-    # out = tf.nn.in_top_k(tensor, opt.target, opt.k).sg_float()
-
-    # add summary
-    name = 'acc' + '_' + opt.name if opt.name else 'acc'
-    tf.sg_summary_metric(out, name)
+    out = tf.identity(tf.equal(tensor.sg_argmax(), tf.cast(opt.target, tf.int64)).sg_float(), name='acc')
+    # out = tf.identity(tf.nn.in_top_k(tensor, opt.target, opt.k).sg_float(), name='acc')
 
     return out

@@ -39,13 +39,13 @@ class Mnist(object):
 
         # convert to tensor queue
         self.train.image, self.train.label = \
-            _data_to_tensor([_train.images, _train.labels], batch_size, name='train')
+            _data_to_tensor([_train.images, _train.labels.astype('int32')], batch_size, name='train')
         self.valid.image, self.valid.label = \
-            _data_to_tensor([_valid.images, _valid.labels], batch_size, name='valid')
+            _data_to_tensor([_valid.images, _valid.labels.astype('int32')], batch_size, name='valid')
         self.test.image, self.test.label = \
-            _data_to_tensor([_test.images, _test.labels], batch_size, name='test')
+            _data_to_tensor([_test.images, _test.labels.astype('int32')], batch_size, name='test')
 
         # calc total batch count
-        self.train.total_batch = _train.labels.shape[0] // self.batch_size
-        self.valid.total_batch = _valid.labels.shape[0] // self.batch_size
-        self.test.total_batch = _test.labels.shape[0] // self.batch_size
+        self.train.num_batch = _train.labels.shape[0] // self.batch_size
+        self.valid.num_batch = _valid.labels.shape[0] // self.batch_size
+        self.test.num_batch = _test.labels.shape[0] // self.batch_size

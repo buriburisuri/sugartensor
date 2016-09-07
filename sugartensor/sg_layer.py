@@ -13,9 +13,9 @@ __author__ = 'njkim@jamonglab.com'
 @tf.sg_layer_func
 def sg_dense(tensor, opt):
     # parameter initialize
-    w = init.he_uniform('weight', (opt.in_dim, opt.dim), reuse=opt.reuse)
+    w = init.he_uniform('weight', (opt.in_dim, opt.dim))
     if opt.bias:
-        b = init.constant('bias', opt.dim, reuse=opt.reuse)
+        b = init.constant('bias', opt.dim)
 
     # apply transform
     out = tf.matmul(tensor, w) + (b if opt.bias else 0)
@@ -32,9 +32,9 @@ def sg_conv(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter initialize
-    w = init.he_uniform('weight', (opt.size[0], opt.size[1], opt.in_dim, opt.dim), reuse=opt.reuse)
+    w = init.he_uniform('weight', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
     if opt.bias:
-        b = init.constant('bias', opt.dim, reuse=opt.reuse)
+        b = init.constant('bias', opt.dim)
 
     # apply convolution
     out = tf.nn.conv2d(tensor, w, strides=opt.stride, padding=opt.pad) + (b if opt.bias else 0)
@@ -51,9 +51,9 @@ def sg_upconv(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter initialize
-    w = init.he_uniform('weight', (opt.size[0], opt.size[1], opt.dim, opt.in_dim), reuse=opt.reuse)
+    w = init.he_uniform('weight', (opt.size[0], opt.size[1], opt.dim, opt.in_dim))
     if opt.bias:
-        b = init.constant('bias', opt.dim, reuse=opt.reuse)
+        b = init.constant('bias', opt.dim)
 
     # tedious shape handling for conv2d_transpose
     shape = tensor.get_shape().as_list()

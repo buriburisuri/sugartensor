@@ -13,13 +13,14 @@ __author__ = 'njkim@jamonglab.com'
 def sg_train(**kwargs):
     opt = tf.sg_opt(kwargs)
     assert opt.loss is not None, 'loss is mandatory.'
-    assert opt.save_dir, 'save_dir is mandatory.'
 
     # default training options
     opt += tf.sg_opt(optim='MaxPropOptimizer', lr=0.001, beta1=0.9, beta2=0.99,
-                     max_ep=500, total_batch=100000000,
+                     save_dir='asset/train',
+                     max_ep=500, ep_size=100000000,
                      save_interval=600, log_interval=60,
-                     early_stop=True,  lr_reset=False, eval_metric=[])
+                     early_stop=True, lr_reset=False,
+                     eval_metric=[])
 
     # make directory if not exist
     if not os.path.exists(opt.save_dir + '/log'):
@@ -35,6 +36,10 @@ def sg_train(**kwargs):
 
     # train op
     train_op = optim.minimize(opt.loss, global_step=tf.sg_global_step())
+
+    # add evaluation metric summary
+    for m in opt.eval_metric:
+        tf.sg_summary_metric(m)
 
     # summary op
     summary_op = tf.merge_all_summaries()
@@ -138,7 +143,8 @@ def sg_train(**kwargs):
                     break
 
                 # log epoch information
-                tf.sg_info('\tEpoch[%03d:lr=%7.5f] - loss = %8.6f' % (ep, tf.sg_learning_rate(as_tensor=False), loss))
+                tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %8.6f' %
+                           (ep, tf.sg_learning_rate(as_tensor=False), tf.sg_global_step(as_tensor=False), loss))
 
             # save last epoch
             saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
@@ -147,64 +153,3 @@ def sg_train(**kwargs):
 
         # logging
         tf.sg_info('Training finished at epoch[%d]-step[%d].' % (ep, tf.sg_global_step(as_tensor=False)))
-
-
-# def sg_eval(**kwargs):
-#     opt = tf.sg_opt(kwargs)
-#     assert opt.eval_metric is not None, 'eval_metric is mandatory.'
-#     assert opt.save_dir, 'save_dir is mandatory.'
-#
-#     # default training options
-#     opt += tf.sg_opt(total_batch=100000000, eval_interval=1)
-#
-#     # make directory if not exist
-#     if not os.path.exists(opt.save_dir + '/log'):
-#         os.makedirs(opt.save_dir + '/log')
-#
-#     # summary op
-#     summary_op = tf.merge_all_summaries()
-#
-#     # run as default session
-#     with tf.Session() as sess:
-#
-#         # initialize variables
-#         sess.run(tf.group(tf.initialize_all_variables(),
-#                           tf.initialize_local_variables()))
-#
-#         # summary writer
-#         summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=sess.graph)
-#
-#         # saver
-#         saver = tf.train.Saver(keep_checkpoint_every_n_hours=1)
-#         last_file = tf.train.latest_checkpoint(opt.save_dir + '/ckpt') if opt.last_file is None else opt.last_file
-#         assert os.path.isfile(str(last_file)), 'Trained parameter file not found.'
-#
-#         # load saved parameters
-#         saver.restore(sess, last_file)
-#         start_ep = int(last_file.split('-')[1])
-#         start_step = int(last_file.split('-')[2])
-#
-#         # logging
-#         tf.sg_info('Evaluating started from epoch[%03d]-step[%d].' % (start_ep, start_step))
-#
-#         # start data queue runner
-#         with tf.sg_queue_context(sess):
-#
-#             # set mode to train
-#             tf.sg_phase(phase='train')
-#
-#             # loop epoch
-#             for i in tqdm(range(opt.total_batch),
-#                           desc='eval', ncols=70, unit='b', leave=False):
-#
-#                 # logging summary
-#                 if (i + 1) % opt.eval_interval == 0:
-#
-#                     # run evaluation operations
-#                     if len(opt.eval_metric) > 0:
-#                         sess.run(opt.eval_metric)
-#
-#                     # logging ops
-#                     summary_writer.add_summary(sess.run(summary_op), global_step=i)
-#
-#         tf.sg_info('Evaluation finished.')

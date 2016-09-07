@@ -6,7 +6,7 @@ __author__ = 'njkim@jamonglab.com'
 
 
 #
-# transform layers
+# transform sugar functions
 #
 
 @tf.sg_sugar_func
