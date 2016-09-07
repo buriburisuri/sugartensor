@@ -8,7 +8,7 @@ setup(
               'sugartensor.data'
               ],
     url='https://github.com/buriburisuri/sugartensor',
-    license='Apache License Version 2.0',
+    license='MIT',
     author='Namju Kim',
     author_email='njkim@jamonglab.com',
     description='Slim syntactic sugar wrapper for tensorflow', requires=[]
