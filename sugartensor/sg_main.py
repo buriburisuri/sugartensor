@@ -204,6 +204,9 @@ def sg_layer_func(func):
                                   lambda: tf.nn.dropout(out, 1 - opt.dout),
                                   lambda: out)
 
+                # rename tensor
+                out = tf.identity(out, 'out')
+
                 # add final output summary
                 if opt.reuse is None or not opt.reuse:
                     tf.sg_summary_activation(out)
