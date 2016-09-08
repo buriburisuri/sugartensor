@@ -66,6 +66,17 @@ def sg_summary_param(tensor, prefix='40.parameters'):
         tf.scalar_summary(name, tf.reduce_mean(tensor))
 
 
+def sg_summary_gradient(tensor, gradient, prefix='50.gradient'):
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + _pretty_name(tensor)
+    # summary statistics
+    with tf.name_scope('summary'):
+        tf.scalar_summary(name + '/norm', tf.global_norm([gradient]))
+        tf.histogram_summary(name, gradient)
+
+
 def sg_summary_image(tensor, prefix=None):
     # defaults
     prefix = '' if prefix is None else prefix + '/'

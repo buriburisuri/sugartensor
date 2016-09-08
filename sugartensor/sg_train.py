@@ -34,8 +34,18 @@ def sg_train(**kwargs):
     elif opt.optim == 'AdaMaxOptimizer':
         optim = tf.sg_optimize.AdaMaxOptimizer(learning_rate=tf.sg_learning_rate(), beta1=opt.beta1, beta2=opt.beta2)
 
+    # get trainable variables
+    var_list = tf.trainable_variables()
+
+    # calc gradient
+    gradient = optim.compute_gradients(opt.loss, var_list=var_list)
+
+    # add summary
+    for v, g in zip(var_list, gradient):
+        tf.sg_summary_gradient(v, g)
+
     # train op
-    train_op = optim.minimize(opt.loss, global_step=tf.sg_global_step())
+    train_op = optim.apply_gradients(gradient, global_step=tf.sg_global_step())
 
     # add evaluation metric summary
     for m in opt.eval_metric:
