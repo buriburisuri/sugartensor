@@ -60,17 +60,18 @@ def sg_phase(phase=None):
         tf.get_default_session().run(tf.assign(_phase, False))
 
 
-def sg_current_context():
-    global _context
-    return _context
-
-
 @contextmanager
 def sg_context(**kwargs):
     global _context
     # set options when enter
     _context = tf.sg_opt(kwargs)
-    yield
+    if _context.name:
+        _context.context_name = _context.name
+        _context.name = None
+        with tf.variable_scope(_context.context_name):
+            yield
+    else:
+        yield
     # clear options when exit
     _context = tf.sg_opt()
 
@@ -212,7 +213,7 @@ def sg_layer_func(func):
                     tf.sg_summary_activation(out)
 
                 # save node info for reuse
-                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs)+_context,
+                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
                                        prev=tensor, is_layer=True, name=opt.name)
                 # inject reuse function
                 out.sg_reuse = types.MethodType(sg_reuse, out)
@@ -244,7 +245,11 @@ def sg_reuse(tensor, **opt):
     for node in nodes[1:]:  # exclude head node
         if node._sugar.is_layer:
             fn = tf.sg_layer_func(node._sugar.func)
-            out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
+            if node._sugar.arg.context_name:
+                with tf.variable_scope(node._sugar.arg.context_name):
+                    out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
+            else:
+                out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
         else:
             out = node._sugar.func(out, node._sugar.arg)
 

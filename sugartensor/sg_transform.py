@@ -10,6 +10,11 @@ __author__ = 'njkim@jamonglab.com'
 #
 
 @tf.sg_sugar_func
+def sg_identity(tensor, opt):
+    return tf.identity(tensor, name=opt.name)
+
+
+@tf.sg_sugar_func
 def sg_cast(tensor, opt):
     assert opt.dtype is not None, 'dtype is mandatory.'
     return tf.cast(tensor, opt.dtype)
@@ -54,6 +59,22 @@ def sg_argmax(tensor, opt):
     opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
     return tf.argmax(tensor, opt.dim, opt.name)
 
+
+@tf.sg_sugar_func
+def sg_concat(tensor, opt):
+    assert opt.target is not None, 'target is mantory.'
+    opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
+    target = opt.target if isinstance(opt.target, (tuple, list)) else [opt.target]
+    return tf.concat(opt.dim, [tensor] + target, name=opt.name)
+
+
+@tf.sg_sugar_func
+def sg_squeeze(tensor, opt):
+    return tf.squeeze(tensor, squeeze_dims=opt.dim, name=opt.name)
+
+#
+# complicated transform function ( layer related )
+#
 
 @tf.sg_sugar_func
 def sg_pool(tensor, opt):

@@ -16,7 +16,7 @@ __author__ = 'njkim@jamonglab.com'
 # augmenting tensorflow Variable and Tensor type by injecting custom methods
 #
 
-modules = ['sg_activation', 'sg_metric', 'sg_layer', 'sg_loss', 'sg_transform']
+modules = ['sg_activation', 'sg_metric', 'sg_layer', 'sg_loss', 'sg_transform', 'sg_net']
 for mod in modules:
     sg_inject(__path__[0], mod)
 
