@@ -76,6 +76,7 @@ def sg_squeeze(tensor, opt):
 # complicated transform function ( layer related )
 #
 
+
 @tf.sg_sugar_func
 def sg_pool(tensor, opt):
     # default stride and pad
@@ -96,3 +97,4 @@ def sg_pool(tensor, opt):
         out = tf.nn.max_pool(tensor, opt.size, opt.stride, opt.pad)
 
     return out
+
