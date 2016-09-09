@@ -71,12 +71,12 @@ train_gen = tf.sg_optim(loss_gen, lr=0.001, category='generator')
 # training
 #
 
+# def alternate training func
 @tf.sg_train_func
-def train(sess):
-    # alternate training
+def alt_train(sess):
     sess.run(train_disc)  # training discriminator
     sess.run(train_gen)  # training generator
 
 # do training
-train(log_interval=10)
+alt_train(log_interval=10)
 
