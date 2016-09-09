@@ -2,7 +2,7 @@
 import sugartensor as tf
 import numpy as np
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 #

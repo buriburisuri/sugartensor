@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import tensorflow as tf
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 class AdaMaxOptimizer(tf.train.Optimizer):

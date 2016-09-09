@@ -3,7 +3,7 @@ import sugartensor as tf
 import sg_initializer as init
 
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 #

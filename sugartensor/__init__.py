@@ -5,11 +5,12 @@ from tensorflow import *
 from sg_util import sg_opt
 from sg_main import *
 from sg_logging import *
-from sg_train import sg_train
+import sg_optimize
+from sg_train import *
 
 import sg_data
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 #

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sugartensor as tf
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 #

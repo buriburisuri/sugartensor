@@ -4,7 +4,7 @@ import os
 import time
 import sys
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 #
@@ -14,20 +14,6 @@ __author__ = 'njkim@jamonglab.com'
 
 def _pretty_name(tensor):
     return ':'.join(tensor.name.split(':')[:-1])
-
-
-def sg_summary(tensor, prefix=None):
-    # defaults
-    prefix = '' if prefix is None else prefix + '/'
-    # summary name
-    name = prefix + _pretty_name(tensor)
-    # summary statistics
-    with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/avg', tf.reduce_mean(tensor))
-        tf.scalar_summary(name + '/ratio',
-                          tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
-        tf.scalar_summary(name + '/max', tf.reduce_max(tensor))
-        tf.histogram_summary(name, tensor)
 
 
 def sg_summary_loss(tensor, prefix='10. loss'):
@@ -53,20 +39,30 @@ def sg_summary_metric(tensor, prefix='20. metric'):
 
 
 def sg_summary_activation(tensor, prefix='30. activation'):
-    return sg_summary(tensor, prefix)
-
-
-def sg_summary_param(tensor, prefix='40.parameters'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
     name = prefix + _pretty_name(tensor)
     # summary statistics
     with tf.name_scope('summary'):
-        tf.scalar_summary(name, tf.reduce_mean(tensor))
+        tf.scalar_summary(name + '/norm', tf.global_norm([tensor]))
+        tf.scalar_summary(name + '/ratio',
+                          tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
+        tf.histogram_summary(name, tensor)
 
 
-def sg_summary_gradient(tensor, gradient, prefix='50.gradient'):
+def sg_summary_param(tensor, prefix='40. parameters'):
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + _pretty_name(tensor)
+    # summary statistics
+    with tf.name_scope('summary'):
+        tf.scalar_summary(name + '/norm', tf.global_norm([tensor]))
+        tf.histogram_summary(name, tensor)
+
+
+def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -83,11 +79,8 @@ def sg_summary_image(tensor, prefix=None):
     # summary name
     name = prefix + _pretty_name(tensor)
     # summary statistics
-    with tf.name_scope('summary_image'):
+    with tf.name_scope('summary'):
         tf.image_summary(name, tensor)
-
-# add learning rate summary
-sg_summary_param(tf.sg_learning_rate())
 
 
 #

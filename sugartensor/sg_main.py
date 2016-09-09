@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 import sugartensor as tf
 
-__author__ = 'njkim@jamonglab.com'
+__author__ = 'buriburisuri@gmail.com'
 
 #
 # default float, int precision
@@ -18,46 +18,43 @@ sg_intx = tf.int32
 sg_eps = 1e-8
 
 #
-# global variables
+# global step
 #
 
-# global step
 _global_step = tf.Variable(0, name='global_step', trainable=False)
-
-# global learning rate
-_learning_rate = tf.Variable(0., name='learning_rate', trainable=False)
-
-# global phase(train or infer) flag
-_phase = tf.Variable(False, name='phase', trainable=False, collections=[tf.GraphKeys.LOCAL_VARIABLES])
-
-# context options
-_context = tf.sg_opt()
 
 
 def sg_global_step(as_tensor=True):
     global _global_step
-    if as_tensor:
-        return _global_step
-    else:
-        return tf.get_default_session().run(_global_step)
+    return _global_step
+
+#
+# global phase(train or infer) flag
+#
+
+_phase = tf.Variable(False, name='phase', trainable=False, collections=[tf.GraphKeys.LOCAL_VARIABLES])
+_phase_train = _phase.assign(True)
+_phase_infer = _phase.assign(False)
 
 
-def sg_learning_rate(as_tensor=True):
-    global _learning_rate
-    if as_tensor:
-        return _learning_rate
-    else:
-        return tf.get_default_session().run(_learning_rate)
-
-
-def sg_phase(phase=None):
+def sg_phase():
     global _phase
-    if phase is None:
-        return _phase
-    elif phase == 'train':
-        tf.get_default_session().run(tf.assign(_phase, True))
-    elif phase == 'infer':
-        tf.get_default_session().run(tf.assign(_phase, False))
+    return _phase
+
+
+def sg_set_train(sess):
+    sess.run(_phase_train)
+
+
+def sg_set_infer(sess):
+    sess.run(_phase_infer)
+
+
+#
+# context helpers
+#
+
+_context = tf.sg_opt()
 
 
 @contextmanager
