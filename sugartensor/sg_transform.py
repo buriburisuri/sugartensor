@@ -72,6 +72,13 @@ def sg_concat(tensor, opt):
 def sg_squeeze(tensor, opt):
     return tf.squeeze(tensor, squeeze_dims=opt.dim, name=opt.name)
 
+
+@tf.sg_sugar_func
+def sg_one_hot(tensor, opt):
+    assert opt.depth is not None, 'depth is mandatory.'
+    return tf.one_hot(tensor, opt.depth)
+
+
 #
 # complicated transform function ( layer related )
 #

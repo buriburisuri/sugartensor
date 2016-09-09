@@ -55,16 +55,15 @@ with tf.sg_context(name='discriminator', stride=2, act='leaky_relu'):
             .sg_squeeze())
 
 #
-# loss
+# loss & train ops
 #
 
-# discriminator loss
-loss_disc = disc.sg_bce(target=y_disc)
-train_disc = tf.sg_optim(loss_disc, lr=0.0001, category='discriminator')
+loss_disc = disc.sg_bce(target=y_disc)  # discriminator loss
+loss_gen = disc.sg_reuse(input=gen).sg_bce(target=y)  # generator loss
 
-# generator loss
-loss_gen = disc.sg_reuse(input=gen).sg_bce(target=y)
-train_gen = tf.sg_optim(loss_gen, lr=0.001, category='generator')
+
+train_disc = tf.sg_optim(loss_disc, lr=0.0001, category='discriminator')  # discriminator train ops
+train_gen = tf.sg_optim(loss_gen, lr=0.001, category='generator')  # generator train ops
 
 
 #
