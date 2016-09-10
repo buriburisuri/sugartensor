@@ -12,7 +12,7 @@ x = data.train.image.sg_squeeze()
 y = data.train.label
 
 # create training graph
-logit = (x.sg_rnn(dim=200, act='relu', last_only=True).sg_dense(dim=10))
+logit = (x.sg_rnn(dim=200, act='relu', ln=True, last_only=True).sg_dense(dim=10))
 
 # cross entropy loss with logit ( for training set )
 loss = logit.sg_ce(target=y)

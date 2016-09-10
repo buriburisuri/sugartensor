@@ -40,6 +40,14 @@ def sg_init(sess):
                       tf.initialize_local_variables()))
 
 
+def sg_print(tensor):
+    with tf.Session() as sess:
+        sg_init(sess)
+        with tf.sg_queue_context():
+            res = sess.run(tensor)
+            print res, res.shape, res.dtype
+
+
 def sg_optim(loss, **kwargs):
     opt = tf.sg_opt(kwargs)
 

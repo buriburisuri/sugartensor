@@ -122,7 +122,7 @@ def sg_layer_func(func):
         if opt.name is None:
 
             # layer function name will be used as layer name
-            opt.name = func.__name__
+            opt.name = func.__name__.replace('sg_', '')
 
             # find existing layer names
             exist_layers = []
@@ -174,23 +174,6 @@ def sg_layer_func(func):
 
                     # apply batch normalization
                     out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
-
-                # apply layer normalization
-                if opt.ln:
-                    # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1])
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
-
-                    # calc layer mean, variance for final axis
-                    mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1])
-
-                    # apply layer normalization ( explicit broadcasting needed )
-                    broadcast_shape = [-1] + [1] * (len(out.get_shape()) - 1)
-                    out = (out - tf.reshape(mean, broadcast_shape)) \
-                          / tf.reshape(tf.sqrt(variance + tf.sg_eps), broadcast_shape)
-
-                    # apply parameter
-                    out = gamma * out + beta
 
                 # apply activation
                 if opt.act:

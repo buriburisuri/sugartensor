@@ -43,6 +43,23 @@ def sg_conv(tensor, opt):
 
 
 @tf.sg_layer_func
+def sg_aconv(tensor, opt):
+    # default options
+    opt += tf.sg_opt(size=(3, 3), rate=2, pad='VALID')
+    opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
+
+    # parameter initialize
+    w = init.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
+    if opt.bias:
+        b = init.constant('b', opt.dim)
+
+    # apply convolution
+    out = tf.nn.atrous_conv2d(tensor, w, rate=opt.rate, padding=opt.pad) + (b if opt.bias else 0)
+
+    return out
+
+
+@tf.sg_layer_func
 def sg_upconv(tensor, opt):
     # default options
     opt += tf.sg_opt(size=(3, 3), stride=(1, 2, 2, 1), pad='SAME')
@@ -86,7 +103,8 @@ def sg_rnn(tensor, opt):
     # step func
     def step(h, x):
         # apply transform
-        return tf.matmul(x, w) + tf.matmul(h, u) + (b if opt.bias else 0)
+        y = tf.matmul(x, w) + tf.matmul(h, u) + (b if opt.bias else 0)
+        return _apply_layer_normalization(y, opt)
 
     # loop by scan
     out = tf.scan(step, xx, init_h)
@@ -103,4 +121,26 @@ def sg_rnn(tensor, opt):
 
 @tf.sg_layer_func
 def sg_bypass(tensor, opt):
+    return tensor
+
+
+def _apply_layer_normalization(tensor, opt):
+
+    # apply layer normalization
+    if opt.ln:
+        # offset, scale parameter
+        beta = init.constant('beta', tensor.get_shape().as_list()[-1])
+        gamma = init.constant('gamma', tensor.get_shape().as_list()[-1], value=1)
+
+        # calc layer mean, variance for final axis
+        mean, variance = tf.nn.moments(tensor, axes=[len(tensor.get_shape()) - 1])
+
+        # apply layer normalization ( explicit broadcasting needed )
+        broadcast_shape = [-1] + [1] * (len(tensor.get_shape()) - 1)
+        tensor = (tensor - tf.reshape(mean, broadcast_shape)) \
+                 / tf.reshape(tf.sqrt(variance + tf.sg_eps), broadcast_shape)
+
+        # apply parameter
+        tensor = gamma * tensor + beta
+
     return tensor
