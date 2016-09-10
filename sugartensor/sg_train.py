@@ -150,7 +150,7 @@ def sg_train_func(func):
                               desc='train', ncols=70, unit='b', leave=False):
 
                     # call train function
-                    batch_loss = func(sess)
+                    batch_loss = func(sess, opt)
 
                     # loss history update
                     if batch_loss is not None:

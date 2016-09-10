@@ -90,10 +90,10 @@ train_gen = tf.sg_optim(loss_gen + loss_recog, lr=0.001, category='generator')  
 
 # def alternate training func
 @tf.sg_train_func
-def alt_train(sess):
+def alt_train(sess, opt):
     sess.run(train_disc)  # training discriminator
     sess.run(train_gen)  # training generator
 
 # do training
-alt_train(log_interval=10)
+alt_train(log_interval=10, ep_size=data.train.num_batch)
 

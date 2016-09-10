@@ -40,6 +40,12 @@ class _Opt(collections.MutableMapping):
                 res.__dict__[k] = v
         return res
 
+    def __mul__(self, other):
+        res = _Opt(self.__dict__)
+        for k, v in other.iteritems():
+            res.__dict__[k] = v
+        return res
+
 
 # aliasing
 sg_opt = _Opt
