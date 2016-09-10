@@ -40,8 +40,8 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
 
 
 def identity(name, dim, scale=1, dtype=tf.sg_floatx):
-    x = tf.get_variable(name, dtype=dtype,
-                        initializer=tf.constant(np.eye(dim) * scale))
+    x = tf.get_variable(name,
+                        initializer=tf.constant(np.eye(dim) * scale, dtype=dtype))
     # add summary
     if not tf.get_variable_scope().reuse:
         tf.sg_summary_param(x)
@@ -57,7 +57,7 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
     q = u if u.shape == flat_shape else v
     q = q.reshape(shape)
     # create variable
-    x = tf.get_variable(name, dtype=dtype,
+    x = tf.get_variable(name,
                         initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype))
     # add summary
     if not tf.get_variable_scope().reuse:

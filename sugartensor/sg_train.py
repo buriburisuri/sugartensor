@@ -27,7 +27,7 @@ def sg_train(**kwargs):
 
     # define train function
     @sg_train_func
-    def train_func(sess):
+    def train_func(sess, arg):
         return sess.run([opt.loss, train_op])[0]
 
     # run train function
