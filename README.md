@@ -24,7 +24,7 @@ we use only pure python functions as possible and avoid class style conventions.
 
 ###Imports
 
-> `import sugartensor as tf   # no need of 'import tensorflow'`
+<pre><code>import sugartensor as tf   # no need of 'import tensorflow'</code></pre>
 
 ## Features
 
@@ -39,31 +39,31 @@ Inspired by prettytensor library we support chainable object syntax for all suga
 This could provides increased productivity and readability.  
 Look following snippet.
 
-`
+<pre><code>
 logit = (tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE))
          .sg_dense(dim=400, act='relu', bn=True)
          .sg_dense(dim=200, act='relu', bn=True)
          .sg_dense(dim=10))
-`
+</code></pre>
  
 ### All returned objects are tensors.
 
 In the above snippet, all return values of sugar functions are pure tensorflow's tensor variables ( or constants ). 
 So, the following example is completely legal.
 
-`
+<pre><code>
 ph = tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE)   # <-- this is tensor 
 ph = ph.sg_dense(dim=400, act='relu', bn=True)   # <-- this is tensor
 ph = ph * 100 + 10  # <-- this is ok.
 ph = tf.reshape(ph, (-1, 20, 20, 1)).conv(dim=30)   # <-- all tensorflow's function can be applied and chained.
-`
+</code></pre>
 
 ### practical DRY(Don't repeat yourself) for deep learning researchers.
   
 We provide pre-defined but powerful training and report functions for practical developers.
 A Following code is full mnist training module with saver, report and early stopping support.
 
-`
+<pre><code>
 # -*- coding: utf-8 -*-
 import sugartensor as tf
 
@@ -89,5 +89,5 @@ acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
 
 # train
 tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch)
-`
+</code></pre>
 
