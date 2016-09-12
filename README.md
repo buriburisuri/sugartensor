@@ -36,8 +36,7 @@ to avoid name space chaos. ^_^
 ### Chainable object syntax
   
 Inspired by prettytensor library we support chainable object syntax for all sugar functions. 
-This could provides increased productivity and readability.  
-Look following snippet.
+This could provides increased productivity and readability. Look following snippet.
 
 <pre><code>
 logit = (tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE))
@@ -58,7 +57,7 @@ ph = ph * 100 + 10  # <-- this is ok.
 ph = tf.reshape(ph, (-1, 20, 20, 1)).conv(dim=30)   # <-- all tensorflow's function can be applied and chained.
 </code></pre>
 
-### practical DRY(Don't repeat yourself) for deep learning researchers.
+### practical DRY(Don't repeat yourself) functions for deep learning researchers.
   
 We provide pre-defined but powerful training and report functions for practical developers.
 A Following code is full mnist training module with saver, report and early stopping support.
@@ -90,4 +89,26 @@ acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
 # train
 tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch)
 </code></pre>
+
+You can check all statistics through the tensorboard's web interface like following.
+
+!(sugartensor/png/image1.png)
+!(sugartensor/png/image2.png)
+!(sugartensor/png/image3.png)
+
+If you write more complex training module, don't want to repeat saver, report, ... 
+then your can do that like following snippet.
+<pre><code>
+# def alternate training func
+@tf.sg_train_func   # <-- sugar annotator for training function wrapping
+def alt_train(sess, opt):
+    l_disc = sess.run([loss_disc, train_disc])[0]  # training discriminator
+    l_gen = sess.run([loss_gen, train_gen])[0]  # training generator
+    return np.mean(l_disc) + np.mean(l_gen)
+    
+# do training
+alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_dir='asset/train/gan')    
+</code></pre>
+
+Please, see example codes in the 'sugartensor/example/' directory.
 

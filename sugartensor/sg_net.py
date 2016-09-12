@@ -5,7 +5,7 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 @tf.sg_sugar_func
-def vgg_16(x, opt):
+def sg_vgg_16(x, opt):
 
     # conv1
     with tf.sg_context(name='conv1', act='relu'):
