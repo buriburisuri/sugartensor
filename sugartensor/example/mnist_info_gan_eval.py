@@ -27,7 +27,7 @@ z = (tf.ones(batch_size, dtype=tf.sg_intx) * target_num).sg_one_hot(depth=num_ca
 z = z.sg_concat(target=[target_cval_1.sg_expand_dims(), target_cval_2.sg_expand_dims()])
 
 # random seed = categorical variable + continuous variable + random uniform
-z = z.sg_concat(target=tf.random_uniform((batch_size, 88)))
+z = z.sg_concat(target=tf.random_uniform((batch_size, 38)))
 
 #
 # create generator
