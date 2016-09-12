@@ -93,9 +93,9 @@ tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch)
 You can check all statistics through the tensorboard's web interface like following.
 
 <p align="center">
-  <img src="tree/master/sugartensor/png/image1.png" width="350"/>
-  <img src="tree/master/sugartensor/png/image2.png" width="350"/>
-  <img src="tree/master/sugartensor/png/image3.png" width="350"/>
+  <img src="https://github.com/buriburisuri/sugartensor/tree/master/sugartensor/png/image1.png" width="350"/>
+  <img src="https://github.com/buriburisuri/sugartensor/tree/master/sugartensor/png/image2.png" width="350"/>
+  <img src="https://github.com/buriburisuri/sugartensor/tree/master/sugartensor/png/image3.png" width="350"/>
 </p>
 
 If you write more complex training module, don't want to repeat saver, report, ... 
