@@ -94,9 +94,13 @@ You can check all statistics through the tensorboard's web interface like follow
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/buriburisuri/sugartensor/master/sugartensor/png/image1.png" width="350"/>
+</p>  
+<p align="center">
   <img src="https://raw.githubusercontent.com/buriburisuri/sugartensor/master/sugartensor/png/image2.png" width="350"/>
+</p>  
+<p align="center">
   <img src="https://raw.githubusercontent.com/buriburisuri/sugartensor/master/sugartensor/png/image3.png" width="350"/>
-</p>
+</p>  
 
 If you write more complex training module, don't want to repeat saver, report, ... 
 then your can do that like following snippet.
