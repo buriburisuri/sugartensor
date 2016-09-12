@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
-from pip.req import parse_requirements
-from pip.download import PipSession
-
-# dependency
-install_reqs = parse_requirements('requirements.txt', session=PipSession())
 
 setup(
     name='sugartensor',
@@ -18,5 +13,4 @@ setup(
     keywords=['tensorflow', 'sugar', 'sugartensor', 'slim', 'wrapper'],
     classifiers=[],
     license='MIT',
-    install_reqs=[str(ir.req) for ir in install_reqs],
 )
