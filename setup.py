@@ -8,14 +8,15 @@ install_reqs = parse_requirements('requirements.txt', session=PipSession())
 
 setup(
     name='sugartensor',
+    packages=['sugartensor'],
     version='0.0.1.0',
-    packages=['sugartensor',
-              'sugartensor.sg_data'
-              ],
-    url='https://github.com/buriburisuri/sugartensor',
-    license='MIT',
+    description='A slim tensorflow wrapper that provides syntactic sugar for tensor variables.',
     author='Namju Kim at Jamonglabs Co.,Ltd.',
     author_email='buriburisuri@gmail.com',
-    description='A slim tensorflow wrapper that provides syntactic sugar for tensor variables.',
+    url='https://github.com/buriburisuri/sugartensor',
+    download_url='https://github.com/buriburisuri/sugartensor/tarball/0.0.1',
+    keywords=['tensorflow', 'sugar', 'sugartensor', 'slim', 'wrapper'],
+    classifiers=[],
+    license='MIT',
     install_reqs=[str(ir.req) for ir in install_reqs],
 )

@@ -127,96 +127,97 @@ def sg_train_func(func):
             # initialize variables
             sg_init(sess)
 
-        # start data queue runner
-        with tf.sg_queue_context(sess):
+        # restore last checkpoint
+        if last_file:
+            saver.restore(sess, last_file)
 
-            # restore last checkpoint
-            if last_file:
-                saver.restore(sess, last_file)
+        # set learning rate
+        if start_ep == 1 or opt.lr_reset:
+            sess.run(_learning_rate.assign(opt.lr))
 
-            # set session mode to train
-            tf.sg_set_train(sess)
+        # logging
+        tf.sg_info('Training started from epoch[%03d]-step[%d].' % (start_ep, start_step))
 
-            # logging
-            tf.sg_info('Training started from epoch[%03d]-step[%d].' % (start_ep, start_step))
+        try:
+            # start data queue runner
+            with tf.sg_queue_context(sess):
 
-            # set learning rate
-            if start_ep == 1 or opt.lr_reset:
-                sess.run(_learning_rate.assign(opt.lr))
+                # set session mode to train
+                tf.sg_set_train(sess)
 
-            # loss history for learning rate decay
-            loss, loss_prev, early_stopped = None, None, False
+                # loss history for learning rate decay
+                loss, loss_prev, early_stopped = None, None, False
 
-            # time stamp for saving and logging
-            last_saved = last_logged = time.time()
+                # time stamp for saving and logging
+                last_saved = last_logged = time.time()
 
-            # epoch loop
-            for ep in range(start_ep, opt.max_ep + 1):
+                # epoch loop
+                for ep in range(start_ep, opt.max_ep + 1):
 
-                # batch loop
-                for _ in tqdm(range(opt.ep_size),
-                              desc='train', ncols=70, unit='b', leave=False):
+                    # batch loop
+                    for _ in tqdm(range(opt.ep_size),
+                                  desc='train', ncols=70, unit='b', leave=False):
 
-                    # call train function
-                    batch_loss = func(sess, opt)
+                        # call train function
+                        batch_loss = func(sess, opt)
 
-                    # loss history update
-                    if batch_loss is not None:
-                        if loss is None:
-                            loss = np.mean(batch_loss)
-                        else:
-                            loss = loss * 0.9 + np.mean(batch_loss) * 0.1
+                        # loss history update
+                        if batch_loss is not None:
+                            if loss is None:
+                                loss = np.mean(batch_loss)
+                            else:
+                                loss = loss * 0.9 + np.mean(batch_loss) * 0.1
 
-                    # saving
-                    if time.time() - last_saved > opt.save_interval:
-                        last_saved = time.time()
-                        saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
-                                   write_meta_graph=False,
-                                   global_step=sess.run(tf.sg_global_step()))
+                        # saving
+                        if time.time() - last_saved > opt.save_interval:
+                            last_saved = time.time()
+                            saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
+                                       write_meta_graph=False,
+                                       global_step=sess.run(tf.sg_global_step()))
 
-                    # logging
-                    if time.time() - last_logged > opt.log_interval:
-                        last_logged = time.time()
+                        # logging
+                        if time.time() - last_logged > opt.log_interval:
+                            last_logged = time.time()
 
-                        # set session mode to infer
-                        tf.sg_set_infer(sess)
+                            # set session mode to infer
+                            tf.sg_set_infer(sess)
 
-                        # run evaluation op
-                        if len(opt.eval_metric) > 0:
-                            sess.run(opt.eval_metric)
+                            # run evaluation op
+                            if len(opt.eval_metric) > 0:
+                                sess.run(opt.eval_metric)
 
-                        # run logging op
-                        summary_writer.add_summary(sess.run(summary_op),
-                                                   global_step=sess.run(tf.sg_global_step()))
+                            # run logging op
+                            summary_writer.add_summary(sess.run(summary_op),
+                                                       global_step=sess.run(tf.sg_global_step()))
 
-                        # learning rate decay
-                        if opt.early_stop and loss_prev:
-                            # if loss stalling
-                            if loss >= 0.95 * loss_prev:
-                                # early stopping
-                                current_lr = sess.run(_learning_rate)
-                                if current_lr < 5e-6:
-                                    early_stopped = True
-                                    break
-                                else:
-                                    # decrease learning rate by half
-                                    sess.run(_learning_rate.assign(current_lr / 2.))
+                            # learning rate decay
+                            if opt.early_stop and loss_prev:
+                                # if loss stalling
+                                if loss >= 0.95 * loss_prev:
+                                    # early stopping
+                                    current_lr = sess.run(_learning_rate)
+                                    if current_lr < 5e-6:
+                                        early_stopped = True
+                                        break
+                                    else:
+                                        # decrease learning rate by half
+                                        sess.run(_learning_rate.assign(current_lr / 2.))
 
-                        # update loss history
-                        loss_prev = loss
+                            # update loss history
+                            loss_prev = loss
 
-                        # revert session mode to train
-                        tf.sg_set_train(sess)
+                            # revert session mode to train
+                            tf.sg_set_train(sess)
 
-                # log epoch information
-                tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
-                           (ep, sess.run(_learning_rate), sess.run(tf.sg_global_step()),
-                            ('NA' if loss is None else '%8.6f' % loss)))
+                    # log epoch information
+                    tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
+                               (ep, sess.run(_learning_rate), sess.run(tf.sg_global_step()),
+                                ('NA' if loss is None else '%8.6f' % loss)))
 
-                if early_stopped:
-                    tf.sg_info('\tEarly stopped ( no loss progress ).')
-                    break
-
+                    if early_stopped:
+                        tf.sg_info('\tEarly stopped ( no loss progress ).')
+                        break
+        finally:
             # save last epoch
             saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
                        write_meta_graph=False,
@@ -228,8 +229,8 @@ def sg_train_func(func):
             # logging
             tf.sg_info('Training finished at epoch[%d]-step[%d].' % (ep, sess.run(tf.sg_global_step())))
 
-        # close session
-        if opt.sess is None:
-            sess.close()
+            # close session
+            if opt.sess is None:
+                sess.close()
 
     return wrapper

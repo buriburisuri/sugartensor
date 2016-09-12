@@ -79,5 +79,5 @@ def alt_train(sess, opt):
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training
-alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False)
+alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_dir='asset/train/gan')
 

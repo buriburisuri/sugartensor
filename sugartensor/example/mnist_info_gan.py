@@ -32,7 +32,7 @@ num_category = 10
 z_cat = tf.multinomial(tf.ones((batch_size, num_category), dtype=tf.sg_floatx) / num_category, 1).sg_squeeze()
 
 # random seed = random categorical variable + random uniform
-z = z_cat.sg_one_hot(depth=num_category).sg_concat(target=tf.random_uniform((batch_size, 90)))
+z = z_cat.sg_one_hot(depth=num_category).sg_concat(target=tf.random_uniform((batch_size, 40)))
 
 # random continuous variable
 num_cont = 2
@@ -96,5 +96,5 @@ def alt_train(sess, opt):
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training
-alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False)
+alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_dir='asset/train/infogan')
 

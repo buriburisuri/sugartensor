@@ -12,11 +12,11 @@ def _data_to_tensor(data_list, batch_size, name=None):
     const_list = [tf.constant(data) for data in data_list]
 
     # create queue from constant tensor
-    queue_list = tf.train.slice_input_producer(const_list, capacity=batch_size, name=name)
+    queue_list = tf.train.slice_input_producer(const_list, capacity=batch_size*128, name=name)
 
     # create batch queue
     return tf.train.shuffle_batch(queue_list, batch_size, capacity=batch_size*128,
-                                  min_after_dequeue=batch_size*32, num_threads=4, name=name)
+                                  min_after_dequeue=batch_size*32, name=name)
 
 
 class Mnist(object):
