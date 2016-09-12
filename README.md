@@ -18,7 +18,7 @@ we use only pure python functions as possible and avoid class style conventions.
     1. tqdm >= 4.8.4  ( for console progressive bar )
 
 1. Installation
-> `pip install sugartensor`
+<pre><code>pip install sugartensor</code></pre>
 
 ## Quick start
 
