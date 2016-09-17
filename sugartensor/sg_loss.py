@@ -63,7 +63,7 @@ def sg_hinge(tensor, opt):
     assert opt.target is not None, 'target is mandatory.'
 
     # default margin
-    opt += tf.sg_opt('margin', 1)
+    opt += tf.sg_opt(margin=1)
 
     # reshape target
     shape = tensor.get_shape().as_list()
