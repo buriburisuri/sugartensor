@@ -149,12 +149,12 @@ def sg_layer_func(func):
                 # apply batch normalization
                 if opt.bn:
                     # offset, scale parameter
-                    beta = init.constant('beta', out.get_shape().as_list()[-1])
-                    gamma = init.constant('gamma', out.get_shape().as_list()[-1], value=1)
+                    beta = init.constant('beta', opt.dim)
+                    gamma = init.constant('gamma', opt.dim, value=1)
 
                     # offset, scale parameter
-                    mean_running = init.constant('mean', out.get_shape().as_list()[-1])
-                    variance_running = init.constant('variance', out.get_shape().as_list()[-1], value=1)
+                    mean_running = init.constant('mean', opt.dim)
+                    variance_running = init.constant('variance', opt.dim, value=1)
 
                     # calc batch mean, variance
                     mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))

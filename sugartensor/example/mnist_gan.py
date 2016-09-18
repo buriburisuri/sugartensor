@@ -16,7 +16,7 @@ data = tf.sg_data.Mnist(batch_size=32)
 x = data.train.image
 
 # generator labels ( all ones )
-y = tf.ones(x.get_shape().as_list()[0], dtype=tf.sg_floatx)
+y = tf.ones(data.batch_size, dtype=tf.sg_floatx)
 
 # discriminator labels ( half 1s, half 0s )
 y_disc = tf.concat(0, [y, y * 0])
@@ -26,16 +26,16 @@ y_disc = tf.concat(0, [y, y * 0])
 #
 
 # random uniform seed
-z = tf.random_uniform((x.get_shape().as_list()[0], 100))
+z = tf.random_uniform((data.batch_size, 100))
 
-with tf.sg_context(name='generator', stride=2, act='relu', bn=True):
+with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
 
     # generator network
     gen = (z.sg_dense(dim=1024)
            .sg_dense(dim=7*7*128)
            .sg_reshape(shape=(-1, 7, 7, 128))
-           .sg_upconv(size=4, dim=64)
-           .sg_upconv(size=4, dim=1, act='sigmoid', bn=False))
+           .sg_upconv(dim=64)
+           .sg_upconv(dim=1, act='sigmoid', bn=False))
 
 # add image summary
 tf.sg_summary_image(gen)
@@ -47,9 +47,9 @@ tf.sg_summary_image(gen)
 # create real + fake image input
 xx = tf.concat(0, [x, gen])
 
-with tf.sg_context(name='discriminator', stride=2, act='leaky_relu'):
-    disc = (xx.sg_conv(size=4, dim=64)
-            .sg_conv(size=4, dim=128)
+with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu'):
+    disc = (xx.sg_conv(dim=64)
+            .sg_conv(dim=128)
             .sg_flatten()
             .sg_dense(dim=1024)
             .sg_dense(dim=1, act='linear')
@@ -79,5 +79,6 @@ def alt_train(sess, opt):
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training
-alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_dir='asset/train/gan')
+alt_train(log_interval=10, max_ep=30, ep_size=data.train.num_batch, early_stop=False,
+          save_dir='asset/train/gan')
 
