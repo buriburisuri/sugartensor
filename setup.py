@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name='sugartensor',
     packages=['sugartensor'],
-    version='0.0.1.1',
+    version='0.0.1.2',
     description='A slim tensorflow wrapper that provides syntactic sugar for tensor variables.',
     author='Namju Kim at Jamonglabs Co.,Ltd.',
     author_email='buriburisuri@gmail.com',

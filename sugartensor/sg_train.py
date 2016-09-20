@@ -96,10 +96,10 @@ def sg_train_func(func):
         # find last checkpoint
         last_file = tf.train.latest_checkpoint(opt.save_dir + '/ckpt')
         if last_file:
-            start_ep = int(last_file.split('-')[1]) + 1
+            ep = start_ep = int(last_file.split('-')[1]) + 1
             start_step = int(last_file.split('-')[2])
         else:
-            start_ep = 1
+            ep = start_ep = 1
             start_step = 0
 
         # checkpoint saver

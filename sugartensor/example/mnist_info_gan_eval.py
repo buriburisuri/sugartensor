@@ -7,11 +7,17 @@ import matplotlib.pyplot as plt
 tf.sg_verbosity(10)
 
 #
-# inputs
+# hyper parameters
 #
 
-batch_size = 100
-num_category = 10
+batch_size = 100   # batch size
+num_category = 10  # total categorical factor
+num_cont = 2  # total continuous factor
+num_dim = 50  # total latent dimension
+
+#
+# inputs
+#
 
 # target_number
 target_num = tf.placeholder(dtype=tf.sg_intx, shape=batch_size)
@@ -27,7 +33,7 @@ z = (tf.ones(batch_size, dtype=tf.sg_intx) * target_num).sg_one_hot(depth=num_ca
 z = z.sg_concat(target=[target_cval_1.sg_expand_dims(), target_cval_2.sg_expand_dims()])
 
 # random seed = categorical variable + continuous variable + random uniform
-z = z.sg_concat(target=tf.random_uniform((batch_size, 38)))
+z = z.sg_concat(target=tf.random_uniform((batch_size, num_dim-num_category-num_cont)))
 
 #
 # create generator
@@ -72,14 +78,20 @@ def run_generator(num, x1, x2, fig_name='sample.png'):
 # draw sample by categorical division
 #
 
-run_generator(np.arange(10).repeat(10), np.ones(100) * 0.5, np.ones(100) * 0.5)
+# fake image
+run_generator(np.random.randint(0, num_category, batch_size),
+              np.random.uniform(0, 1, batch_size), np.random.uniform(0, 1, batch_size),
+              fig_name='fake.png')
+
+# classified image
+run_generator(np.arange(10).repeat(10), np.ones(batch_size) * 0.5, np.ones(batch_size) * 0.5)
 
 #
 # draw sample by continuous division
 #
 
 for i in range(10):
-    run_generator(np.ones(100) * i,
+    run_generator(np.ones(batch_size) * i,
                   np.linspace(0, 1, 10).repeat(10),
                   np.expand_dims(np.linspace(0, 1, 10), axis=1).repeat(10, axis=1).T.flatten(),
                   fig_name='sample%d.png' % i)

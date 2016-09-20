@@ -6,10 +6,17 @@ import numpy as np
 tf.sg_verbosity(10)
 
 #
-# inputs
+# hyper parameters
 #
 
 batch_size = 32
+num_category = 10
+num_cont = 2
+num_dim = 50
+
+#
+# inputs
+#
 
 # MNIST input tensor ( with QueueRunner )
 data = tf.sg_data.Mnist(batch_size=batch_size)
@@ -28,14 +35,12 @@ y_disc = tf.concat(0, [y, y * 0])
 #
 
 # random class number
-num_category = 10
 z_cat = tf.multinomial(tf.ones((batch_size, num_category), dtype=tf.sg_floatx) / num_category, 1).sg_squeeze()
 
 # random seed = random categorical variable + random uniform
-z = z_cat.sg_one_hot(depth=num_category).sg_concat(target=tf.random_uniform((batch_size, 40)))
+z = z_cat.sg_one_hot(depth=num_category).sg_concat(target=tf.random_uniform((batch_size, num_dim-num_category)))
 
 # random continuous variable
-num_cont = 2
 z_cont = z[:, num_category:num_category+num_cont]
 
 # generator network
