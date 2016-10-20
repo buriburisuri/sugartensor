@@ -83,6 +83,16 @@ def sg_summary_image(tensor, prefix=None):
         tf.image_summary(name, tensor)
 
 
+def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + _pretty_name(tensor)
+    # summary statistics
+    with tf.name_scope('summary'):
+        tf.audio_summary(name, tensor, sample_rate)
+
+
 #
 # logger wrappers
 #

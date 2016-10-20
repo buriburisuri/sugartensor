@@ -50,9 +50,60 @@ def sg_conv(tensor, opt):
 
 
 @tf.sg_layer_func
+def sg_conv1d(tensor, opt):
+    # default options
+    opt += tf.sg_opt(size=2, stride=1, pad='SAME')
+
+    # parameter initialize
+    w = init.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
+    if opt.bias:
+        b = init.constant('b', opt.dim)
+
+    # apply convolution
+    out = tf.nn.conv1d(tensor, w, stride=opt.stride, padding=opt.pad) + (b if opt.bias else 0)
+
+    return out
+
+
+@tf.sg_layer_func
+def sg_conv1d_dilated(tensor, opt):
+
+    import math
+
+    # default options
+    opt += tf.sg_opt(size=2, rate=1, pad='SAME')
+
+    # parameter initialize
+    w = init.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
+    if opt.bias:
+        b = init.constant('b', opt.dim)
+
+    # reshaping for dilated convolution
+    # time_len, channel = tf.shape(tensor)[1], tf.shape(tensor)[2]
+    time_len, channel = tensor.get_shape().as_list()[1:]
+    padded_len = int(math.ceil(1.0 * time_len / opt.rate) + 1) * opt.rate
+    padded = tf.pad(tensor, [[0, 0], [0, padded_len-time_len], [0, 0]])
+    padded = padded.sg_reshape(shape=[-1, opt.rate, channel]).sg_transpose(perm=(1, 0, 2))
+
+    # apply convolution
+    conv_out = tf.nn.conv1d(padded, w, stride=1, padding='SAME') + (b if opt.bias else 0)
+
+    # recover to original shape
+    out = conv_out.sg_transpose(perm=(1, 0, 2)).sg_reshape(shape=[-1, padded_len, channel])
+
+    # cropping output
+    out_len = time_len - opt.rate * opt.size + opt.rate if opt.pad == 'VALID' else time_len
+    out = out[:, :out_len:, :]
+    # set shape is needed.
+    out.set_shape([None, out_len, channel])
+
+    return out
+
+
+@tf.sg_layer_func
 def sg_aconv(tensor, opt):
     # default options
-    opt += tf.sg_opt(size=(3, 3), rate=2, pad='VALID')
+    opt += tf.sg_opt(size=(3, 3), rate=2, pad='SAME')
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
 
     # parameter initialize

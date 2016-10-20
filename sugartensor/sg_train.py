@@ -46,6 +46,7 @@ def sg_print(tensor):
         with tf.sg_queue_context():
             res = sess.run(tensor)
             print res, res.shape, res.dtype
+    return res
 
 
 def sg_optim(loss, **kwargs):
