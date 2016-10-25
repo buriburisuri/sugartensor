@@ -27,14 +27,14 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
 
 def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
     # He et aE. ( http://arxiv.org/pdf/1502.01852v1.pdf )
-    fin = shape[0]
+    fin, _ = _get_fans(shape)
     s = np.sqrt(1. * scale / fin)
     return uniform(name, shape, s, dtype)
 
 
 def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
     # glorot & benjio ( http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf )
-    fin, fout = shape[0], (shape[1] if len(shape) == 2 else np.prod(shape[1:]))
+    fin, fout = _get_fans(shape)
     s = np.sqrt(6. * scale / (fin + fout))
     return uniform(name, shape, s, dtype)
 
@@ -63,3 +63,19 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
     if not tf.get_variable_scope().reuse:
         tf.sg_summary_param(x)
     return x
+
+
+def _get_fans(shape):
+    if len(shape) == 2:
+        fan_in = shape[0]
+        fan_out = shape[1]
+    elif len(shape) == 4 or len(shape) == 5:
+        # assuming convolution kernels (2D or 3D).
+        kernel_size = np.prod(shape[:2])
+        fan_in = shape[-2] * kernel_size
+        fan_out = shape[-1] * kernel_size
+    else:
+        # no specific assumptions
+        fan_in = np.sqrt(np.prod(shape))
+        fan_out = np.sqrt(np.prod(shape))
+    return fan_in, fan_out

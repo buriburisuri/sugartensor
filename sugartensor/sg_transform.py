@@ -38,8 +38,9 @@ def sg_expand_dims(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_squeeze(tensor, opt):
-    opt += tf.sg_opt(dim=-1)
-    return tf.squeeze(tensor, [opt.dim], name=opt.name)
+    opt += tf.sg_opt(dim=[-1])
+    opt.dim = opt.dim if isinstance(opt.dim, (tuple, list)) else [opt.dim]
+    return tf.squeeze(tensor, opt.dim, name=opt.name)
 
 
 @tf.sg_sugar_func
