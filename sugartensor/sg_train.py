@@ -86,7 +86,9 @@ def sg_train_func(func):
                          max_ep=1000, ep_size=100000,
                          save_interval=600, log_interval=60,
                          early_stop=True, lr_reset=False,
-                         eval_metric=[])
+                         eval_metric=[],
+                         max_keep=5, keep_interval=1,
+                         tqdm=True, console_log=False)
 
         # make directory if not exist
         if not os.path.exists(opt.save_dir + '/log'):
@@ -104,7 +106,8 @@ def sg_train_func(func):
             start_step = 0
 
         # checkpoint saver
-        saver = tf.train.Saver(keep_checkpoint_every_n_hours=1)
+        saver = tf.train.Saver(max_to_keep=opt.max_keep,
+                               keep_checkpoint_every_n_hours=opt.keep_interval)
 
         # summary writer
         summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=tf.get_default_graph())
@@ -155,9 +158,14 @@ def sg_train_func(func):
                 # epoch loop
                 for ep in range(start_ep, opt.max_ep + 1):
 
+                    # show progressbar
+                    if opt.tqdm:
+                        iterator = tqdm(range(opt.ep_size), desc='train', ncols=70, unit='b', leave=False)
+                    else:
+                        iterator = range(opt.ep_size)
+
                     # batch loop
-                    for _ in tqdm(range(opt.ep_size),
-                                  desc='train', ncols=70, unit='b', leave=False):
+                    for _ in iterator:
 
                         # call train function
                         batch_loss = func(sess, opt)
@@ -187,9 +195,15 @@ def sg_train_func(func):
                             if len(opt.eval_metric) > 0:
                                 sess.run(opt.eval_metric)
 
-                            # run logging op
-                            summary_writer.add_summary(sess.run(summary_op),
-                                                       global_step=sess.run(tf.sg_global_step()))
+                            if opt.console_log:   # console logging
+                                # log epoch information
+                                tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
+                                           (ep, sess.run(_learning_rate), sess.run(tf.sg_global_step()),
+                                            ('NA' if loss is None else '%8.6f' % loss)))
+                            else:   # tensorboard logging
+                                # run logging op
+                                summary_writer.add_summary(sess.run(summary_op),
+                                                           global_step=sess.run(tf.sg_global_step()))
 
                             # learning rate decay
                             if opt.early_stop and loss_prev:
@@ -211,9 +225,10 @@ def sg_train_func(func):
                             tf.sg_set_train(sess)
 
                     # log epoch information
-                    tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
-                               (ep, sess.run(_learning_rate), sess.run(tf.sg_global_step()),
-                                ('NA' if loss is None else '%8.6f' % loss)))
+                    if not opt.console_log:
+                        tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
+                                   (ep, sess.run(_learning_rate), sess.run(tf.sg_global_step()),
+                                    ('NA' if loss is None else '%8.6f' % loss)))
 
                     if early_stopped:
                         tf.sg_info('\tEarly stopped ( no loss progress ).')
