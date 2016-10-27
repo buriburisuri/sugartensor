@@ -116,9 +116,9 @@ def sg_resnet_50(x, opt):
             .sg_bypass(act='relu', bn=True)
             .sg_pool(size=7, stride=1, avg=True))  # global average pool
 
+    # fully convolution layers
     fc = (conv
-          .sg_conv(dim=1000, size=1, act='relu', bn=True)
-          .sg_conv(dim=2, size=1, act='linear', bn=False))
+          .sg_conv(dim=opt.num_class, size=1, act='linear', bn=False))
 
     if opt.conv_only:
         return conv
@@ -144,9 +144,9 @@ def sg_resnet_101(x, opt):
             .sg_bypass(act='relu', bn=True)
             .sg_pool(size=7, stride=1, avg=True))  # global average pool
 
+    # fully convolution layers
     fc = (conv
-          .sg_conv(dim=1000, size=1, act='relu', bn=True)
-          .sg_conv(dim=2, size=1, act='linear', bn=False))
+          .sg_conv(dim=opt.num_class, size=1, act='linear', bn=False))
 
     if opt.conv_only:
         return conv
@@ -172,9 +172,9 @@ def sg_resnet_152(x, opt):
             .sg_bypass(act='relu', bn=True)
             .sg_pool(size=7, stride=1, avg=True))  # global average pool
 
+    # fully convolution layers
     fc = (conv
-          .sg_conv(dim=1000, size=1, act='relu', bn=True)
-          .sg_conv(dim=2, size=1, act='linear', bn=False))
+          .sg_conv(dim=opt.num_class, size=1, act='linear', bn=False))
 
     if opt.conv_only:
         return conv
@@ -200,9 +200,9 @@ def sg_resnet_200(x, opt):
             .sg_bypass(act='relu', bn=True)
             .sg_pool(size=7, stride=1, avg=True))  # global average pool
 
+    # fully convolution layers
     fc = (conv
-          .sg_conv(dim=1000, size=1, act='relu', bn=True)
-          .sg_conv(dim=2, size=1, act='linear', bn=False))
+          .sg_conv(dim=opt.num_class, size=1, act='linear', bn=False))
 
     if opt.conv_only:
         return conv
