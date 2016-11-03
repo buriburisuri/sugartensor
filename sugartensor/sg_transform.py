@@ -162,3 +162,68 @@ def sg_pool1d(tensor, opt):
 
     return tf.identity(out.sg_squeeze(dim=2), name=opt.name)
 
+#
+# Periodic shuffle transform for SubPixel CNN
+# (see : http://www.cv-foundation.org/openaccess/
+# content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+#
+
+
+@tf.sg_sugar_func
+def sg_periodic_shuffle(tensor, opt):
+    # default factor
+    opt += tf.sg_opt(factor=2)
+
+    # get current shape
+    batch, row, col, channel = tensor.get_shape().as_list()
+
+    # get target channel num
+    channel_target = channel / (opt.factor * opt.factor)
+    channel_factor = channel / channel_target
+
+    # intermediate shape for shuffling
+    shape_1 = [batch, row, col, channel_factor / opt.factor, channel_factor / opt.factor]
+    shape_2 = [batch, row * opt.factor, col * opt.factor, 1]
+
+    # reshape and transpose for periodic shuffling for each channel
+    out = []
+    for i in range(channel_target):
+        out.append((tensor[:, :, :, i*channel_factor:(i+1)*channel_factor])
+                   .sg_reshape(shape=shape_1)
+                   .sg_transpose(perm=(0, 1, 3, 2, 4))
+                   .sg_reshape(shape=shape_2))
+
+    # final output
+    out = tf.concat(3, out)
+
+    return tf.identity(out, name=opt.name)
+
+
+@tf.sg_sugar_func
+def sg_inverse_periodic_shuffle(tensor, opt):
+    # default factor
+    opt += tf.sg_opt(factor=2)
+
+    # get current shape
+    batch, row, col, channel = tensor.get_shape().as_list()
+
+    # get target shape and channel num
+    channel_factor = opt.factor * opt.factor
+
+     # intermediate shape for shuffling
+    shape_1 = [batch, row / opt.factor, col / opt.factor, channel_factor // opt.factor, channel_factor // opt.factor]
+    shape_2 = [batch, row / opt.factor, col / opt.factor, channel_factor]
+
+    # reshape and transpose for periodic shuffling for each channel
+    out = []
+    for i in range(channel):
+        out.append(tensor[:, :, :, i]
+                   .sg_expand_dims()
+                   .sg_reshape(shape=shape_1)
+                   .sg_transpose(perm=(0, 1, 3, 2, 4))
+                   .sg_reshape(shape=shape_2))
+
+    # final output
+    out = tf.concat(3, out)
+
+    return tf.identity(out, name=opt.name)
