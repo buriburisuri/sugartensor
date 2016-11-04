@@ -14,7 +14,6 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
         tf.sg_summary_param(x)
     return x
 
-
 def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
@@ -59,6 +58,16 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
     # create variable
     x = tf.get_variable(name,
                         initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype))
+    # add summary
+    if not tf.get_variable_scope().reuse:
+        tf.sg_summary_param(x)
+    return x
+
+
+def external(name, value, dtype=tf.sg_floatx):
+    # create variable
+    x = tf.get_variable(name,
+                        initializer=tf.constant(value, dtype=dtype))
     # add summary
     if not tf.get_variable_scope().reuse:
         tf.sg_summary_param(x)

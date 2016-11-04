@@ -12,7 +12,7 @@ x = data.train.image.sg_squeeze()
 y = data.train.label
 
 # create training graph
-logit = (x.sg_rnn(dim=200, act='relu', ln=True, last_only=True).sg_dense(dim=10))
+logit = (x.sg_lstm(dim=200, ln=True, last_only=True).sg_dense(dim=10))
 
 # cross entropy loss with logit ( for training set )
 loss = logit.sg_ce(target=y)
@@ -22,5 +22,6 @@ acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
        .sg_accuracy(target=data.valid.label, name='val'))
 
 # train
-tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch, log_interval=10)
+tf.sg_train(log_interval=10, loss=loss, eval_metric=[acc], ep_size=data.train.num_batch,
+            save_dir='asset/train/rnn')
 

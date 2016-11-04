@@ -162,6 +162,12 @@ def sg_pool1d(tensor, opt):
 
     return tf.identity(out.sg_squeeze(dim=2), name=opt.name)
 
+
+@tf.sg_sugar_func
+def sg_lookup(tensor, opt):
+    assert opt.embed is not None, 'embed is mandatory'
+    return tf.nn.embedding_lookup(opt.embed, tensor)
+
 #
 # Periodic shuffle transform for SubPixel CNN
 # (see : http://www.cv-foundation.org/openaccess/
@@ -210,7 +216,7 @@ def sg_inverse_periodic_shuffle(tensor, opt):
     # get target shape and channel num
     channel_factor = opt.factor * opt.factor
 
-     # intermediate shape for shuffling
+    # intermediate shape for shuffling
     shape_1 = [batch, row / opt.factor, col / opt.factor, channel_factor // opt.factor, channel_factor // opt.factor]
     shape_2 = [batch, row / opt.factor, col / opt.factor, channel_factor]
 
@@ -227,3 +233,14 @@ def sg_inverse_periodic_shuffle(tensor, opt):
     out = tf.concat(3, out)
 
     return tf.identity(out, name=opt.name)
+
+
+#
+# RNN related functions
+#
+
+@tf.sg_sugar_func
+def sg_lookup(tensor, opt):
+    assert opt.emb is not None, 'emb is mandatory.'
+    return tf.nn.embedding_lookup(opt.emb, tensor, name=opt.name)
+
