@@ -65,40 +65,6 @@ def sg_conv1d(tensor, opt):
 
 
 @tf.sg_layer_func
-def sg_conv1d_dilated(tensor, opt):
-
-    import math
-
-    # default options
-    opt += tf.sg_opt(size=2, rate=1, pad='SAME')
-
-    # parameter initialize
-    w = init.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
-    if opt.bias:
-        b = init.constant('b', opt.dim)
-
-    # reshaping for dilated convolution
-    time_len, channel = tensor.get_shape().as_list()[1:]
-    padded_len = int(math.ceil(1.0 * time_len / opt.rate) + 1) * opt.rate
-    padded = tf.pad(tensor, [[0, 0], [0, padded_len-time_len], [0, 0]])
-    padded = padded.sg_reshape(shape=[-1, opt.rate, channel]).sg_transpose(perm=(1, 0, 2))
-
-    # apply convolution
-    conv_out = tf.nn.conv1d(padded, w, stride=1, padding='SAME') + (b if opt.bias else 0)
-
-    # recover to original shape
-    out = conv_out.sg_transpose(perm=(1, 0, 2)).sg_reshape(shape=[-1, padded_len, channel])
-
-    # cropping output
-    out_len = time_len - opt.rate * opt.size + opt.rate if opt.pad == 'VALID' else time_len
-    out = out[:, :out_len:, :]
-    # set shape is needed.
-    out.set_shape([None, out_len, channel])
-
-    return out
-
-
-@tf.sg_layer_func
 def sg_aconv(tensor, opt):
     # default options
     opt += tf.sg_opt(size=(3, 3), rate=2, pad='SAME')
@@ -111,6 +77,36 @@ def sg_aconv(tensor, opt):
 
     # apply convolution
     out = tf.nn.atrous_conv2d(tensor, w, rate=opt.rate, padding=opt.pad) + (b if opt.bias else 0)
+
+    return out
+
+
+@tf.sg_layer_func
+def sg_aconv1d(tensor, opt):
+
+    # default options
+    opt += tf.sg_opt(size=(2 if opt.causal else 3), rate=1, pad='SAME')
+
+    # parameter initialize
+    w = init.he_uniform('W', (1, opt.size, opt.in_dim, opt.dim))
+    if opt.bias:
+        b = init.constant('b', opt.dim)
+
+    if opt.causal:
+        # pre-padding for causality
+        if opt.pad == 'SAME':
+            pad_len = (opt.size - 1) * opt.rate  # padding size
+            x = tf.pad(tensor, [[0, 0], [pad_len, 0], [0, 0]]).sg_expand_dims(dim=1)
+        else:
+            x = tensor.sg_expand_dims(dim=1)
+        # apply 2d convolution
+        out = tf.nn.atrous_conv2d(x, w, rate=opt.rate, padding='VALID') + (b if opt.bias else 0)
+    else:
+        # apply 2d convolution
+        out = tf.nn.atrous_conv2d(tensor.sg_expand_dims(dim=1),
+                                  w, rate=opt.rate, padding=opt.pad) + (b if opt.bias else 0)
+    # reduce dimension
+    out = out.sg_squeeze(dim=1)
 
     return out
 
@@ -199,10 +195,13 @@ def sg_rnn(tensor, opt):
         # apply step func
         h = step(h, tensor[:, i, :])
         # save result
-        out.append(h)
+        out.append(h.sg_expand_dims(dim=1))
 
     # merge tensor
-    out = tf.concat(1, out)
+    if opt.last_only:
+        out = out[-1].sg_squeeze(dim=1)
+    else:
+        out = tf.concat(1, out)
 
     return out
 
@@ -252,10 +251,13 @@ def sg_gru(tensor, opt):
         # apply step function
         h = step(h, tensor[:, i, :])
         # save result
-        out.append(h)
+        out.append(h.sg_expand_dims(dim=1))
 
     # merge tensor
-    out = tf.concat(1, out)
+    if opt.last_only:
+        out = out[-1].sg_squeeze(dim=1)
+    else:
+        out = tf.concat(1, out)
 
     return out
 
@@ -271,13 +273,13 @@ def sg_lstm(tensor, opt):
         i = tf.sigmoid(ln(tf.matmul(x, w_i) + tf.matmul(h, u_i) + (b_i if opt.bias else 0)))
         # forget gate
         f = tf.sigmoid(ln(tf.matmul(x, w_f) + tf.matmul(h, u_f) + (b_f if opt.bias else 0)))
-        # out gate
+        # out
         o = tf.sigmoid(ln(tf.matmul(x, w_o) + tf.matmul(h, u_o) + (b_o if opt.bias else 0)))
-        # cell gate
+        # cell
         g = tf.tanh(ln(tf.matmul(x, w_g) + tf.matmul(h, u_g) + (b_g if opt.bias else 0)))
         # cell update
         cell = f * c + i * g
-        # output
+        # final output
         y = o * tf.tanh(cell)
         return y, cell
 
@@ -291,10 +293,10 @@ def sg_lstm(tensor, opt):
     w_g = init.orthogonal('W_g', (opt.in_dim, opt.dim))
     u_g = init.identity('U_g', opt.dim)
     if opt.bias:
-        b_i = init.constant('b_z', opt.dim)
-        b_f = init.constant('b_r', opt.dim)
-        b_o = init.constant('b_h', opt.dim, value=1)
-        b_g = init.constant('b_h', opt.dim)
+        b_i = init.constant('b_i', opt.dim)
+        b_f = init.constant('b_f', opt.dim)
+        b_o = init.constant('b_o', opt.dim, value=1)
+        b_g = init.constant('b_g', opt.dim)
 
     # layer normalization parameters
     if opt.ln:
@@ -312,10 +314,13 @@ def sg_lstm(tensor, opt):
         # apply step function
         h, c = step(h, c, tensor[:, i, :])
         # save result
-        out.append(h)
+        out.append(h.sg_expand_dims(dim=1))
 
     # merge tensor
-    out = tf.concat(1, out)
+    if opt.last_only:
+        out = out[-1].sg_squeeze(dim=1)
+    else:
+        out = tf.concat(1, out)
 
     return out
 
