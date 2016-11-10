@@ -69,8 +69,11 @@ def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
     name = prefix + _pretty_name(tensor)
     # summary statistics
     with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/norm', tf.global_norm([gradient]))
-        tf.histogram_summary(name, gradient)
+        try:
+            tf.scalar_summary(name + '/norm', tf.global_norm([gradient]))
+            tf.histogram_summary(name, gradient)
+        except:
+            pass
 
 
 def sg_summary_image(tensor, prefix=None):

@@ -69,7 +69,7 @@ def sg_argmax(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_concat(tensor, opt):
-    assert opt.target is not None, 'target is mantory.'
+    assert opt.target is not None, 'target is mandatory.'
     opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
     target = opt.target if isinstance(opt.target, (tuple, list)) else [opt.target]
     return tf.concat(opt.dim, [tensor] + target, name=opt.name)
@@ -167,6 +167,15 @@ def sg_pool1d(tensor, opt):
 def sg_lookup(tensor, opt):
     assert opt.embed is not None, 'embed is mandatory'
     return tf.nn.embedding_lookup(opt.embed, tensor)
+
+
+@tf.sg_sugar_func
+def sg_reverse_seq(tensor, opt):
+    # default sequence dimension
+    opt += tf.sg_opt(dim=1)
+    seq_len = tf.not_equal(tensor, tf.zeros_like(tensor)).sg_int().sg_sum(dims=opt.dim)
+    return tf.reverse_sequence(tensor, seq_len, opt.dim)
+
 
 #
 # Periodic shuffle transform for SubPixel CNN

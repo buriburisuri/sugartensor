@@ -14,6 +14,10 @@ def sg_ce(tensor, opt):
     else:
         out = tf.identity(tf.nn.sparse_softmax_cross_entropy_with_logits(tensor, opt.target), 'ce')
 
+    # masking loss
+    if opt.mask:
+        out *= tf.not_equal(opt.target, tf.zeros_like(opt.target)).sg_float()
+
     # add summary
     tf.sg_summary_loss(out)
 

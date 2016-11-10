@@ -55,7 +55,7 @@ class AdaMaxOptimizer(tf.train.Optimizer):
         return tf.group(*[var_update, m_t, v_t])
 
     def _apply_sparse(self, grad, var):
-        raise NotImplementedError("Sparse gradient updates are not supported.")
+        return self._apply_dense(grad, var)
 
 
 class MaxPropOptimizer(tf.train.Optimizer):
@@ -93,4 +93,4 @@ class MaxPropOptimizer(tf.train.Optimizer):
         return tf.group(*[var_update, m_t])
 
     def _apply_sparse(self, grad, var):
-        raise NotImplementedError("Sparse gradient updates are not supported.")
+        return self._apply_dense(grad, var)

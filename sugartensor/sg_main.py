@@ -175,9 +175,92 @@ def sg_layer_func(func):
                     # apply batch normalization
                     out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
 
+                # apply normalization parameters
+                if opt.ln:
+                    # offset, scale parameter
+                    beta = init.constant('beta', opt.dim)
+                    gamma = init.constant('gamma', opt.dim, value=1)
+
+                    # calc layer mean, variance for final axis
+                    mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
+
+                    # apply normalization
+                    out = (out - mean) / tf.sqrt(variance + tf.sg_eps)
+                    # apply parameter
+                    out = gamma * out + beta
+
                 # apply activation
                 if opt.act:
                     out = getattr(sg_activation, 'sg_' + opt.act.lower())(out)
+
+                # apply dropout
+                if opt.dout:
+                    out = tf.cond(_phase,
+                                  lambda: tf.nn.dropout(out, 1 - opt.dout),
+                                  lambda: out)
+
+                # rename tensor
+                out = tf.identity(out, 'out')
+
+                # add final output summary
+                if opt.reuse is None or not opt.reuse:
+                    tf.sg_summary_activation(out)
+
+                # save node info for reuse
+                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
+                                       prev=tensor, is_layer=True, name=opt.name)
+                # inject reuse function
+                out.sg_reuse = types.MethodType(sg_reuse, out)
+
+        return out
+
+    return wrapper
+
+
+def sg_rnn_layer_func(func):
+    @wraps(func)
+    def wrapper(tensor, **kwargs):
+
+        # kwargs parsing
+        opt = tf.sg_opt(kwargs) + _context
+
+        # set default argument
+        try:
+            shape = tensor.get_shape().as_list()
+            # dropout off
+            opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1], dout=0)
+            # disable bias when normalization on
+            opt += tf.sg_opt(bias=not opt.ln)
+        finally:
+            pass
+
+        # automatic layer naming
+        if opt.name is None:
+
+            # layer function name will be used as layer name
+            opt.name = func.__name__.replace('sg_', '')
+
+            # find existing layer names
+            exist_layers = []
+            for t in tf.get_collection(tf.GraphKeys.VARIABLES):
+                i = t.name.rfind('layers/' + opt.name)
+                if i >= 0:
+                    exist_layers.append(t.name[i:].split('/')[1])
+            exist_layers = list(set(exist_layers))
+
+            # layer name numbering
+            if len(exist_layers) == 0:
+                opt.name += '_1'
+            else:
+                opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
+
+        # all layer variables start with 'layers/' prefix
+        with tf.variable_scope('layers', reuse=opt.reuse):
+
+            with tf.variable_scope(opt.name):
+
+                # call layer function
+                out = func(tensor, opt)
 
                 # apply dropout
                 if opt.dout:
@@ -267,6 +350,13 @@ def sg_inject(path, mod_name):
                 exec ('tf.Variable.%s = types.MethodType(%s.%s, None, tf.Variable)' % (func_name, mod_name, func_name))
                 # inject to tf.Tensor type
                 exec ('tf.Tensor.%s = types.MethodType(%s.%s, None, tf.Tensor)' % (func_name, mod_name, func_name))
+
+
+def sg_inject_func(func):
+    # inject to tf.Variable type
+    exec ('tf.Variable.%s = func' % func.__name__)
+    # inject to tf.Tensor type
+    exec ('tf.Tensor.%s = func' % func.__name__)
 
 
 #

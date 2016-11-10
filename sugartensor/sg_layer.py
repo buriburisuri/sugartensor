@@ -162,13 +162,27 @@ def sg_emb(**kwargs):
     return emb
 
 
-@tf.sg_layer_func
+# layer normalization for rnn
+def _ln_rnn(x, gamma, beta):
+
+    # calc layer mean, variance for final axis
+    mean, variance = tf.nn.moments(x, axes=[len(x.get_shape()) - 1], keep_dims=True)
+
+    # apply layer normalization
+    x = (x - mean) / tf.sqrt(variance + tf.sg_eps)
+
+    # apply parameter
+    return gamma * x + beta
+
+
+@tf.sg_rnn_layer_func
 def sg_rnn(tensor, opt):
+
+    # layer normalization
+    ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
 
     # step function
     def step(h, x):
-        # layer normalization
-        ln = lambda v: _ln(v, gamma, beta) if opt.ln else v
         # simple rnn
         y = ln(tf.matmul(tensor[:, i, :], w) + tf.matmul(h, u) + (b if opt.bias else 0))
         return y
@@ -186,7 +200,7 @@ def sg_rnn(tensor, opt):
         gamma = init.constant('gamma', opt.dim, value=1)
 
     # initial state
-    init_h = opt.init_state if opt.init_state \
+    init_h = opt.init_state if opt.init_state is not None \
         else tf.zeros((tensor.get_shape().as_list()[0], opt.dim), dtype=tf.sg_floatx)
 
     # do rnn loop
@@ -206,13 +220,14 @@ def sg_rnn(tensor, opt):
     return out
 
 
-@tf.sg_layer_func
+@tf.sg_rnn_layer_func
 def sg_gru(tensor, opt):
+
+    # layer normalization
+    ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
 
     # step func
     def step(h, x):
-        # layer normalization
-        ln = lambda v: _ln(v, gamma, beta) if opt.ln else v
         # update gate
         z = tf.sigmoid(ln(tf.matmul(x, w_z) + tf.matmul(h, u_z) + (b_z if opt.bias else 0)))
         # reset gate
@@ -242,7 +257,7 @@ def sg_gru(tensor, opt):
         gamma = init.constant('gamma', opt.dim, value=1)
 
     # initial state
-    init_h = opt.init_state if opt.init_state \
+    init_h = opt.init_state if opt.init_state is not None \
         else tf.zeros((tensor.get_shape().as_list()[0], opt.dim), dtype=tf.sg_floatx)
 
     # do rnn loop
@@ -262,23 +277,24 @@ def sg_gru(tensor, opt):
     return out
 
 
-@tf.sg_layer_func
+@tf.sg_rnn_layer_func
 def sg_lstm(tensor, opt):
+
+    # layer normalization
+    ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
 
     # step func
     def step(h, c, x):
-        # layer normalization
-        ln = lambda v: _ln(v, gamma, beta) if opt.ln else v
-        # input gate
-        i = tf.sigmoid(ln(tf.matmul(x, w_i) + tf.matmul(h, u_i) + (b_i if opt.bias else 0)))
         # forget gate
         f = tf.sigmoid(ln(tf.matmul(x, w_f) + tf.matmul(h, u_f) + (b_f if opt.bias else 0)))
-        # out
+        # input gate
+        i = tf.sigmoid(ln(tf.matmul(x, w_i) + tf.matmul(h, u_i) + (b_i if opt.bias else 0)))
+        # new cell value
+        cc = tf.tanh(ln(tf.matmul(x, w_c) + tf.matmul(h, u_c) + (b_c if opt.bias else 0)))
+        # out gate
         o = tf.sigmoid(ln(tf.matmul(x, w_o) + tf.matmul(h, u_o) + (b_o if opt.bias else 0)))
-        # cell
-        g = tf.tanh(ln(tf.matmul(x, w_g) + tf.matmul(h, u_g) + (b_g if opt.bias else 0)))
         # cell update
-        cell = f * c + i * g
+        cell = f * c + i * cc
         # final output
         y = o * tf.tanh(cell)
         return y, cell
@@ -290,13 +306,13 @@ def sg_lstm(tensor, opt):
     u_f = init.identity('U_f', opt.dim)
     w_o = init.orthogonal('W_o', (opt.in_dim, opt.dim))
     u_o = init.identity('U_o', opt.dim)
-    w_g = init.orthogonal('W_g', (opt.in_dim, opt.dim))
-    u_g = init.identity('U_g', opt.dim)
+    w_c = init.orthogonal('W_c', (opt.in_dim, opt.dim))
+    u_c = init.identity('U_c', opt.dim)
     if opt.bias:
         b_i = init.constant('b_i', opt.dim)
         b_f = init.constant('b_f', opt.dim)
         b_o = init.constant('b_o', opt.dim, value=1)
-        b_g = init.constant('b_g', opt.dim)
+        b_c = init.constant('b_c', opt.dim)
 
     # layer normalization parameters
     if opt.ln:
@@ -305,7 +321,7 @@ def sg_lstm(tensor, opt):
         gamma = init.constant('gamma', opt.dim, value=1)
 
     # initial state
-    init_h = opt.init_state if opt.init_state \
+    init_h = opt.init_state if opt.init_state is not None \
         else tf.zeros((tensor.get_shape().as_list()[0], opt.dim), dtype=tf.sg_floatx)
 
     # do rnn loop
@@ -324,15 +340,3 @@ def sg_lstm(tensor, opt):
 
     return out
 
-
-# layer normalization
-def _ln(x, gamma, beta):
-
-    # calc layer mean, variance for final axis
-    mean, variance = tf.nn.moments(x, axes=[len(x.get_shape()) - 1], keep_dims=True)
-
-    # apply layer normalization
-    x = (x - mean) / tf.sqrt(variance + tf.sg_eps)
-
-    # apply parameter
-    return gamma * x + beta
