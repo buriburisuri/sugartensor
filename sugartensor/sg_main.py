@@ -127,9 +127,11 @@ def sg_layer_func(func):
             # find existing layer names
             exist_layers = []
             for t in tf.get_collection(tf.GraphKeys.VARIABLES):
-                i = t.name.rfind('layers/' + opt.name)
+                scope_name = tf.get_variable_scope().name
+                prefix = scope_name + '/' if len(scope_name) > 0 else ''
+                i = t.name.rfind(prefix + 'layers/' + opt.name)
                 if i >= 0:
-                    exist_layers.append(t.name[i:].split('/')[1])
+                    exist_layers.append(t.name[i:].split('/')[-2])
             exist_layers = list(set(exist_layers))
 
             # layer name numbering
