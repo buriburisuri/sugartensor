@@ -40,12 +40,18 @@ def sg_init(sess):
                       tf.initialize_local_variables()))
 
 
-def sg_print(tensor):
+def sg_print(tensor_list):
+    # to list
+    if type(tensor_list) is not list and type(tensor_list) is not tuple:
+        tensor_list = [tensor_list]
+
+    # evaluate tensor list with queue runner
     with tf.Session() as sess:
         sg_init(sess)
         with tf.sg_queue_context():
-            res = sess.run(tensor)
-            print res, res.shape, res.dtype
+            res = sess.run(tensor_list)
+            for r in res:
+                print r, r.shape, r.dtype
     return res
 
 
@@ -127,7 +133,8 @@ def sg_train_func(func):
         if opt.sess:
             sess = opt.sess
         else:
-            sess = tf.Session()
+            # session with multiple GPU support
+            sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
             # initialize variables
             sg_init(sess)
 

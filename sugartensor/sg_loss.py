@@ -81,3 +81,21 @@ def sg_hinge(tensor, opt):
     tf.sg_summary_loss(out)
 
     return out
+
+
+@tf.sg_sugar_func
+def sg_ctc(tensor, opt):
+    assert opt.target is not None, 'target is mandatory.'
+
+    # default sequence length
+    shape = tf.shape(tensor)
+    opt += tf.sg_opt(seq_len=tf.ones((shape[0],), dtype=tf.sg_intx) * shape[1])
+
+    # ctc loss
+    out = tf.nn.ctc_loss(tensor, opt.target.sg_to_sparse(), opt.seq_len, time_major=False)
+    out = tf.identity(out, 'ctc')
+
+    # add summary
+    tf.sg_summary_loss(out)
+
+    return out

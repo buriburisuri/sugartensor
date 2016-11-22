@@ -384,3 +384,32 @@ def sg_queue_context(sess=None):
         coord.request_stop()
         # wait thread to exit.
         coord.join(threads)
+
+
+#
+# Command line argument util funcs
+#
+
+# noinspection PyProtectedMember
+def sg_arg():
+    if not tf.app.flags.FLAGS.__dict__['__parsed']:
+        tf.app.flags.FLAGS._parse_flags()
+    return tf.sg_opt(tf.app.flags.FLAGS.__dict__['__flags'])
+
+
+def sg_arg_def(**kwargs):
+    for k, v in kwargs.items():
+        if type(v) is tuple or type(v) is list:
+            v, c = v[0], v[1]
+        else:
+            c = k
+        if type(v) is str:
+            tf.app.flags.DEFINE_string(k, v, c)
+        elif type(v) is int:
+            tf.app.flags.DEFINE_integer(k, v, c)
+        elif type(v) is float:
+            tf.app.flags.DEFINE_float(k, v, c)
+        elif type(v) is bool:
+            tf.app.flags.DEFINE_bool(k, v, c)
+
+

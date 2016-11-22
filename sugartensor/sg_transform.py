@@ -81,6 +81,14 @@ def sg_one_hot(tensor, opt):
     return tf.one_hot(tensor, opt.depth, name=opt.name)
 
 
+@tf.sg_sugar_func
+def sg_to_sparse(tensor, opt):
+    indices = tf.where(tf.not_equal(tensor.sg_float(), 0.))
+    return tf.SparseTensor(indices=indices,
+                           values=tf.gather_nd(tensor, indices) - 1,  # for zero-based index
+                           shape=tf.shape(tensor).sg_cast(dtype=tf.int64))
+
+
 #
 # reduce functions
 #
@@ -165,8 +173,8 @@ def sg_pool1d(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_lookup(tensor, opt):
-    assert opt.embed is not None, 'embed is mandatory'
-    return tf.nn.embedding_lookup(opt.embed, tensor)
+    assert opt.emb is not None, 'emb is mandatory.'
+    return tf.nn.embedding_lookup(opt.emb, tensor, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -174,7 +182,7 @@ def sg_reverse_seq(tensor, opt):
     # default sequence dimension
     opt += tf.sg_opt(dim=1)
     seq_len = tf.not_equal(tensor, tf.zeros_like(tensor)).sg_int().sg_sum(dims=opt.dim)
-    return tf.reverse_sequence(tensor, seq_len, opt.dim)
+    return tf.reverse_sequence(tensor, seq_len, opt.dim, name=opt.name)
 
 
 #
@@ -242,14 +250,3 @@ def sg_inverse_periodic_shuffle(tensor, opt):
     out = tf.concat(3, out)
 
     return tf.identity(out, name=opt.name)
-
-
-#
-# RNN related functions
-#
-
-@tf.sg_sugar_func
-def sg_lookup(tensor, opt):
-    assert opt.emb is not None, 'emb is mandatory.'
-    return tf.nn.embedding_lookup(opt.emb, tensor, name=opt.name)
-

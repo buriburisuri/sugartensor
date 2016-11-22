@@ -6,6 +6,7 @@ from sg_util import sg_opt
 from sg_main import *
 from sg_logging import *
 from sg_train import *
+from sg_queue import sg_producer_func
 from sg_layer import sg_emb
 
 import sg_optimize

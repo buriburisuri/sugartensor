@@ -46,14 +46,7 @@ def sg_softsign(x, opt):
 
 @tf.sg_sugar_func
 def sg_softmax(x, opt):
-    dim = x.get_shape().ndims
-    assert dim >= 2, 'softmax needs rank 2 at least'
-    if dim == 2:
-        return tf.nn.softmax(x, name=opt.name)
-    else:
-        ori_shape = [-1] + x.get_shape().as_list()[1:]
-        new_shape = (-1, ori_shape[-1])
-        return tf.reshape(tf.nn.softmax(tf.reshape(x, new_shape), name=opt.name), ori_shape)
+    return tf.nn.softmax(x, name=opt.name)
 
 
 @tf.sg_sugar_func
