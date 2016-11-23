@@ -11,6 +11,20 @@ __author__ = 'buriburisuri@gmail.com'
 
 @tf.sg_sugar_func
 def sg_vgg_16(tensor, opt):
+    r"""Applies vgg 16 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+     tensor: A `Tensor`
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers
@@ -53,6 +67,20 @@ def sg_vgg_16(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_vgg_19(tensor, opt):
+    r"""Applies vgg 19 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      tensor: A `Tensor`.
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers
@@ -103,6 +131,20 @@ def sg_vgg_19(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_50(x, opt):
+    r"""Applies residual net 50 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      x: A `Tensor`.
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers ( residual net v2 arch )
@@ -131,6 +173,20 @@ def sg_resnet_50(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_101(x, opt):
+    r"""Applies residual net 101 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      x: A `Tensor`.
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers ( residual net v2 arch )
@@ -159,6 +215,20 @@ def sg_resnet_101(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_152(x, opt):
+    r"""Applies residual net 152 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      x: A `Tensor`.
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers ( residual net v2 arch )
@@ -187,6 +257,20 @@ def sg_resnet_152(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_200(x, opt):
+    r"""Applies residual net 200 model.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      x: A `Tensor`.
+      num_class: number of class.
+      conv_only: Boolean. If True, fc layers are not applied.
+      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
     # convolution layers ( residual net v2 arch )
@@ -219,6 +303,17 @@ def sg_resnet_200(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_layer(tensor, opt):
+    r"""Applies basic architectureif residual net.
+    Note that the fc layers in the original architecture 
+      will be replaced with fully convolutional layers.
+      For convenience, We still call them fc layers, though.
+    
+    Args:
+      tensor: A `Tensor`.
+    
+    Returns:
+      A `Tesnor`. 
+    """
     assert opt.dim is not None, 'dim is mandatory.'
     assert opt.num is not None, 'num is mandatory.'
 
