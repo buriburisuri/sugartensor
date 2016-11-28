@@ -7,7 +7,16 @@ __author__ = 'mansour'
 
 # constant sg_data to tensor conversion with queue support
 def _data_to_tensor(data_list, batch_size, name=None):
-
+    r"""Returns batch queues from the whole data. 
+    
+    Args:
+      data_list: A list of ndarrays. Every ndarray must have the same size in the first dimension.
+      batch_size: An integer.
+      name: A name for the operations (optional).
+      
+    Returns:
+      A list of tensors of `batch_size`.
+    """
     # convert to constant tensor
     const_list = [tf.constant(data) for data in data_list]
 
@@ -20,7 +29,8 @@ def _data_to_tensor(data_list, batch_size, name=None):
 
 
 class Mnist(object):
-
+    r"""Downloads Mnist datasets and puts them in queues.
+    """
     _data_dir = './asset/data/mnist'
 
     def __init__(self, batch_size=128, reshape=False, one_hot=False):

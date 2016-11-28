@@ -13,11 +13,30 @@ __author__ = 'buriburisuri@gmail.com'
 
 @tf.sg_layer_func
 def sg_bypass(tensor, opt):
+    r"""Returns the input tensor itself.
+    
+    Args:
+      tensor: A `Tensor`.
+    
+    Returns:
+      The same tensor as `tensor`.
+    """
     return tensor
 
 
 @tf.sg_layer_func
 def sg_dense(tensor, opt):
+    r"""Applies a full connection.
+    
+    Args:
+      tensor: A 2-D `Tensor`.
+      in_dim: An `integer`. The size of input dimension.
+      dim: An `integer`. The size of output dimension.
+      bias: Boolean. If True, biases are added. 
+      
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # parameter initialize
     w = init.he_uniform('W', (opt.in_dim, opt.dim))
     if opt.bias:
@@ -31,6 +50,26 @@ def sg_dense(tensor, opt):
 
 @tf.sg_layer_func
 def sg_conv(tensor, opt):
+    r"""Applies a 2-D convolution.
+    
+    Args:
+      tensor: A 4-D `Tensor`.
+      size: A tuple or list of integers of length 2 representing `[kernel height, kernel width]`.
+        Can be an int if both values are the same.
+        If not specified, (3, 3) is set implicitly.
+      stride: A tuple or list of integers of length 2 or 4 representing stride dimensions.
+        If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
+        If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
+        Can be an int. If the length is an int, i.e., a, the stride is `[1, a, a, 1]`.
+        The default value is [1, 1, 1, 1].
+      in_dim: An `integer`. The size of input dimension.
+      dim: An `integer`. The size of output dimension.
+      pad: Either `SAME` (Default) or `VALID`. 
+      bias: Boolean. If True, biases are added.
+
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # default options
     opt += tf.sg_opt(size=(3, 3), stride=(1, 1, 1, 1), pad='SAME')
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
@@ -50,6 +89,22 @@ def sg_conv(tensor, opt):
 
 @tf.sg_layer_func
 def sg_conv1d(tensor, opt):
+    r"""Applies a 1-D convolution.
+    
+    Args:
+      tensor: A `Tensor`.
+      size: An `integer` representing `[kernel width]`.
+        If not specified, 2 is set implicitly.
+      stride: An `integer`. The number of entries by which
+        the filter is moved right at each step.
+      in_dim: An `integer`. The size of input dimension.
+      dim: An `integer`. The size of output dimension.
+      pad: Either `SAME` (Default) or `VALID`.
+      bias: Boolean. Whether to add biases to the filters.
+      
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # default options
     opt += tf.sg_opt(size=2, stride=1, pad='SAME')
 
@@ -66,6 +121,23 @@ def sg_conv1d(tensor, opt):
 
 @tf.sg_layer_func
 def sg_aconv(tensor, opt):
+    r"""Applies a 2-D atrous (or dilated) convolution.
+    
+    Args:
+      tensor: A 4-D `Tensor`.
+      size: A tuple or list of integers of length 2 representing `[kernel height, kernel width]`.
+        Can be an int if both values are the same.
+        If not specified, (3, 3) is set automatically.
+      rate: A positive int32. The stride with which we sample input values across
+        the `height` and `width` dimensions. Default is 2.
+      in_dim: An `integer`. The size of input dimension.
+      dim: An `integer`. The size of output dimension.
+      pad: Either `SAME` (Default) or `VALID`.
+      bias: Boolean. Whether to add biases to the filters.
+            
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # default options
     opt += tf.sg_opt(size=(3, 3), rate=2, pad='SAME')
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
@@ -83,7 +155,24 @@ def sg_aconv(tensor, opt):
 
 @tf.sg_layer_func
 def sg_aconv1d(tensor, opt):
-
+    r"""Applies 1-D atrous (or dilated) convolution.
+    
+    Args:
+      tensor: A 3-D `Tensor`.
+      causal: Boolean. If True, zeros are padded before the time axis such that
+        each activation unit doesn't have receptive neurons beyond the equivalent time step.
+      size: An `integer` representing `[kernel width]`. As a default it is set to 2
+        if causal is True, 3 otherwise. 
+      rate: A positive int32. The stride with which we sample input values across
+        the `height` and `width` dimensions. Default is 1.
+      in_dim: An `integer`. The size of input dimension.
+      dim: An `integer`. The size of output dimension.
+      pad: Either `SAME` (Default) or `VALID`.
+      bias: Boolean. Whether to add biases to the filters.
+            
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # default options
     opt += tf.sg_opt(size=(2 if opt.causal else 3), rate=1, pad='SAME')
 
@@ -113,6 +202,26 @@ def sg_aconv1d(tensor, opt):
 
 @tf.sg_layer_func
 def sg_upconv(tensor, opt):
+    r"""Applies a upconvolution (or convolution transpose).
+    
+    Args:
+      tensor: A 4-D `Tensor`.
+      size: A tuple or list of integers of length 2 representing `[kernel height, kernel width]`.
+        Can be an int if both values are the same.
+        If not specified, (3, 3) is set implicitly.
+        The default value is [1, 2, 2, 1].
+      stride: A tuple or list of integers of length 2 or 4 representing stride dimensions.
+        If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
+        If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
+        Can be an int. If the length is an int, i.e., a, the stride is `[1, a, a, 1]`.
+      in_dim: A positive `integer`. The size of input dimension.
+      dim: A positive `integer`. The size of output dimension.
+      pad: Either `SAME` (Default) or `VALID`. 
+      bias: Boolean. If True, biases are added.
+            
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
     # default options
     opt += tf.sg_opt(size=(3, 3), stride=(1, 2, 2, 1), pad='SAME')
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
@@ -142,6 +251,19 @@ def sg_upconv(tensor, opt):
 #
 
 def sg_emb(**kwargs):
+    r"""Returns an embedding layer or a look-up table.
+    
+    Args:
+      name: A name for the layer (required).
+      emb: A 2-D array. Has the shape of `[vocabulary size -1, embedding dimension size]`.
+        Note that the first row is filled with 0's because they correspond to padding.
+      in_dim: A positive `integer`. The size of input dimension.
+      dim: A positive `integer`. The size of output dimension.
+      voca_size: A positive int32.
+      
+    Returns:
+      A 2-D tensor.
+    """
     opt = tf.sg_opt(kwargs)
     assert opt.name is not None, 'name is mandatory.'
 
@@ -164,7 +286,17 @@ def sg_emb(**kwargs):
 
 # layer normalization for rnn
 def _ln_rnn(x, gamma, beta):
-
+    r"""Applies layer normalization.
+    Normalizes the last dimension of the tensor `x`.
+    
+    Args:
+      x: A `Tensor`.
+      gamma: A `Tensor` constant. Scale parameter.
+      beta: A `Tensor` constant. Offset parameter.
+    
+    Returns:
+      A `Tensor` with the same shape as `x`.
+    """
     # calc layer mean, variance for final axis
     mean, variance = tf.nn.moments(x, axes=[len(x.get_shape()) - 1], keep_dims=True)
 
@@ -177,13 +309,27 @@ def _ln_rnn(x, gamma, beta):
 
 @tf.sg_rnn_layer_func
 def sg_rnn(tensor, opt):
-
+    r"""Applies a simple rnn.
+    
+    Args:
+      tensor: A 3-D `Tensor`.
+      in_dim: A positive `integer`. The size of input dimension.
+      dim: A positive `integer`. The size of output dimension.
+      bias: Boolean. If True, biases are added.
+      ln: Boolean. If True, layer normalization is applied.   
+      init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
+      last_only: Boolean. If True, the outputs in the last time step are returned.
+    
+    Returns:
+      A `Tensor`. If last_only is False, the output tensor has shape [batch size, time steps, dim].
+        If last_only is True, the shape will be [batch size, dim].
+    """
     # layer normalization
     ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
-
     # step function
     def step(h, x):
         # simple rnn
+        ### Replace tensor[:, i, :] with x. bryan ###
         y = ln(tf.matmul(tensor[:, i, :], w) + tf.matmul(h, u) + (b if opt.bias else 0))
         return y
 
@@ -222,7 +368,22 @@ def sg_rnn(tensor, opt):
 
 @tf.sg_rnn_layer_func
 def sg_gru(tensor, opt):
-
+    r"""Applies a GRU.
+    
+    Args:
+      tensor: A 3-D `Tensor`.
+      in_dim: A positive `integer`. The size of input dimension.
+      dim: A positive `integer`. The size of output dimension.
+      bias: Boolean. If True, biases are added.
+      ln: Boolean. If True, layer normalization is applied.   
+      init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
+      last_only: Boolean. If True, the outputs in the last time step are returned.
+    
+    Returns:
+      A `Tensor`. If last_only is False, the output tensor has shape [batch size, time steps, dim].
+        If last_only is True, the shape will be [batch size, dim].
+    """
+    
     # layer normalization
     ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
 
@@ -279,7 +440,21 @@ def sg_gru(tensor, opt):
 
 @tf.sg_rnn_layer_func
 def sg_lstm(tensor, opt):
+    r"""Applies an LSTM.
 
+    Args:
+      tensor: A 3-D `Tensor`.
+      in_dim: A positive `integer`. The size of input dimension.
+      dim: A positive `integer`. The size of output dimension.
+      bias: Boolean. If True, biases are added.
+      ln: Boolean. If True, layer normalization is applied.   
+      init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
+      last_only: Boolean. If True, the outputs in the last time step are returned.
+    
+    Returns:
+      A `Tensor`. If last_only is False, the output tensor has shape [batch size, time steps, dim].
+        If last_only is True, the shape will be [batch size, dim].
+    """
     # layer normalization
     ln = lambda v: _ln_rnn(v, gamma, beta) if opt.ln else v
 
