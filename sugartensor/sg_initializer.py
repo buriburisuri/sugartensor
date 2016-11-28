@@ -16,6 +16,7 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
         tf.sg_summary_param(x)
     return x
 
+
 def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
     r"""Returns an initializer of random numbers based on uniform distribution.
     Note that the default value of `scale` (=0.05) is different from 
