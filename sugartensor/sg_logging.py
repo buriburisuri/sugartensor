@@ -13,10 +13,14 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 def _pretty_name(tensor):
+    r"""Returns the name of the `tensor` without its parents. 
+    """
     return ':'.join(tensor.name.split(':')[:-1])
 
 
 def sg_summary_loss(tensor, prefix='10. loss'):
+    r"""Writes the average of `tensor` (=loss).
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -28,6 +32,8 @@ def sg_summary_loss(tensor, prefix='10. loss'):
 
 
 def sg_summary_metric(tensor, prefix='20. metric'):
+    r"""Writes the average of `tensor` (=metric such as accuracy).
+    """    
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -63,6 +69,12 @@ def sg_summary_param(tensor, prefix='40. parameters'):
 
 
 def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
+    r"""Writes the normalized gradient value
+    
+    Args:
+      tensor: A `Tensor` variable.
+      gradient: A `Tensor`. Gradient of `tensor`.
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name

@@ -6,6 +6,8 @@ __author__ = 'mansour'
 
 
 def constant(name, shape, value=0, dtype=tf.sg_floatx):
+    r"""Returns an initializer of `shape` with all elements set to a scalar `value`.
+    """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.constant_initializer(value))
@@ -15,6 +17,10 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
     return x
 
 def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
+    r"""Returns an initializer of random numbers based on uniform distribution.
+    Note that the default value of `scale` (=0.05) is different from 
+    the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.
+    """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale))
@@ -25,20 +31,34 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
 
 
 def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
-    # He et aE. ( http://arxiv.org/pdf/1502.01852v1.pdf )
+    r"""See He et al. 2015 `http://arxiv.org/pdf/1502.01852v1.pdf`
+    """
     fin, _ = _get_fans(shape)
     s = np.sqrt(1. * scale / fin)
     return uniform(name, shape, s, dtype)
 
 
 def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
-    # glorot & benjio ( http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf )
+    r"""See Glorot et al. 2010 `http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf`
+    """
     fin, fout = _get_fans(shape)
     s = np.sqrt(6. * scale / (fin + fout))
     return uniform(name, shape, s, dtype)
 
 
 def identity(name, dim, scale=1, dtype=tf.sg_floatx):
+    r"""Returns an initializer of a 2-D identity tensor.
+    
+    Args:
+      name: A string. The name of the new or existing variable.
+      dim: An int. The size of the first and second dimension of the output tensor
+      scale: An int (optional). The value on the diagonal. 
+      shape: Shape of the new or existing variable.
+      dtype: A tensor datatype.
+    
+    Returns:
+      A 2-D tensor variable with the value of `scale` on the diagoanl and zeros elsewhere.   
+    """
     x = tf.get_variable(name,
                         initializer=tf.constant(np.eye(dim) * scale, dtype=dtype))
     # add summary
@@ -48,7 +68,18 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx):
 
 
 def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
-    # Sax et aE. ( http://arxiv.org/pdf/1312.6120.pdf )
+    r"""Returns a random orthogonal initializer.
+    See Saxe et al. 2014 `http://arxiv.org/pdf/1312.6120.pdf`
+    
+    Args:
+      name: A string. The name of the new or existing variable.
+      shape: A list or tuple of integers.
+      scale: A Python scalr.
+      dtype = A float32 or float64.
+    
+    Returns:
+      A `Tensor` variable.
+    """
     flat_shape = (shape[0], np.prod(shape[1:]))
     a = np.random.normal(0.0, 1.0, flat_shape)
     u, _, v = np.linalg.svd(a, full_matrices=False)
@@ -63,8 +94,16 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
         tf.sg_summary_param(x)
     return x
 
-
 def external(name, value, dtype=tf.sg_floatx):
+    r"""Returns an initializer of `value`.
+    Args:
+      name: A string. The name of the new or existing variable.
+      value: A constant value (or array) of output type `dtype`.
+      dtype: The type of the elements of the resulting tensor. (optional)
+    
+    Returns:
+      A `Tensor` variable.  
+    """
     # create variable
     x = tf.get_variable(name,
                         initializer=tf.constant(value, dtype=dtype))
@@ -75,6 +114,15 @@ def external(name, value, dtype=tf.sg_floatx):
 
 
 def _get_fans(shape):
+    """Returns values of input dimension and output dimension, given `shape`.
+    
+    Args:
+      shape: A list of integers.
+    
+    Returns:
+      fan_in: An int. The value of input dimension.
+      fan_out: An int. The value of output dimension.
+    """
     if len(shape) == 2:
         fan_in = shape[0]
         fan_out = shape[1]

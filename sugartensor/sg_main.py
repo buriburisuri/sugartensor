@@ -97,8 +97,26 @@ def sg_sugar_func(func):
 
 
 def sg_layer_func(func):
+    r"""Decorates sg_layer functions.
+    """
     @wraps(func)
     def wrapper(tensor, **kwargs):
+        r"""Manages arguments of `tf.sg_opt`.
+        
+        Args:
+          shape:  A list of integers. The shape of `tensor`. Inferred if not specified.
+          in_dim: An integer. The size of input dimension, which is set to the last one as a default.
+          dim: An integer. The size of output dimension. Has the same value as in_dim as a default.
+          bn: Boolean. If True, batch normalization is applied.
+          ln: Boolean. If True, layer normalization is applied.
+          dout: A float of range [0, 100). A dropout rate. Set to 0 as a default.
+          bias: Boolean. If True, biases are added. As a default, it is set to True 
+            if both normalization options (bn and ln) are False.
+          name: A name for the layer. As a default, the function name is assigned.
+          act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
+          reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope 
+            as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+        """
 
         import sg_initializer as init
         import sg_activation
