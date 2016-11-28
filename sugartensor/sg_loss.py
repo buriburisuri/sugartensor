@@ -186,6 +186,23 @@ def sg_hinge(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_ctc(tensor, opt):
+    r"""Returns softmax cross entropy loss between `tensor` and `target`.
+
+    Args:
+      tensor: A `Tensor`. Logits. Unscaled log probabilities.
+      target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )
+
+    Returns:
+      A 1-D `Tensor` with the same shape as `tensor`.
+
+    For example,
+
+    ```
+    tensor = [[[2, -1, 3], [3, 1, -2]]]
+    target = [[2, 1]]
+    tensor.sg_ce(target=target, one_hot=True) => [ 31.32656264  64.13284527]
+    ```
+    """
     assert opt.target is not None, 'target is mandatory.'
 
     # default sequence length
