@@ -1,10 +1,16 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import collections
+
 
 __author__ = 'buriburisuri@gmail.com'
 
 
 class _Opt(collections.MutableMapping):
+    r""" option utility class
+
+    This class is internally used only for sg_opt
+
+    """
 
     def __init__(self, *args, **kwargs):
         self.__dict__.update(*args, **kwargs)
@@ -18,6 +24,7 @@ class _Opt(collections.MutableMapping):
     def __delitem__(self, key):
         del self.__dict__[key]
 
+    # noinspection PyUnusedLocal,PyUnusedLocal
     def __getattr__(self, key):
         return None
 

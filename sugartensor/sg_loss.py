@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
 
 __author__ = 'buriburisuri@gmail.com'
@@ -10,9 +10,10 @@ def sg_ce(tensor, opt):
     
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
-      target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. 
-      one_hot: Boolean. Whether to treat the labels as one-hot encoding. The default is False.
-      mask: Boolean. If True, zeros in the target will be excluded from the calculation.
+      opt:
+          target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels.
+          one_hot: Boolean. Whether to treat the labels as one-hot encoding. The default is False.
+          mask: Boolean. If True, zeros in the target will be excluded from the calculation.
       
     Returns:
       A 1-D `Tensor` with the same shape as `tensor`. 
@@ -57,7 +58,8 @@ def sg_bce(tensor, opt):
     
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
-      target: A `Tensor` with the same shape and dtype as `tensor`. Labels. 
+      opt:
+        target: A `Tensor` with the same shape and dtype as `tensor`. Labels.
       
     Returns:
       A `Tensor` of the same shape as `tensor`
@@ -88,7 +90,8 @@ def sg_mse(tensor, opt):
     
     Args:
       tensor: A `Tensor`.
-      target: A `Tensor` with the same shape and dtype as `tensor`. 
+      opt:
+        target: A `Tensor` with the same shape and dtype as `tensor`.
        
     Returns:
       A `Tensor` of the same shape and dtype as `tensor` 
@@ -119,7 +122,8 @@ def sg_mae(tensor, opt):
     
     Args:
       tensor: A `Tensor`.
-      target: A `Tensor` with the same shape and dtype as `tensor`.  
+      opt:
+        target: A `Tensor` with the same shape and dtype as `tensor`.
       
     Returns:
       A `Tensor` of the same shape and dtype as `tensor` 
@@ -150,8 +154,9 @@ def sg_hinge(tensor, opt):
     
     Args:
       tensor: A `Tensor`.
-      opt.target: A `Tensor`. Labels.
-      opt.margin: An int. Maximum margin. Default is 1.
+      opt:
+        target: A `Tensor`. Labels.
+        margin: An int. Maximum margin. Default is 1.
       
     Returns:
       A `Tensor`.
@@ -190,7 +195,8 @@ def sg_ctc(tensor, opt):
 
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
-      target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )
+      opt:
+        target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )
 
     Returns:
       A 1-D `Tensor` with the same shape as `tensor`.

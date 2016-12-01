@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-from distutils.core import setup
+from setuptools import setup
+from setuptools import find_packages
 
 exec(open('sugartensor/_version.py').read())
 setup(
@@ -11,7 +11,7 @@ setup(
     author_email='buriburisuri@gmail.com',
     url='https://github.com/buriburisuri/sugartensor',
     download_url='https://github.com/buriburisuri/sugartensor/tarball/' + __version__,
-    keywords=['tensorflow', 'sugar', 'sugartensor', 'slim', 'wrapper'],
-    classifiers=[],
     license='MIT',
+    install_requires=['tqdm>=4.8.4'],
+    keywords=['tensorflow', 'sugar', 'sugartensor', 'slim', 'wrapper'],
 )

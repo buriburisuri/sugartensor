@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
 
 __author__ = 'buriburisuri@gmail.com'
@@ -15,7 +15,8 @@ def sg_accuracy(tensor, opt):
     
     Args:
       tensor: A `Tensor`. Probability distributions or unscaled prediction scores.
-      target: A 'Tensor`. Labels.
+      opt:
+        target: A 'Tensor`. Labels.
       
     Returns:
       A `Tensor` of the same shape as `tensor`. Each value will be 1 if correct else 0. 

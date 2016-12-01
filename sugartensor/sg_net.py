@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
+
 
 __author__ = 'buriburisuri@gmail.com'
 
@@ -18,12 +19,13 @@ def sg_vgg_16(tensor, opt):
     
     Args:
      tensor: A `Tensor`
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+     opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`.
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -74,12 +76,13 @@ def sg_vgg_19(tensor, opt):
     
     Args:
       tensor: A `Tensor`.
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`.
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -138,12 +141,13 @@ def sg_resnet_50(x, opt):
     
     Args:
       x: A `Tensor`.
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`. 
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -180,12 +184,13 @@ def sg_resnet_101(x, opt):
     
     Args:
       x: A `Tensor`.
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`. 
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -222,12 +227,13 @@ def sg_resnet_152(x, opt):
     
     Args:
       x: A `Tensor`.
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`. 
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -264,12 +270,13 @@ def sg_resnet_200(x, opt):
     
     Args:
       x: A `Tensor`.
-      num_class: number of class.
-      conv_only: Boolean. If True, fc layers are not applied.
-      squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      opt:
+          num_class: number of class.
+          conv_only: Boolean. If True, fc layers are not applied.
+          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
-      A `Tesnor`. 
+      A `Tensor`. 
     """
     opt += tf.sg_opt(num_class=1000, conv_only=False, squeeze=True)
 
@@ -303,16 +310,19 @@ def sg_resnet_200(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_layer(tensor, opt):
-    r"""Applies basic architectureif residual net.
+    r"""Applies basic architecture residual net.
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
     
     Args:
       tensor: A `Tensor`.
-    
+      opt:
+          dim: dimension for this resnet layer
+          num: number to repeat
+
     Returns:
-      A `Tesnor`. 
+      A `Tensor`. 
     """
     assert opt.dim is not None, 'dim is mandatory.'
     assert opt.num is not None, 'num is mandatory.'

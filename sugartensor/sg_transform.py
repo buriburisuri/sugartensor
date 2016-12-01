@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
+# noinspection PyPackageRequirements
 import numpy as np
+
 
 __author__ = 'buriburisuri@gmail.com'
 
@@ -81,6 +83,7 @@ def sg_one_hot(tensor, opt):
     return tf.one_hot(tensor, opt.depth, name=opt.name)
 
 
+# noinspection PyUnusedLocal
 @tf.sg_sugar_func
 def sg_to_sparse(tensor, opt):
     indices = tf.where(tf.not_equal(tensor.sg_float(), 0.))
