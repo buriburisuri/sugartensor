@@ -144,7 +144,7 @@ def sg_layer_func(func):
 
             # find existing layer names
             exist_layers = []
-            for t in tf.get_collection(tf.GraphKeys.VARIABLES):
+            for t in tf.global_variables():
                 scope_name = tf.get_variable_scope().name
                 prefix = scope_name + '/' if len(scope_name) > 0 else ''
                 i = t.name.rfind(prefix + 'layers/' + opt.name)
@@ -262,7 +262,7 @@ def sg_rnn_layer_func(func):
 
             # find existing layer names
             exist_layers = []
-            for t in tf.get_collection(tf.GraphKeys.VARIABLES):
+            for t in tf.global_variables():
                 scope_name = tf.get_variable_scope().name
                 prefix = scope_name + '/' if len(scope_name) > 0 else ''
                 i = t.name.rfind(prefix + 'layers/' + opt.name)

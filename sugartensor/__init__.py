@@ -12,6 +12,8 @@ from sg_layer import sg_emb
 import sg_optimize
 import sg_data
 
+from ._version import __version__
+
 
 __author__ = 'buriburisuri@gmail.com'
 

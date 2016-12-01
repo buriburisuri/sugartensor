@@ -36,8 +36,8 @@ def sg_train(**kwargs):
 
 def sg_init(sess):
     # initialize variables
-    sess.run(tf.group(tf.initialize_all_variables(),
-                      tf.initialize_local_variables()))
+    sess.run(tf.group(tf.global_variables_initializer(),
+                      tf.local_variables_initializer()))
 
 
 def sg_print(tensor_list):
