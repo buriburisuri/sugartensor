@@ -112,4 +112,5 @@ alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_
 Please see the example codes in the 'sugartensor/example/' directory.
 
 # Author
+
 Namju Kim (buriburisuri@gmail.com) at Jamonglabs Co., Ltd.
