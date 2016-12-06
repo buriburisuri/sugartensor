@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
 import sugartensor as tf
+# noinspection PyPackageRequirements
 import numpy as np
 import os
 import time
@@ -15,6 +16,33 @@ _learning_rate = tf.Variable(0.001, dtype=tf.sg_floatx, name='learning_rate', tr
 
 
 def sg_train(**kwargs):
+    r""" Train function.
+
+    Args:
+        **kwargs:
+            loss: loss to train
+
+            optim: optimizer name ( default: 'MaxProp'.  other : 'AdaMax', 'Adam', 'sgd')
+            lr: learning rate ( default : 0.001)
+            beta1: optimizer beta1 ( default :0.9 )
+            beta2: optimizer beta2 ( default :0.99 )
+
+            eval_metric: evaluation metric tensor list ( default : [] )
+            early_stop: automatic learning rate decay and stop. ( default : True)
+            lr_reset: whether reset learning rate when restarting training ( default : False)
+
+            save_dir: checkpoint file save path ( default : 'asset/train')
+            max_ep: max epoch number to train ( default : 1000 )
+            ep_size: total batch number in a epoch ( default : 100000)
+
+            save_interval: checkpoint saving interval ( default : 600 seconds )
+            log_interval: logging interval ( default : 60 seconds )
+            max_keep: max checkpoint files to keep ( default : 5 )
+            keep_interval: checkpoint file keep interval ( default : 1 hour )
+
+            tqdm: whether show tqdm progress bar or not ( default : True)
+            console_log: print loss on the console and do not save report file ( default : False )
+    """
     opt = tf.sg_opt(kwargs)
     assert opt.loss is not None, 'loss is mandatory.'
 
@@ -26,6 +54,7 @@ def sg_train(**kwargs):
                         beta1=opt.beta1, beta2=opt.beta2, category=opt.category)
 
     # define train function
+    # noinspection PyUnusedLocal
     @sg_train_func
     def train_func(sess, arg):
         return sess.run([opt.loss, train_op])[0]
@@ -35,12 +64,20 @@ def sg_train(**kwargs):
 
 
 def sg_init(sess):
+    r""" Initialize session variables
+    Args:
+        sess: session to init
+    """
     # initialize variables
     sess.run(tf.group(tf.global_variables_initializer(),
                       tf.local_variables_initializer()))
 
 
 def sg_print(tensor_list):
+    r""" Simple tensor printing function for debugging
+    Args:
+        tensor_list: tensors to print
+    """
     # to list
     if type(tensor_list) is not list and type(tensor_list) is not tuple:
         tensor_list = [tensor_list]
@@ -51,11 +88,23 @@ def sg_print(tensor_list):
         with tf.sg_queue_context():
             res = sess.run(tensor_list)
             for r in res:
-                print r, r.shape, r.dtype
+                print (r, r.shape, r.dtype)
     return res
 
 
 def sg_optim(loss, **kwargs):
+    r""" Create optimizer
+
+    Args:
+        loss: loss to optimize
+        **kwargs:
+            optim: optimizer name ( default: 'MaxProp'.  other : 'AdaMax', 'Adam', 'sgd')
+            lr: learning rate ( default : 0.001)
+            beta1: optimizer beta1 ( default :0.9 )
+            beta2: optimizer beta2 ( default :0.99 )
+    Returns:
+        optimizer
+    """
     opt = tf.sg_opt(kwargs)
 
     # default training options
@@ -66,9 +115,13 @@ def sg_optim(loss, **kwargs):
         optim = tf.sg_optimize.MaxPropOptimizer(learning_rate=opt.lr, beta2=opt.beta2)
     elif opt.optim == 'AdaMax':
         optim = tf.sg_optimize.AdaMaxOptimizer(learning_rate=opt.lr, beta1=opt.beta1, beta2=opt.beta2)
+    elif opt.optim == 'Adam':
+        optim = tf.train.AdamOptimizer(learning_rate=opt.lr, beta1=opt.beta1, beta2=opt.beta2)
+    else:
+        optim = tf.train.GradientDescentOptimizer(learning_rate=opt.lr)
 
     # get trainable variables
-    var_list = [t for t in tf.trainable_variables() if t.name.encode('utf8').startswith(opt.category)]
+    var_list = [t for t in tf.trainable_variables() if t.name.startswith(opt.category)]
 
     # calc gradient
     gradient = optim.compute_gradients(loss, var_list=var_list)
@@ -82,8 +135,30 @@ def sg_optim(loss, **kwargs):
 
 
 def sg_train_func(func):
+    r""" Decorate function as sg_train_func.
+    Args:
+        func: function to decorate
+    """
     @wraps(func)
     def wrapper(**kwargs):
+        r""" Manages arguments of `tf.sg_opt`.
+
+        Args:
+            **kwargs:
+                lr: learning rate ( default : 0.001)
+                save_dir: checkpoint file save path ( default : 'asset/train')
+                max_ep: max epoch number to train ( default : 1000 )
+                ep_size: total batch number in a epoch ( default : 100000)
+                save_interval: checkpoint saving interval ( default : 600 seconds )
+                log_interval: logging interval ( default : 60 seconds )
+                early_stop: automatic learning rate decay and stop. ( default : True)
+                lr_reset: whether reset learning rate when restarting training ( default : False)
+                eval_metric: evaluation metric tensor list ( default : [] )
+                max_keep: max checkpoint files to keep ( default : 5 )
+                keep_interval: checkpoint file keep interval ( default : 1 hour )
+                tqdm: whether show tqdm progress bar or not ( default : True)
+                console_log: print loss on the console and do not save report file ( default : False )
+        """
         opt = tf.sg_opt(kwargs)
 
         # default training options

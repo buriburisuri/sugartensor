@@ -14,7 +14,17 @@ we use pure python functions only and avoid class style conventions.
     1. tqdm >= 4.8.4  ( for a console progressive bar )
 
 2. Installation
+
+python 2
+
 <pre><code>pip install sugartensor</code></pre>
+
+python 3
+
+<pre><code>pip3 install sugartensor</code></pre>
+
+docker installation : See docker [README.md](docker/README.md).
+
 
 ## Quick start
 
@@ -112,4 +122,5 @@ alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_
 Please see the example codes in the 'sugartensor/example/' directory.
 
 # Author
+
 Namju Kim (buriburisuri@gmail.com) at Jamonglabs Co., Ltd.

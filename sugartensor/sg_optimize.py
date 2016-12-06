@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import tensorflow as tf
 
 __author__ = 'buriburisuri@gmail.com'
 
 
+# noinspection PyAbstractClass
 class AdaMaxOptimizer(tf.train.Optimizer):
-    """Optimizer that implements the Adamax algorithm.
+    r"""Optimizer that implements the Adamax algorithm.
     See [Kingma et. al., 2014](http://arxiv.org/abs/1412.6980)
     ([pdf](http://arxiv.org/pdf/1412.6980.pdf)).
 
@@ -58,7 +59,10 @@ class AdaMaxOptimizer(tf.train.Optimizer):
         return self._apply_dense(grad, var)
 
 
+# noinspection PyAbstractClass
 class MaxPropOptimizer(tf.train.Optimizer):
+    r"""Optimizer that implements the MaxProp algorithm by buriburisuri@gmail.com.
+    """
     def __init__(self, learning_rate=0.001, beta2=0.999, use_locking=False, name="MaxProp"):
         super(MaxPropOptimizer, self).__init__(use_locking, name)
         self._lr = learning_rate

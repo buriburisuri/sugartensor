@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
 from functools import wraps
 import threading
@@ -9,8 +9,22 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 def sg_producer_func(func):
+    r""" Decorate function as sg_producer_func
+
+    Args:
+        func: function to decorate
+    """
     @wraps(func)
     def wrapper(**kwargs):
+        r""" Manages arguments of `tf.sg_opt`.
+
+        Args:
+            **kwargs:
+                source : source queue list to enqueue
+                dtypes : types of each tensor
+                capacity : queue capacity ( default : 32 )
+                num_threads : number of threads ( default : 1 )
+        """
 
         # default option
         opt = tf.sg_opt(kwargs) + tf.sg_opt(dtypes=[tf.sg_floatx], capacity=32, num_threads=1)
@@ -21,10 +35,10 @@ def sg_producer_func(func):
             opt.source = [opt.source]
         if type(opt.dtypes) is not list and type(opt.dtypes) is not tuple:
             opt.dtypes = [opt.dtypes]
-        assert len(opt.source) == len(opt.dtypes), 'Source and dtypes shoud have same length.'
+        assert len(opt.source) == len(opt.dtypes), 'Source and dtypes should have same length.'
 
         # enqueue function
-        def enqueue_func(sess, op, coord):
+        def enqueue_func(sess, op):
             # read data from source queue
             data = func(sess.run(opt.source))
             # create feeder dict
@@ -46,7 +60,7 @@ def sg_producer_func(func):
         enqueue_op = queue.enqueue(placeholders)
 
         # create queue runner
-        runner = FuncQueueRunner(enqueue_func, queue, [enqueue_op] * opt.num_threads)
+        runner = _FuncQueueRunner(enqueue_func, queue, [enqueue_op] * opt.num_threads)
 
         # register to global collection
         tf.train.add_queue_runner(runner)
@@ -57,7 +71,7 @@ def sg_producer_func(func):
     return wrapper
 
 
-class FuncQueueRunner(tf.train.QueueRunner):
+class _FuncQueueRunner(tf.train.QueueRunner):
 
     def __init__(self, func, queue=None, enqueue_ops=None, close_op=None,
                  cancel_op=None, queue_closed_exception_types=None,
@@ -65,8 +79,8 @@ class FuncQueueRunner(tf.train.QueueRunner):
         # save ad-hoc function
         self.func = func
         # call super()
-        super(FuncQueueRunner, self).__init__(queue, enqueue_ops, close_op, cancel_op,
-                                              queue_closed_exception_types, queue_runner_def)
+        super(_FuncQueueRunner, self).__init__(queue, enqueue_ops, close_op, cancel_op,
+                                               queue_closed_exception_types, queue_runner_def)
 
     # pylint: disable=broad-except
     def _run(self, sess, enqueue_op, coord=None):
@@ -79,13 +93,13 @@ class FuncQueueRunner(tf.train.QueueRunner):
                 if coord and coord.should_stop():
                     break
                 try:
-                    self.func(sess, enqueue_op, coord)  # call enqueue function
+                    self.func(sess, enqueue_op)  # call enqueue function
                 except self._queue_closed_exception_types:  # pylint: disable=catching-non-exception
                     # This exception indicates that a queue was closed.
                     with self._lock:
-                        self._runs -= 1
+                        self._runs_per_session[sess] -= 1
                         decremented = True
-                        if self._runs == 0:
+                        if self._runs_per_session[sess] == 0:
                             try:
                                 sess.run(self._close_op)
                             except Exception as e:
@@ -105,10 +119,4 @@ class FuncQueueRunner(tf.train.QueueRunner):
             # Make sure we account for all terminations: normal or errors.
             if not decremented:
                 with self._lock:
-                    self._runs -= 1
-
-
-
-
-
-
+                    self._runs_per_session[sess] -= 1

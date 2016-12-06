@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
 import os
 import time
 import sys
+
 
 __author__ = 'buriburisuri@gmail.com'
 
@@ -12,14 +13,17 @@ __author__ = 'buriburisuri@gmail.com'
 #
 
 
-def _pretty_name(tensor):
-    r"""Returns the name of the `tensor` without its parents. 
-    """
-    return ':'.join(tensor.name.split(':')[:-1])
-
-
+# noinspection PyTypeChecker
 def sg_summary_loss(tensor, prefix='10. loss'):
-    r"""Writes the average of `tensor` (=loss).
+    r"""Register tensor to summary report as loss
+
+    Args:
+        tensor: tensor to log as loss
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -31,9 +35,18 @@ def sg_summary_loss(tensor, prefix='10. loss'):
         tf.histogram_summary(name, tensor)
 
 
+# noinspection PyTypeChecker
 def sg_summary_metric(tensor, prefix='20. metric'):
-    r"""Writes the average of `tensor` (=metric such as accuracy).
-    """    
+    r"""Register tensor to summary report as metric
+
+    Args:
+        tensor: tensor to log as metric
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -45,6 +58,16 @@ def sg_summary_metric(tensor, prefix='20. metric'):
 
 
 def sg_summary_activation(tensor, prefix='30. activation'):
+    r"""Register tensor to summary report as activation
+
+    Args:
+        tensor: tensor to log as activation
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -58,6 +81,16 @@ def sg_summary_activation(tensor, prefix='30. activation'):
 
 
 def sg_summary_param(tensor, prefix='40. parameters'):
+    r"""Register tensor to summary report as parameter
+
+    Args:
+        tensor: tensor to log as parameter
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -69,11 +102,16 @@ def sg_summary_param(tensor, prefix='40. parameters'):
 
 
 def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
-    r"""Writes the normalized gradient value
-    
+    r"""Register tensor to summary report as gradient
+
     Args:
-      tensor: A `Tensor` variable.
-      gradient: A `Tensor`. Gradient of `tensor`.
+        tensor: tensor to log as gradient
+        gradient: gradient to log
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -81,6 +119,7 @@ def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
     name = prefix + _pretty_name(tensor)
     # summary statistics
     with tf.name_scope('summary'):
+        # noinspection PyBroadException
         try:
             tf.scalar_summary(name + '/norm', tf.global_norm([gradient]))
             tf.histogram_summary(name, gradient)
@@ -89,6 +128,16 @@ def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
 
 
 def sg_summary_image(tensor, prefix=None):
+    r"""Register tensor to summary report as image
+
+    Args:
+        tensor: tensor to log as image
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -99,6 +148,17 @@ def sg_summary_image(tensor, prefix=None):
 
 
 def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
+    r"""Register tensor to summary report as audio
+
+    Args:
+        tensor: tensor to log as audio
+        sample_rate : sample rate to report ( default : 16000 )
+        prefix: prefix to display in the tensor board web UI.
+
+    Returns:
+        None
+
+    """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
@@ -108,20 +168,27 @@ def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
         tf.audio_summary(name, tensor, sample_rate)
 
 
+def _pretty_name(tensor):
+    return ':'.join(tensor.name.split(':')[:-1])
+
+
 #
 # logger wrappers
 #
 
 # use tensorflow logger
+# pylint: disable=protected-access
+# noinspection PyProtectedMember
 _logger = tf.logging._logger
 
 
 def _log_prefix():
 
-    # Returns (filename, linenumber) for the stack frame.
+    # Returns (filename, line number) for the stack frame.
     def _get_file_line():
 
         # pylint: disable=protected-access
+        # noinspection PyProtectedMember
         f = sys._getframe()
         # pylint: enable=protected-access
         our_file = f.f_code.co_filename
@@ -129,9 +196,9 @@ def _log_prefix():
         while f:
             code = f.f_code
             if code.co_filename != our_file:
-                return (code.co_filename, f.f_lineno)
+                return code.co_filename, f.f_lineno
             f = f.f_back
-        return ('<unknown>', 0)
+        return '<unknown>', 0
 
     # current time
     now = time.time()

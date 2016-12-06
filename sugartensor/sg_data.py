@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import sugartensor as tf
 from tensorflow.examples.tutorials.mnist import input_data
+
 
 __author__ = 'mansour'
 
@@ -60,5 +61,3 @@ class Mnist(object):
         self.train.num_batch = _train.labels.shape[0] // batch_size
         self.valid.num_batch = _valid.labels.shape[0] // batch_size
         self.test.num_batch = _test.labels.shape[0] // batch_size
-
-

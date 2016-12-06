@@ -1,10 +1,17 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+import six
 import collections
+
 
 __author__ = 'buriburisuri@gmail.com'
 
 
 class _Opt(collections.MutableMapping):
+    r""" option utility class
+
+    This class is internally used only for sg_opt
+
+    """
 
     def __init__(self, *args, **kwargs):
         self.__dict__.update(*args, **kwargs)
@@ -18,6 +25,7 @@ class _Opt(collections.MutableMapping):
     def __delitem__(self, key):
         del self.__dict__[key]
 
+    # noinspection PyUnusedLocal,PyUnusedLocal
     def __getattr__(self, key):
         return None
 
@@ -35,14 +43,14 @@ class _Opt(collections.MutableMapping):
 
     def __add__(self, other):
         res = _Opt(self.__dict__)
-        for k, v in other.iteritems():
+        for k, v in six.iteritems(other):
             if k not in res.__dict__ or res.__dict__[k] is None:
                 res.__dict__[k] = v
         return res
 
     def __mul__(self, other):
         res = _Opt(self.__dict__)
-        for k, v in other.iteritems():
+        for k, v in six.iteritems(other):
             res.__dict__[k] = v
         return res
 
