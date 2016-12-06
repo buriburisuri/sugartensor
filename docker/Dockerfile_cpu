@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:0.12.0-rc0-gpu
+FROM tensorflow/tensorflow:0.12.0-rc0
 MAINTAINER Namju Kim buriburisuri@gmail.com
 
 # requirements
@@ -12,5 +12,3 @@ ADD sugartensor/example/* /sugartensor/example/
 
 # set default directory to sugar tensor's example directory
 WORKDIR /sugartensor/example
-
-

@@ -12,7 +12,7 @@ If you use GPUs, you'll need [Nvidia-docker](https://github.com/NVIDIA/nvidia-do
 Get sugartensor docker image for GPU support
 
 ```
-docker pull sugartensor/sugartensor:latest
+docker pull sugartensor/sugartensor
 ```
 
 Get sugartensor docker image for CPU only support
@@ -23,17 +23,30 @@ docker pull sugartensor/sugartensor:latest-cpu
 
 ## Running sugartensor container
 
-Run sugartensor container with GPU support
+Run sugartensor container with GPU support ( for shell console )
 
 ```
-nvidia-docker run -it sugartensor/sugartensor:latest /bin/bash 
+nvidia-docker run -it sugartensor/sugartensor /bin/bash 
 ```
 
-Run sugartensor container with CPU only support
+Run sugartensor container with CPU only support ( for shell console )
 
 ```
 docker run -it sugartensor/sugartensor:latest-cpu /bin/bash 
 ```
+
+Run sugartensor container with GPU support ( for ipython notebook )
+
+```
+nvidia-docker run -it -p 8888:8888 sugartensor/sugartensor
+```
+
+Run sugartensor container with CPU only support ( for ipython notebook )
+
+```
+docker run -it -p 8888:8888 sugartensor/sugartensor:latest-cpu 
+```
+
 
 ## Testing sugartensor container
 
