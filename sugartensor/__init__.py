@@ -10,7 +10,7 @@ from .sg_layer import sg_emb
 
 from . import sg_optimize
 from . import sg_data
-from . import sg_initializer as sg_init
+from . import sg_initializer
 
 from ._version import __version__
 

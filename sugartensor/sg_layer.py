@@ -44,8 +44,8 @@ def sg_dense(tensor, opt):
       A `Tensor` with the same type as `tensor`.
     """
     # parameter initialize
-    w = tf.sg_init.he_uniform('W', (opt.in_dim, opt.dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    w = tf.sg_initializer.he_uniform('W', (opt.in_dim, opt.dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply transform
     out = tf.matmul(tensor, w) + b
@@ -83,8 +83,8 @@ def sg_conv(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter initialize
-    w = tf.sg_init.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
     out = tf.nn.conv2d(tensor, w, strides=opt.stride, padding=opt.pad) + b
@@ -114,9 +114,9 @@ def sg_conv1d(tensor, opt):
     # default options
     opt += tf.sg_opt(size=2, stride=1, pad='SAME')
 
-    # parameter tf.sg_initialize
-    w = tf.sg_init.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    # parameter tf.sg_initializer
+    w = tf.sg_initializer.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
     out = tf.nn.conv1d(tensor, w, stride=opt.stride, padding=opt.pad) + b
@@ -148,9 +148,9 @@ def sg_aconv(tensor, opt):
     opt += tf.sg_opt(size=(3, 3), rate=2, pad='SAME')
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
 
-    # parameter tf.sg_initialize
-    w = tf.sg_init.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    # parameter tf.sg_initializer
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
     out = tf.nn.atrous_conv2d(tensor, w, rate=opt.rate, padding=opt.pad) + b
@@ -182,9 +182,9 @@ def sg_aconv1d(tensor, opt):
     # default options
     opt += tf.sg_opt(size=(2 if opt.causal else 3), rate=1, pad='SAME')
 
-    # parameter tf.sg_initialize
-    w = tf.sg_init.he_uniform('W', (1, opt.size, opt.in_dim, opt.dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    # parameter tf.sg_initializer
+    w = tf.sg_initializer.he_uniform('W', (1, opt.size, opt.in_dim, opt.dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     if opt.causal:
         # pre-padding for causality
@@ -235,9 +235,9 @@ def sg_upconv(tensor, opt):
     opt.stride = opt.stride if isinstance(opt.stride, (tuple, list)) else [1, opt.stride, opt.stride, 1]
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
-    # parameter tf.sg_initialize
-    w = tf.sg_init.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim))
-    b = tf.sg_init.constant('b', opt.dim) if opt.bias else 0
+    # parameter tf.sg_initializer
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # tedious shape handling for conv2d_transpose
     shape = tensor.get_shape().as_list()
@@ -279,10 +279,10 @@ def sg_emb(**kwargs):
         # initialize embedding matrix
         assert opt.voca_size is not None, 'voca_size is mandatory.'
         assert opt.dim is not None, 'dim is mandatory.'
-        w = tf.sg_init.he_uniform(opt.name, (opt.voca_size - 1, opt.dim))
+        w = tf.sg_initializer.he_uniform(opt.name, (opt.voca_size - 1, opt.dim))
     else:
         # use given embedding matrix
-        w = tf.sg_init.external(opt.name, value=opt.emb)
+        w = tf.sg_initializer.external(opt.name, value=opt.emb)
 
     # 1st row should be zero and not be updated by backprop because of zero padding.
     emb = tf.concat(0, [tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w])
@@ -342,16 +342,16 @@ def sg_rnn(tensor, opt):
         return y
 
     # parameter initialize
-    w = tf.sg_init.orthogonal('W', (opt.in_dim, opt.dim))
-    u = tf.sg_init.identity('U', opt.dim)
+    w = tf.sg_initializer.orthogonal('W', (opt.in_dim, opt.dim))
+    u = tf.sg_initializer.identity('U', opt.dim)
     if opt.bias:
-        b = tf.sg_init.constant('b', opt.dim)
+        b = tf.sg_initializer.constant('b', opt.dim)
 
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_init.constant('beta', opt.dim)
-        gamma = tf.sg_init.constant('gamma', opt.dim, value=1)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \
@@ -410,22 +410,22 @@ def sg_gru(tensor, opt):
         return y
 
     # parameter initialize
-    w_z = tf.sg_init.orthogonal('W_z', (opt.in_dim, opt.dim))
-    u_z = tf.sg_init.identity('U_z', opt.dim)
-    w_r = tf.sg_init.orthogonal('W_r', (opt.in_dim, opt.dim))
-    u_r = tf.sg_init.identity('U_r', opt.dim)
-    w_h = tf.sg_init.orthogonal('W_h', (opt.in_dim, opt.dim))
-    u_h = tf.sg_init.identity('U_h', opt.dim)
+    w_z = tf.sg_initializer.orthogonal('W_z', (opt.in_dim, opt.dim))
+    u_z = tf.sg_initializer.identity('U_z', opt.dim)
+    w_r = tf.sg_initializer.orthogonal('W_r', (opt.in_dim, opt.dim))
+    u_r = tf.sg_initializer.identity('U_r', opt.dim)
+    w_h = tf.sg_initializer.orthogonal('W_h', (opt.in_dim, opt.dim))
+    u_h = tf.sg_initializer.identity('U_h', opt.dim)
     if opt.bias:
-        b_z = tf.sg_init.constant('b_z', opt.dim)
-        b_r = tf.sg_init.constant('b_r', opt.dim)
-        b_h = tf.sg_init.constant('b_h', opt.dim)
+        b_z = tf.sg_initializer.constant('b_z', opt.dim)
+        b_r = tf.sg_initializer.constant('b_r', opt.dim)
+        b_h = tf.sg_initializer.constant('b_h', opt.dim)
 
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_init.constant('beta', opt.dim)
-        gamma = tf.sg_init.constant('gamma', opt.dim, value=1)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \
@@ -488,25 +488,25 @@ def sg_lstm(tensor, opt):
         return y, cell
 
     # parameter initialize
-    w_i = tf.sg_init.orthogonal('W_i', (opt.in_dim, opt.dim))
-    u_i = tf.sg_init.identity('U_i', opt.dim)
-    w_f = tf.sg_init.orthogonal('W_f', (opt.in_dim, opt.dim))
-    u_f = tf.sg_init.identity('U_f', opt.dim)
-    w_o = tf.sg_init.orthogonal('W_o', (opt.in_dim, opt.dim))
-    u_o = tf.sg_init.identity('U_o', opt.dim)
-    w_c = tf.sg_init.orthogonal('W_c', (opt.in_dim, opt.dim))
-    u_c = tf.sg_init.identity('U_c', opt.dim)
+    w_i = tf.sg_initializer.orthogonal('W_i', (opt.in_dim, opt.dim))
+    u_i = tf.sg_initializer.identity('U_i', opt.dim)
+    w_f = tf.sg_initializer.orthogonal('W_f', (opt.in_dim, opt.dim))
+    u_f = tf.sg_initializer.identity('U_f', opt.dim)
+    w_o = tf.sg_initializer.orthogonal('W_o', (opt.in_dim, opt.dim))
+    u_o = tf.sg_initializer.identity('U_o', opt.dim)
+    w_c = tf.sg_initializer.orthogonal('W_c', (opt.in_dim, opt.dim))
+    u_c = tf.sg_initializer.identity('U_c', opt.dim)
     if opt.bias:
-        b_i = tf.sg_init.constant('b_i', opt.dim)
-        b_f = tf.sg_init.constant('b_f', opt.dim)
-        b_o = tf.sg_init.constant('b_o', opt.dim, value=1)
-        b_c = tf.sg_init.constant('b_c', opt.dim)
+        b_i = tf.sg_initializer.constant('b_i', opt.dim)
+        b_f = tf.sg_initializer.constant('b_f', opt.dim)
+        b_o = tf.sg_initializer.constant('b_o', opt.dim, value=1)
+        b_c = tf.sg_initializer.constant('b_c', opt.dim)
 
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_init.constant('beta', opt.dim)
-        gamma = tf.sg_init.constant('gamma', opt.dim, value=1)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \

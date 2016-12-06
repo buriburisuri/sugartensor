@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
 import sugartensor as tf
 # noinspection PyPackageRequirements
 import numpy as np
@@ -88,7 +88,7 @@ def sg_print(tensor_list):
         with tf.sg_queue_context():
             res = sess.run(tensor_list)
             for r in res:
-                print r, r.shape, r.dtype
+                print (r, r.shape, r.dtype)
     return res
 
 
@@ -121,7 +121,7 @@ def sg_optim(loss, **kwargs):
         optim = tf.train.GradientDescentOptimizer(learning_rate=opt.lr)
 
     # get trainable variables
-    var_list = [t for t in tf.trainable_variables() if t.name.encode('utf8').startswith(opt.category)]
+    var_list = [t for t in tf.trainable_variables() if t.name.startswith(opt.category)]
 
     # calc gradient
     gradient = optim.compute_gradients(loss, var_list=var_list)

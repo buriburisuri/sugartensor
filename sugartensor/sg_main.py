@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 import types
 from functools import wraps
+from functools import partial
 import importlib
 from contextlib import contextmanager
 
@@ -491,9 +492,9 @@ def sg_inject(path, mod_name):
         if isinstance(globals()[mod_name].__dict__.get(func_name), types.FunctionType):
             if not func_name.startswith('_'):
                 # inject to tf.Variable type
-                exec ('tf.Variable.%s = types.MethodType(%s.%s, None, tf.Variable)' % (func_name, mod_name, func_name))
+                exec('tf.Variable.%s = %s.%s' % (func_name, mod_name, func_name))
                 # inject to tf.Tensor type
-                exec ('tf.Tensor.%s = types.MethodType(%s.%s, None, tf.Tensor)' % (func_name, mod_name, func_name))
+                exec('tf.Tensor.%s = %s.%s' % (func_name, mod_name, func_name))
 
 
 def sg_inject_func(func):

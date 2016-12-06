@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+import six
 import collections
 
 
@@ -42,14 +43,14 @@ class _Opt(collections.MutableMapping):
 
     def __add__(self, other):
         res = _Opt(self.__dict__)
-        for k, v in other.iteritems():
+        for k, v in six.iteritems(other):
             if k not in res.__dict__ or res.__dict__[k] is None:
                 res.__dict__[k] = v
         return res
 
     def __mul__(self, other):
         res = _Opt(self.__dict__)
-        for k, v in other.iteritems():
+        for k, v in six.iteritems(other):
             res.__dict__[k] = v
         return res
 

@@ -5,7 +5,7 @@ SugarTensor supports `Docker` to make it easy to running through [Docker](http:/
 ## Installing and using Docker
 
 For general information about Docker, see [the Docker site](https://docs.docker.com/installation/).
-If you use GPUs, you'll need [Nvidia-docker](https://github.com/NVIDIA/nvidia-docker) as well
+If you use GPUs, you'll need [Nvidia-docker](https://github.com/NVIDIA/nvidia-docker) as well.
 
 ## Download SugarTensor docker images
 
@@ -46,7 +46,5 @@ python mnist_conv.py
 # Author
 
 Namju Kim (buriburisuri@gmail.com) at Jamonglabs Co., Ltd.
-
-
 
 
