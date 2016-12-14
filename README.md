@@ -121,6 +121,40 @@ alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_
 
 Please see the example codes in the 'sugartensor/example/' directory.
 
+### Custom layers
+
+You can add your own custom layer functions like the following code snippet.
+
+```
+# residual block
+@tf.sg_sugar_func
+def sg_res_block(tensor, opt):
+    # default rate
+    opt += tf.sg_opt(size=3, rate=1, causal=False)
+
+    # input dimension
+    in_dim = tensor.get_shape().as_list()[-1]
+
+    # reduce dimension
+    input_ = (tensor
+              .sg_bypass(act='relu', bn=(not opt.causal), ln=opt.causal)
+              .sg_conv1d(size=1, dim=in_dim/2, act='relu', bn=(not opt.causal), ln=opt.causal))
+
+    # 1xk conv dilated
+    out = input_.sg_aconv1d(size=opt.size, rate=opt.rate, causal=opt.causal, act='relu', bn=(not opt.causal), ln=opt.causal)
+
+    # dimension recover and residual connection
+    out = out.sg_conv1d(size=1, dim=in_dim) + tensor
+
+    return out
+
+# inject residual block
+tf.sg_inject_func(sg_res_block)
+```
+
+For more information, see [ByteNet example code](https://github.com/buriburisuri/ByteNet/blob/master/train.py) 
+or [WaveNet example code](https://github.com/buriburisuri/speech-to-text-wavenet/blob/master/train.py).  
+
 # Author
 
 Namju Kim (buriburisuri@gmail.com) at Jamonglabs Co., Ltd.

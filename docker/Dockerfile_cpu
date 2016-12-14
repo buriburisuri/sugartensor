@@ -1,10 +1,10 @@
-FROM tensorflow/tensorflow:0.12.0-rc0
+FROM tensorflow/tensorflow:0.12.0-rc1
 MAINTAINER Namju Kim buriburisuri@gmail.com
 
 # requirements
 RUN pip install --upgrade pip
 RUN pip install tqdm==4.8.4
-RUN pip install sugartensor==0.0.2.1
+RUN pip install sugartensor==0.0.2.2
 
 # make example directory
 RUN mkdir -p /sugartensor/example
