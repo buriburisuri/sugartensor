@@ -7,10 +7,9 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 class _Opt(collections.MutableMapping):
-    r""" option utility class
+    r"""Option utility class.
 
-    This class is internally used only for sg_opt
-
+    This class is only internally used for sg_opt.
     """
 
     def __init__(self, *args, **kwargs):
@@ -42,6 +41,20 @@ class _Opt(collections.MutableMapping):
         return self.__dict__.__repr__()
 
     def __add__(self, other):
+        r"""Overloads `+` operator.
+        
+        It does NOT overwrite the existing item.
+        
+        For example,
+        
+        ```python
+        import sugartensor as tf
+
+        opt = tf.sg_opt(size=1)
+        opt += tf.sg_opt(size=2)
+        print(opt) # Should be {'size': 1}
+        ```
+        """
         res = _Opt(self.__dict__)
         for k, v in six.iteritems(other):
             if k not in res.__dict__ or res.__dict__[k] is None:
@@ -49,6 +62,20 @@ class _Opt(collections.MutableMapping):
         return res
 
     def __mul__(self, other):
+        r"""Overloads `*` operator.
+        
+        It overwrites the existing item.
+        
+        For example,
+        
+        ```python
+        import sugartensor as tf
+
+        opt = tf.sg_opt(size=1)
+        opt *= tf.sg_opt(size=2)
+        print(opt) # Should be {'size': 2}
+        ```
+        """
         res = _Opt(self.__dict__)
         for k, v in six.iteritems(other):
             res.__dict__[k] = v

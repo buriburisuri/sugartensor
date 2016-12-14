@@ -11,9 +11,9 @@ def sg_ce(tensor, opt):
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
       opt:
-          target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels.
-          one_hot: Boolean. Whether to treat the labels as one-hot encoding. The default is False.
-          mask: Boolean. If True, zeros in the target will be excluded from the calculation.
+        target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. 
+        one_hot: Boolean. Whether to treat the labels as one-hot encoding. Default is False.
+        mask: Boolean. If True, zeros in the target will be excluded from the calculation.
       
     Returns:
       A 1-D `Tensor` with the same shape as `tensor`. 
@@ -59,7 +59,7 @@ def sg_bce(tensor, opt):
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
       opt:
-        target: A `Tensor` with the same shape and dtype as `tensor`. Labels.
+        target: A `Tensor` with the same shape and dtype as `tensor`. Labels. 
       
     Returns:
       A `Tensor` of the same shape as `tensor`
@@ -191,22 +191,22 @@ def sg_hinge(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_ctc(tensor, opt):
-    r"""Returns softmax cross entropy loss between `tensor` and `target`.
+    r"""Computes the CTC (Connectionist Temporal Classification) Loss between `tensor` and `target`.
 
     Args:
-      tensor: A `Tensor`. Logits. Unscaled log probabilities.
+      tensor: A 3-D `float Tensor`.
       opt:
         target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )
 
     Returns:
-      A 1-D `Tensor` with the same shape as `tensor`.
+      A 1-D `Tensor` with the same length in the first dimension of the `tensor`.
 
     For example,
 
     ```
-    tensor = [[[2, -1, 3], [3, 1, -2]]]
-    target = [[2, 1]]
-    tensor.sg_ce(target=target, one_hot=True) => [ 31.32656264  64.13284527]
+    tensor = [[[2., -1., 3.], [3., 1., -2.]], [[1., -1., 2.], [3., 1., -2.]]]
+    target = [[2., 1.], [2., 3.]]
+    tensor.sg_ctc(target=target) => [ 4.45940781  2.43091154]
     ```
     """
     assert opt.target is not None, 'target is mandatory.'

@@ -13,34 +13,33 @@ __author__ = 'buriburisuri@gmail.com'
 
 @tf.sg_sugar_func
 def sg_identity(tensor, opt):
-    r""" Return same tensor
+    r"""Returns the same tensor
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-           name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        name : If provided, it replaces current tensor's name
 
     Returns:
-        A tensor
-
+        A `Tensor`. Has the same content as `tensor`.
     """
     return tf.identity(tensor, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_cast(tensor, opt):
-    r""" Cast tensor's data type by given data type.
-    See tf.cast() in the tensorflow.
+    r"""Casts a tensor to a new type.
+    
+    See `tf.cast()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dtype : data type to cast
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` or `SparseTensor` (automatically given by chain).
+      opt:
+        dtype : The destination type.
+        name : If provided, it replaces current tensor's name
 
     Returns:
-        A tensor
-
+      A `Tensor` or `SparseTensor` with same shape as `tensor`.
     """
     assert opt.dtype is not None, 'dtype is mandatory.'
     return tf.cast(tensor, opt.dtype, name=opt.name)
@@ -48,52 +47,51 @@ def sg_cast(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_float(tensor, opt):
-    r""" Cast tensor's data type as floatX data type.
-    See tf.cast() in the tensorflow.
+    r"""Casts a tensor to floatx.
+    
+    See `tf.cast()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` or `SparseTensor` (automatically given by chain).
+      opt:
+        name : If provided, it replaces current tensor's name
 
     Returns:
-        A tensor
-
+      A `Tensor` or `SparseTensor` with same shape as `tensor`.
     """
     return tf.cast(tensor, tf.sg_floatx, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_int(tensor, opt):
-    r""" Cast tensor's data type as intX data type.
-    See tf.cast() in the tensorflow.
+    r"""Casts a tensor to intx.
+    
+    See `tf.cast()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` or `SparseTensor` (automatically given by chain).
+      opt:
+        name: If provided, it replaces current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor` or `SparseTensor` with same shape as `tensor`.
     """
     return tf.cast(tensor, tf.sg_intx, name=opt.name)
 
-
 @tf.sg_sugar_func
 def sg_expand_dims(tensor, opt):
-    r""" Expand dimension of tensor.
-    See tf.expand_dims() in the tensorflow.
+    r"""Inserts a new dimension.
+    
+    See tf.expand_dims() in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dim : dimension to expand ( default : -1 )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dim : Dimension to expand. Default is -1.
+        name: If provided, it replaces current tensor's name.
 
     Returns:
-        A tensor
-
+        A `Tensor`.
     """
     opt += tf.sg_opt(dim=-1)
     return tf.expand_dims(tensor, opt.dim, name=opt.name)
@@ -101,18 +99,19 @@ def sg_expand_dims(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_squeeze(tensor, opt):
-    r""" Expand dimension of tensor.
-    See tf.squeeze() in the tensorflow.
+    r"""Removes dimensions of size 1 from the shape of a tensor.
+    
+    See `tf.squeeze()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dim : dimension or dimension list to squeeze ( default : -1 )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dim : A tuple/list of integers or an integer.
+          Dimensions to remove. Default is -1.
+        name: If provided, it replaces current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     opt += tf.sg_opt(dim=[-1])
     opt.dim = opt.dim if isinstance(opt.dim, (tuple, list)) else [opt.dim]
@@ -121,16 +120,17 @@ def sg_squeeze(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_flatten(tensor, opt):
-    r""" Flatten tensor to 2D ( batch x dim ).
-    See tf.reshape() in the tensorflow.
+    r"""Reshapes a tensor to `batch_size x -1`.
+    
+    See `tf.reshape()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        name: If provided, it replaces current tensor's name.
 
     Returns:
-        A tensor
+      A 2-D tensor.
 
     """
     dim = np.prod(tensor.get_shape().as_list()[1:])
@@ -139,18 +139,18 @@ def sg_flatten(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_reshape(tensor, opt):
-    r""" Reshape tensor to arbitrary shape.
-    See tf.reshape() in the tensorflow.
+    r"""Reshapes a tensor.
+    
+    See `tf.reshape()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            shape : target shape ( list or tuple )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        shape: A tuple/list of integers. The destination shape.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     assert opt.shape is not None, 'shape is mandatory.'
     return tf.reshape(tensor, opt.shape, name=opt.name)
@@ -158,37 +158,36 @@ def sg_reshape(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_transpose(tensor, opt):
-    r""" Transpose tensor to arbitrary dimension.
-    See tf.transpose() in the tensorflow.
+    r"""Permutes the dimensions according to `opt.perm`.
+
+    See `tf.transpose()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            perm : permutation list ( target dimension list )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        perm: A permutation of the dimensions of `tensor`. The target shape.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     assert opt.perm is not None, 'perm is mandatory'
     return tf.transpose(tensor, opt.perm, name=opt.name)
 
-
 @tf.sg_sugar_func
 def sg_argmax(tensor, opt):
-    r""" Get argmax value of tensor along the given dimension
-    See tf.argmax() in the tensorflow.
+    r"""Returns the indices of the maximum values along the specified dimension.
+    
+    See `tf.argmax()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dim : target dimension ( default : last dimension )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dim: Target dimension. Default is the last one.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
     return tf.argmax(tensor, opt.dim, opt.name)
@@ -196,19 +195,20 @@ def sg_argmax(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_concat(tensor, opt):
-    r""" Concat tensor with given target tensor along the given dimension
-    See tf.concat() in the tensorflow.
+    r"""Concatenates tensors along one dimension.
+
+    See `tf.concat()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            target : target tensor
-            dim : target dimension ( default : last dimension )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        target: A `Tensor`. Must have the same rank as `tensor`, and
+          all dimensions except `opt.dim` must be equal.
+        dim : Target dimension. Default is the last one.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     assert opt.target is not None, 'target is mandatory.'
     opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
@@ -218,18 +218,18 @@ def sg_concat(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_one_hot(tensor, opt):
-    r""" Convert tensor into one-hot encoding vector
-    See tf.one_hot() in the tensorflow.
+    r"""Converts a tensor into a one-hot tensor.
+    
+    See `tf.one_hot()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            depth : class number
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` ( automatically given by chain )
+      opt:
+        depth: The number of classes.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+        A `Tensor`.
     """
     assert opt.depth is not None, 'depth is mandatory.'
     return tf.one_hot(tensor, opt.depth, name=opt.name)
@@ -238,17 +238,17 @@ def sg_one_hot(tensor, opt):
 # noinspection PyUnusedLocal
 @tf.sg_sugar_func
 def sg_to_sparse(tensor, opt):
-    r""" Convert dense tensor into sparse tensor
-    See tf.SparseTensor() in the tensorflow.
+    r"""Converts a dense tensor into a sparse tensor.
+    
+    See `tf.SparseTensor()` in tensorflow.
 
     Args:
-        tensor: A tensor pad by zero ( automatically given by chain )
-        opt:
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` with zero-padding (automatically given by chain).
+      opt:
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+        A `SparseTensor`.
     """
     indices = tf.where(tf.not_equal(tensor.sg_float(), 0.))
     return tf.SparseTensor(indices=indices,
@@ -262,133 +262,133 @@ def sg_to_sparse(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_sum(tensor, opt):
-    r""" Reduce sum tensor along the given dimensions
-    See tf.reduce_sum() in the tensorflow.
+    r"""Computes the sum of elements across dimensions of a tensor.
+    
+    See `tf.reduce_sum()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` with zero-padding (automatically given by chain).
+      opt:
+        dims: A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+        A `Tensor`.
     """
     return tf.reduce_sum(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_mean(tensor, opt):
-    r""" Reduce mean tensor along the given dimensions
-    See tf.reduce_mean() in the tensorflow.
+    r"""Computes the mean of elements across dimensions of a tensor.
+    
+    See `tf.reduce_mean()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_mean(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_prod(tensor, opt):
-    r""" Reduce prod tensor along the given dimensions
-    See tf.reduce_prod() in the tensorflow.
+    r"""Computes the product of elements across dimensions of a tensor.
+
+    See `tf.reduce_prod()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_prod(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_min(tensor, opt):
-    r""" Reduce min tensor along the given dimensions
-    See tf.reduce_min() in the tensorflow.
+    r"""Computes the minimum of elements across dimensions of a tensor.
+
+    See `tf.reduce_min()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_min(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_max(tensor, opt):
-    r""" Reduce max tensor along the given dimensions
-    See tf.reduce_max() in the tensorflow.
+    r"""Computes the maximum of elements across dimensions of a tensor.
+
+    See `tf.reduce_max()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_max(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_all(tensor, opt):
-    r""" Reduce all tensor along the given dimensions
-    See tf.reduce_all() in the tensorflow.
+    r"""Computes the "logical and" of elements across dimensions of a tensor.
+    
+    See `tf.reduce_all()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_all(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_any(tensor, opt):
-    r""" Reduce any tensor along the given dimensions
-    See tf.reduce_any() in the tensorflow.
+    r"""Computes the "logical or" of elements across dimensions of a tensor.
+
+    See `tf.reduce_any()` in tensorflow.
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-            dims : dimension list to reduce
-            keep_dims : keep dimension after reducing if True ( default : None )
-            name : if provided, replace current tensor's name
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        keep_dims: If true, retains reduced dimensions with length 1.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`.
     """
     return tf.reduce_any(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
@@ -400,25 +400,25 @@ def sg_any(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_pool(tensor, opt):
-    r""" 2D pooling functions used with sg_conv().
+    r"""Performs the 2-D pooling on the `tensor`.
+    Mostly used with sg_conv().
 
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-          size: A tuple or list of integers of length 2 representing `[kernel height, kernel width]`.
-            Can be an int if both values are the same.
-            If not specified, (2, 2) is set implicitly.
-          stride: A tuple or list of integers of length 2 or 4 representing stride dimensions.
-            If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
-            If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
-            Can be an int. If the length is an int, i.e., a, the stride is `[1, a, a, 1]`.
-            The default value is [1, 1, 1, 1].
-          avg : if True, average pooling instead of max pooling
-          name : if provided, replace current tensor's name
+      tensor: A 4-D `Tensor` (automatically given by chain).
+      opt:
+        size: A tuple or list of integers of length 2 representing `[kernel height, kernel width]`.
+          Can be an int if both values are the same.
+          If not specified, (2, 2) is set implicitly.
+        stride: A tuple or list of integers of length 2 or 4 representing stride dimensions.
+          If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
+          If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
+          Can be an int. If the length is an int, i.e., a, the stride is `[1, a, a, 1]`.
+          The default value is [1, 1, 1, 1].
+        avg: Boolean. If True, average pooling is applied. Otherwise, max pooling.
+        name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor`. The max pooled output tensor.
     """
 
     # default stride and pad
@@ -443,15 +443,17 @@ def sg_pool(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_pool1d(tensor, opt):
-    r""" 1D pooling functions used with sg_conv().
-
+    r"""Performs the 1-D pooling on the `tensor`.
+    
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-          size: Scalar ( default : 2)
-          stride: Scaloar ( default : 2)
-          avg : if True, average pooling instead of max pooling
-          name : if provided, replace current tensor's name
+      tensor: A 3-D `Tensor` (automatically passed by decorator).
+      opt:
+        size: A positive `integer` representing `[kernel width]`.
+          Default is 2.
+        stride: A positive `integer`. The number of entries by which
+          the filter is moved right at each step. Default is 2.
+        avg: Boolean. If True, average pooling is applied. Otherwise, max pooling.
+        name: If provided, replace current tensor's name.
 
     Returns:
         A tensor
@@ -474,16 +476,16 @@ def sg_pool1d(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_lookup(tensor, opt):
-    r""" Look up given embedding matrix with this tensor.
+    r"""Looks up the `tensor`, which is the embedding matrix.
 
     Args:
         tensor: A tensor ( automatically given by chain )
         opt:
-          emb: Embedding matrix
-          name : if provided, replace current tensor's name
+          emb: A 2-D `Tensor`. An embedding matrix.
+          name: If provided, replace current tensor's name.
 
     Returns:
-        A tensor
+        A `Tensor`.
 
     """
     assert opt.emb is not None, 'emb is mandatory.'
@@ -492,17 +494,28 @@ def sg_lookup(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_reverse_seq(tensor, opt):
-    r""" Reverse sequence of tensor.
+    r"""Reverses variable length slices.
 
+    Before applying the pure tensorflow function tf.reverse_sequence,
+      this function calculates sequence lengths by counting non-zeros.
+
+    For example,
+    
+    ```
+    tensor = [[1, 2, 3, 0, 0], [4, 5, 0, 0, 0]]
+    tensor.sg_reverse_seq()
+    => [[3 2 1 0 0]
+        [5 4 0 0 0]]
+    ```
+        
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-          dim: dimension to reverse ( default : 1 )
-          name : if provided, replace current tensor's name
+      tensor: A 2-D `Tensor` (automatically given by chain).
+      opt:
+        dim: Dimension to reverse. Default is 1.
+        name : If provided, it replaces current tensor's name.
 
     Returns:
-        A tensor
-
+      A `Tensor` with the same shape and type as `tensor`.
     """
     # default sequence dimension
     opt += tf.sg_opt(dim=1)
@@ -512,17 +525,17 @@ def sg_reverse_seq(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_periodic_shuffle(tensor, opt):
-    r""" Periodic shuffle transform for SubPixel CNN.
-        (see : http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+    r""" Periodic shuffle transformation for SubPixel CNN.
+        (see [Shi et al. 2016](http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+        
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-          factor: factor to multiply shape ( default : 2 )
-          name : if provided, replace current tensor's name
+      tensor: A tensor (automatically given by chain).
+      opt:
+        factor: factor to multiply shape by. Default is 2.
+        name : If provided, it replaces current tensor's name.
 
     Returns:
         A tensor
-
     """
     # default factor
     opt += tf.sg_opt(factor=2)
@@ -554,17 +567,17 @@ def sg_periodic_shuffle(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_inverse_periodic_shuffle(tensor, opt):
-    r""" Inverse periodic shuffle transform for SubPixel CNN.
-        (see : http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+    r"""Inverse periodic shuffle transformation for SubPixel CNN.
+        (see [Shi et al. 2016](http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+        
     Args:
-        tensor: A tensor ( automatically given by chain )
-        opt:
-          factor: factor to divide shape ( default : 2 )
-          name : if provided, replace current tensor's name
+      tensor: A tensor (automatically given by chain).
+      opt:
+        factor: factor to multiply shape by. Default is 2.
+        name : If provided, it replaces current tensor's name.
 
     Returns:
         A tensor
-
     """
     # default factor
     opt += tf.sg_opt(factor=2)

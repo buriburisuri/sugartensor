@@ -9,21 +9,21 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 def sg_producer_func(func):
-    r""" Decorate function as sg_producer_func
+    r"""Decorates a function `func` as sg_producer_func.
 
     Args:
-        func: function to decorate
+      func: A function to decorate.
     """
     @wraps(func)
     def wrapper(**kwargs):
-        r""" Manages arguments of `tf.sg_opt`.
+        r"""Manages arguments of `tf.sg_opt`.
 
         Args:
-            **kwargs:
-                source : source queue list to enqueue
-                dtypes : types of each tensor
-                capacity : queue capacity ( default : 32 )
-                num_threads : number of threads ( default : 1 )
+          **kwargs:
+            source: A source queue list to enqueue
+            dtypes: Data types of each tensor
+            capacity: Queue capacity. Default is 32.
+            num_threads: Number of threads. Default is 1.
         """
 
         # default option

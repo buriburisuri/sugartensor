@@ -28,10 +28,10 @@ _global_step = tf.Variable(0, name='global_step', trainable=False)
 
 
 def sg_global_step():
-    r""" Get global step count
+    r"""Gets global step count
 
     Returns:
-        global step tensor
+      A 0-D `Tensor`.
 
     """
     global _global_step
@@ -47,37 +47,35 @@ _phase_infer = _phase.assign(False)   # phase set ops ( to infer )
 
 
 def sg_phase():
-    r""" Get current training phase
+    r""" Gets current training phase
 
     Returns:
-        training phase tensor ( True : training mode, False : inferring mode )
-
+      A boolean `Tensor`. If True, it is in the training phase, otherwise inference phase.
     """
     global _phase
     return _phase
 
 
 def sg_set_train(sess):
-    r""" Set current phase as training mode
+    r"""Set current phase as training mode
 
     Args:
-        sess: session to work
+      sess: session to work
 
     Returns:
-        None
+      None
     """
     sess.run(_phase_train)
 
 
 def sg_set_infer(sess):
-    r""" Set current phase as inferring mode
+    r"""Sets current phase as inference mode
 
     Args:
-        sess: session to work
+      sess: session to work
 
     Returns:
-        None
-
+      None
     """
     sess.run(_phase_infer)
 
@@ -91,31 +89,33 @@ _context = tf.sg_opt()
 
 @contextmanager
 def sg_context(**kwargs):
-    r""" Context helper for computational graph building.
-    Given parameters used as default in the given with blocks.
+    r"""Context helper for computational graph building.
+    Makes all elements within the with Block share the parameters.
 
-    For example, the default value of parameter bn is True in the all layers within the with block.
+    For example, in the following example, the default value of parameter `bn` will be set to True
+    in the all layers within the with block.
+    
+    ```
     with tf.sg_context(bn=True):
         ...
         ...
+    ```
 
     Args:
-        **kwargs:
-              in_dim: An integer. The size of input dimension, which is set to the last one as a default.
-              dim: An integer. The size of output dimension. Has the same value as in_dim as a default.
-              bn: Boolean. If True, batch normalization is applied.
-              ln: Boolean. If True, layer normalization is applied.
-              dout: A float of range [0, 100). A dropout rate. Set to 0 as a default.
-              bias: Boolean. If True, biases are added. As a default, it is set to True
-                if both normalization options (bn and ln) are False.
-              name: A name for the layer. As a default, the function name is assigned.
-              act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
-              reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
-                as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+      **kwargs:
+        in_dim: An integer. The size of input dimension, which is set to the last one by default.
+        dim: An integer. The size of output dimension. Has the same value as in_dim by default.
+        bn: Boolean. If True, batch normalization is applied.
+        ln: Boolean. If True, layer normalization is applied.
+        dout: A float of range [0, 100). A dropout rate. Default is 0..
+        bias: Boolean. If True (Default), biases are added.
+        name: A name for the layer. By default, the function name is assigned.
+        act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
+        reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
+          as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
 
     Returns:
-        None
-
+      None
     """
     global _context
     # set options when enter
@@ -136,13 +136,14 @@ def sg_context(**kwargs):
 #
 
 def sg_sugar_func(func):
-    r""" Decorates the given function as sugar function. Sugar function can be used with chaining way.
+    r""" Decorates a function `func` so that it can be a sugar function. 
+    Sugar function can be used in a chainable manner.
 
     Args:
-        func: function to sugar
+        func: function to decorate
 
     Returns:
-        sugar function
+      A sugar function.
 
     """
     @wraps(func)
@@ -164,7 +165,7 @@ def sg_sugar_func(func):
 
 
 def sg_layer_func(func):
-    r"""Decorates function as sg_layer functions.
+    r"""Decorates a function `func` as a sg_layer function.
 
     Args:
         func: function to decorate
@@ -174,19 +175,19 @@ def sg_layer_func(func):
         r"""Manages arguments of `tf.sg_opt`.
         
         Args:
-          tensor: automatically passed by decorator
+          tensor: A `tensor` (automatically passed by decorator).
           kwargs:
-              in_dim: An integer. The size of input dimension, which is set to the last one as a default.
-              dim: An integer. The size of output dimension. Has the same value as in_dim as a default.
-              bn: Boolean. If True, batch normalization is applied.
-              ln: Boolean. If True, layer normalization is applied.
-              dout: A float of range [0, 100). A dropout rate. Set to 0 as a default.
-              bias: Boolean. If True, biases are added. As a default, it is set to True
-                if both normalization options (bn and ln) are False.
-              name: A name for the layer. As a default, the function name is assigned.
-              act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
-              reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
-                as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+            shape:  A list of integers. The shape of `tensor`. Inferred if not specified.
+            in_dim: An integer. The size of input dimension, which is set to the last one by default.
+            dim: An integer. The size of output dimension. Has the same value as in_dim by default.
+            bn: Boolean. If True, batch normalization is applied.
+            ln: Boolean. If True, layer normalization is applied.
+            dout: A float of range [0, 100). A dropout rate. Set to 0 by default.
+            bias: Boolean. If True, biases are added. As a default, it is set to True 
+            name: A name for the layer. As a default, the function name is assigned.
+            act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
+            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope 
+              as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
         """
 
         from . import sg_initializer as init
@@ -320,11 +321,10 @@ def sg_rnn_layer_func(func):
         Args:
           tensor: automatically passed by decorator
           kwargs:
-              in_dim: An integer. The size of input dimension, which is set to the last one as a default.
-              dim: An integer. The size of output dimension. Has the same value as in_dim as a default.
+              in_dim: An integer. The size of input dimension, which is set to the last one by default.
+              dim: An integer. The size of output dimension. Has the same value as in_dim by default.
               ln: Boolean. If True, layer normalization is applied.
               bias: Boolean. If True, biases are added. As a default, it is set to True
-                if both normalization options (bn and ln) are False.
               name: A name for the layer. As a default, the function name is assigned.
               reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
                 as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
@@ -404,17 +404,16 @@ def sg_rnn_layer_func(func):
 
 # noinspection PyProtectedMember
 def sg_reuse(tensor, **opt):
-    r""" Reconstruct current computational graph by given input tensor.
-    Parameters will be reused.
+    r""" Reconstruct computational graph of `tensor` so all the parameters 
+    can be reused and replace its input tensor with `opt.input`.
 
     Args:
-        tensor: automatically given by chaining.
-        **opt:
-            input: input tensor
+      tensor: A `Tensor` (automatically given by chaining).
+      **opt:
+        input: A `Tensor` that will replace the original input tensor.
 
     Returns:
-        reconstructed tensor node
-
+      Reconstructed tensor nodes.
     """
     opt = tf.sg_opt(opt)
     assert hasattr(tensor, '_sugar'), 'cannot reuse this node.'
@@ -447,16 +446,15 @@ def sg_reuse(tensor, **opt):
 #
 
 def sg_input(shape=None, dtype=sg_floatx, name=None):
-    r""" Placeholder wrapper
+    r"""Creates a placeholder.
 
     Args:
-        shape: placeholder shape.
-        dtype: placeholder data type ( default : floatx)
-        name: name
+      shape: A tuple/list of integers. If an integers is given, it will turn to a list.
+      dtype: A data type. Default is float32.
+      name: A name for the placeholder.
 
     Returns:
-        wrapped placeholder
-
+      A wrapped placeholder `Tensor`.
     """
     if shape is None:
         return tf.placeholder(dtype, shape=None, name=name)
@@ -471,16 +469,15 @@ def sg_input(shape=None, dtype=sg_floatx, name=None):
 #
 
 def sg_inject(path, mod_name):
-    r""" Inject all functions in the given python module as sugar functions
-    which can be used with chaining way.
+    r"""Converts all functions in the given Python module to sugar functions
+    so that they can be used in a chainable manner.
 
     Args:
-        path: path to the python module
-        mod_name: python module name
+      path: A string. Path to the Python module
+      mod_name: A string. The name of the Python module to inject.
 
     Returns:
-        None
-
+      None
     """
     # import module
     import sys
@@ -498,14 +495,14 @@ def sg_inject(path, mod_name):
 
 
 def sg_inject_func(func):
-    r""" Inject function as a sugar function which can be used with chaining way.
+    r"""Converts the function `func` to a sugar function
+    so that it can be used in a chainable manner.
 
     Args:
-        func: function to inject
+      func: A function to inject.
 
     Returns:
-        None
-
+      None
     """
     # inject to tf.Variable type
     exec ('tf.Variable.%s = func' % func.__name__)
@@ -520,14 +517,13 @@ def sg_inject_func(func):
 # noinspection PyUnboundLocalVariable
 @contextmanager
 def sg_queue_context(sess=None):
-    r""" with context support for tensorflow's tedious queue routines
+    r"""Context helper for queue routines.
 
     Args:
-        sess: session to open queue ( if not provided, create new one )
+      sess: A session to open queues. If not specified, a new session is created.
 
     Returns:
-        None
-
+      None
     """
 
     # default session
@@ -552,11 +548,10 @@ def sg_queue_context(sess=None):
 
 # noinspection PyProtectedMember
 def sg_arg():
-    r""" Get current command line options
+    r"""Gets current command line options
 
     Returns:
-        current command line options as sg_opt class
-
+      tf.sg_opt instance that is updated with current commandd line options.
     """
     if not tf.app.flags.FLAGS.__dict__['__parsed']:
         tf.app.flags.FLAGS._parse_flags()
@@ -564,19 +559,24 @@ def sg_arg():
 
 
 def sg_arg_def(**kwargs):
-    r""" Define command line options
+    r"""Defines command line options
 
     Args:
-        **kwargs:
-            key: option name
-            value : default value or (default value, comment) tuple
+      **kwargs:
+        key: A name for the option.
+        value : Default value or a tuple of (default value, description).
 
     Returns:
-        None
+      None
 
-    For example, tf.sg_arg_def(n_epoch=1) define --n_epoch command line argument default value as 1
-     or tf.sg_arg_def(n_epoch=(1, 'total number of epochs')) define command line argument with description
-
+    For example, 
+    
+    ```
+    # Either of the following two lines will define `--n_epoch` command line argument and set its default value as 1.
+    
+    tf.sg_arg_def(n_epoch=1) 
+    tf.sg_arg_def(n_epoch=(1, 'total number of epochs'))
+    ```
     """
     for k, v in kwargs.items():
         if type(v) is tuple or type(v) is list:

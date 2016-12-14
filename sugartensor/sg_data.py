@@ -11,7 +11,7 @@ def _data_to_tensor(data_list, batch_size, name=None):
     r"""Returns batch queues from the whole data. 
     
     Args:
-      data_list: A list of ndarrays. Every ndarray must have the same size in the first dimension.
+      data_list: A list of ndarrays. Every array must have the same size in the first dimension.
       batch_size: An integer.
       name: A name for the operations (optional).
       

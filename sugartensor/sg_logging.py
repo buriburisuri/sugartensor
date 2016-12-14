@@ -15,15 +15,14 @@ __author__ = 'buriburisuri@gmail.com'
 
 # noinspection PyTypeChecker
 def sg_summary_loss(tensor, prefix='10. loss'):
-    r"""Register tensor to summary report as loss
+    r"""Register `tensor` to summary report as `loss`
 
     Args:
-        tensor: tensor to log as loss
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as loss
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
-        None
-
+      None
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -37,15 +36,14 @@ def sg_summary_loss(tensor, prefix='10. loss'):
 
 # noinspection PyTypeChecker
 def sg_summary_metric(tensor, prefix='20. metric'):
-    r"""Register tensor to summary report as metric
+    r"""Register `tensor` to summary report as `metric`
 
     Args:
-        tensor: tensor to log as metric
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as metric
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
-        None
-
+      None
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -58,15 +56,14 @@ def sg_summary_metric(tensor, prefix='20. metric'):
 
 
 def sg_summary_activation(tensor, prefix='30. activation'):
-    r"""Register tensor to summary report as activation
+    r"""Register `tensor` to summary report as `activation`
 
     Args:
-        tensor: tensor to log as activation
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as activation
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
-        None
-
+      None
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -81,15 +78,14 @@ def sg_summary_activation(tensor, prefix='30. activation'):
 
 
 def sg_summary_param(tensor, prefix='40. parameters'):
-    r"""Register tensor to summary report as parameter
+    r"""Register `tensor` to summary report as `parameters`
 
     Args:
-        tensor: tensor to log as parameter
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as parameters
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
-        None
-
+      None
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -102,16 +98,15 @@ def sg_summary_param(tensor, prefix='40. parameters'):
 
 
 def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
-    r"""Register tensor to summary report as gradient
+    r"""Register `tensor` to summary report as `gradient`
 
     Args:
-        tensor: tensor to log as gradient
-        gradient: gradient to log
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as gradient
+      gradient: A 0-D `Tensor`. A gradient to log
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
         None
-
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -128,15 +123,14 @@ def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
 
 
 def sg_summary_image(tensor, prefix=None):
-    r"""Register tensor to summary report as image
+    r"""Register `tensor` to summary report as `image`
 
     Args:
-        tensor: tensor to log as image
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A tensor to log as image
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
         None
-
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'
@@ -148,16 +142,15 @@ def sg_summary_image(tensor, prefix=None):
 
 
 def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
-    r"""Register tensor to summary report as audio
+    r"""Register `tensor` to summary report as audio
 
     Args:
-        tensor: tensor to log as audio
-        sample_rate : sample rate to report ( default : 16000 )
-        prefix: prefix to display in the tensor board web UI.
+      tensor: A `Tensor` to log as audio
+      sample_rate : An int. Sample rate to report. Default is 16000.
+      prefix: A `string`. A prefix to display in the tensor board web UI.
 
     Returns:
         None
-
     """
     # defaults
     prefix = '' if prefix is None else prefix + '/'

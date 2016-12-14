@@ -8,16 +8,18 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 def constant(name, shape, value=0, dtype=tf.sg_floatx):
-    r"""Returns an initializer of `shape` with all elements set to a scalar `value`.
+    r"""Creates a tensor variable of which initial values are `value` and shape is `shape`.
 
     Args:
-        name: name of tensor
-        shape: shape to initialize
-        value: value to initialize ( default : 0 )
-        dtype: data type  ( default : floatx )
+      name: The name of new variable.
+      shape: A tuple/list of integers or an integer. 
+        If shape is an integer, it is converted to a list.
+      value: A Python scalar. All elements of the initialized variable
+        will be set to this value. Default is 0.
+      dtype: The data type. Only floating point types are supported. Default is float32.
 
     Returns:
-      A `Tensor` variable.
+      A `Variable`.
 
     """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
@@ -30,19 +32,21 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
 
 
 def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
-    r"""Returns an initializer of random numbers based on uniform distribution.
+    r"""Creates a tensor variable of which initial values are 
+    random numbers based on uniform distribution.
+    
     Note that the default value of `scale` (=0.05) is different from 
     the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.
-
+    
     Args:
-        name: name of tensor
-        shape: shape to initialize
-        scale: scale to initialize ( default : 0.05 )
-        dtype: data type  ( default : floatx )
-
+      name: The name of the new variable.
+      shape: A tuple/list of integers or an integer. 
+        If shape is an integer, it's converted to a list.
+      scale: A Python scalar. All initial values should be in range `[-scale, scale)`. Default is .05.
+      dtype: The data type. Only floating point types are supported. Default is float32.
+    
     Returns:
-      A `Tensor` variable.
-
+      A `Variable`.
     """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
@@ -54,16 +58,16 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
 
 
 def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
-    r"""See He et al. 2015 `http://arxiv.org/pdf/1502.01852v1.pdf`
+    r"""See [He et al. 2015](http://arxiv.org/pdf/1502.01852v1.pdf)
 
     Args:
-        name: name of tensor
-        shape: shape to initialize
-        scale: scale to initialize ( default : 1 )
-        dtype: data type  ( default : floatx )
+      name: The name of new variable
+      shape: A tuple/list of integers.
+      scale: A Python scalar. Scale to initialize. Default is 1.
+      dtype: The data type. Default is float32.
 
     Returns:
-      A `Tensor` variable.
+      A `Variable`.
 
     """
     fin, _ = _get_fans(shape)
@@ -72,16 +76,16 @@ def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
 
 
 def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
-    r"""See Glorot et al. 2010 `http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf`
+    r"""See [Glorot & Bengio. 2010.](http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)
 
     Args:
-        name: name of tensor
-        shape: shape to initialize
-        scale: scale to initialize ( default : 1 )
-        dtype: data type  ( default : floatx )
+      name: The name of new variable
+      shape: A tuple/list of integers.
+      scale: A Python scalar. Scale to initialize. Default is 1.
+      dtype: The data type. Default is float32.
 
     Returns:
-      A `Tensor` variable.
+      A `Variable`.
 
     """
     fin, fout = _get_fans(shape)
@@ -90,16 +94,29 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
 
 
 def identity(name, dim, scale=1, dtype=tf.sg_floatx):
-    r"""Returns an initializer of a 2-D identity tensor.
+    r"""Creates a tensor variable of which initial values are of
+    an identity matrix.
+    
+    Note that the default value of `scale` (=0.05) is different from 
+    the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.
+    
+    For example,
+    
+    ```
+    identity("identity", 3, 2) =>
+    [[2. 0. 0.]
+     [0. 2. 0.]
+     [0. 0. 2.]]
+    ```
     
     Args:
-      name: A string. The name of the new or existing variable.
-      dim: An int. The size of the first and second dimension of the output tensor
-      scale: An int (optional). The value on the diagonal. ( default : 1 )
-      dtype: A tensor datatype.
+      name: The name of new variable.
+      dim: An int. The size of the first and second dimension of the output tensor.
+      scale: A Python scalar. The value on the diagonal.
+      dtype: The type of the elements of the resulting tensor.
     
     Returns:
-      A 2-D tensor variable with the value of `scale` on the diagonal and zeros elsewhere.
+      A 2-D `Variable`.
     """
     x = tf.get_variable(name,
                         initializer=tf.constant(np.eye(dim) * scale, dtype=dtype))
@@ -110,17 +127,19 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx):
 
 
 def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
-    r"""Returns a random orthogonal initializer.
-    See Saxe et al. 2014 `http://arxiv.org/pdf/1312.6120.pdf`
+    r"""Creates a tensor variable of which initial values are of
+    an orthogonal ndarray.
+    
+    See [Saxe et al. 2014.](http://arxiv.org/pdf/1312.6120.pdf)
     
     Args:
-      name: A string. The name of the new or existing variable.
-      shape: A list or tuple of integers.
+      name: The name of new variable.
+      shape: A tuple/list of integers. 
       scale: A Python scalar.
-      dtype: data type of tensor
-
+      dtype = Eighter float32 or float64.
+    
     Returns:
-      A `Tensor` variable.
+      A `Variable`.
     """
     flat_shape = (shape[0], np.prod(shape[1:]))
     a = np.random.normal(0.0, 1.0, flat_shape)
@@ -138,14 +157,22 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
 
 
 def external(name, value, dtype=tf.sg_floatx):
-    r"""Returns an initializer of `value`.
+    r"""Creates a tensor variable of which initial values are `value`.
+    
+    For example,
+    
+    ```
+    external("external", [3,3,1,2])
+    => [3. 3. 1. 2.]
+    ```
+    
     Args:
-      name: A string. The name of the new or existing variable.
-      value: A constant value (or array) of output type `dtype`.
-      dtype: The type of the elements of the resulting tensor. (optional)
+      name: The name of new variable.
+      value: A constant value (or list) of output type `dtype`.
+      dtype: The type of the elements of the resulting tensor.
     
     Returns:
-      A `Tensor` variable.  
+      A `Variable`. Has the same contents as `value` of `dtype`. 
     """
     # create variable
     x = tf.get_variable(name,
@@ -157,7 +184,7 @@ def external(name, value, dtype=tf.sg_floatx):
 
 
 def _get_fans(shape):
-    """Returns values of input dimension and output dimension, given `shape`.
+    r"""Returns the size of input dimension and output dimension, given `shape`.
     
     Args:
       shape: A list of integers.

@@ -13,16 +13,17 @@ __author__ = 'buriburisuri@gmail.com'
 @tf.sg_sugar_func
 def sg_vgg_16(tensor, opt):
     r"""Applies vgg 16 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
     
     Args:
-     tensor: A `Tensor`
-     opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+      tensor: A `Tensor`
+      opt:
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`.
@@ -70,6 +71,7 @@ def sg_vgg_16(tensor, opt):
 @tf.sg_sugar_func
 def sg_vgg_19(tensor, opt):
     r"""Applies vgg 19 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -77,9 +79,9 @@ def sg_vgg_19(tensor, opt):
     Args:
       tensor: A `Tensor`.
       opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`.
@@ -135,6 +137,7 @@ def sg_vgg_19(tensor, opt):
 @tf.sg_sugar_func
 def sg_resnet_50(x, opt):
     r"""Applies residual net 50 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -142,9 +145,9 @@ def sg_resnet_50(x, opt):
     Args:
       x: A `Tensor`.
       opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`. 
@@ -178,6 +181,7 @@ def sg_resnet_50(x, opt):
 @tf.sg_sugar_func
 def sg_resnet_101(x, opt):
     r"""Applies residual net 101 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -185,9 +189,9 @@ def sg_resnet_101(x, opt):
     Args:
       x: A `Tensor`.
       opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`. 
@@ -221,6 +225,7 @@ def sg_resnet_101(x, opt):
 @tf.sg_sugar_func
 def sg_resnet_152(x, opt):
     r"""Applies residual net 152 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -228,9 +233,9 @@ def sg_resnet_152(x, opt):
     Args:
       x: A `Tensor`.
       opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`. 
@@ -264,6 +269,7 @@ def sg_resnet_152(x, opt):
 @tf.sg_sugar_func
 def sg_resnet_200(x, opt):
     r"""Applies residual net 200 model.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -271,9 +277,9 @@ def sg_resnet_200(x, opt):
     Args:
       x: A `Tensor`.
       opt:
-          num_class: number of class.
-          conv_only: Boolean. If True, fc layers are not applied.
-          squeeze: Boolean. If True, the dimensions with size 1 in the final outputs will be removed.
+        num_class: An integer. Number of class. Default is 1000.
+        conv_only: Boolean. If True, fc layers are not applied. Default is False.
+        squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
     
     Returns:
       A `Tensor`. 
@@ -310,7 +316,8 @@ def sg_resnet_200(x, opt):
 
 @tf.sg_sugar_func
 def sg_resnet_layer(tensor, opt):
-    r"""Applies basic architecture residual net.
+    r"""Applies basic architecture of residual net.
+    
     Note that the fc layers in the original architecture 
       will be replaced with fully convolutional layers.
       For convenience, We still call them fc layers, though.
@@ -318,8 +325,8 @@ def sg_resnet_layer(tensor, opt):
     Args:
       tensor: A `Tensor`.
       opt:
-          dim: dimension for this resnet layer
-          num: number to repeat
+          dim: An integer. Dimension for this resnet layer
+          num: Number of times to repeat
 
     Returns:
       A `Tensor`. 

@@ -27,12 +27,15 @@ def sg_relu6(x, opt):
 
 @tf.sg_sugar_func
 def sg_leaky_relu(x, opt):
-    r""""See Xu, et al. 2015 `https://arxiv.org/pdf/1505.00853v2.pdf`
+    r""""See [Xu, et al. 2015](https://arxiv.org/pdf/1505.00853v2.pdf)
 
     Args:
         x: A tensor
         opt:
-          name: name: A name for the operation (optional).
+          name: A name for the operation (optional).
+    
+    Returns:
+      A `Tensor` with the same type and shape as `x`.
     """
     return tf.select(tf.greater(x, 0), x, 0.01 * x, name=opt.name)
 
@@ -54,26 +57,6 @@ def sg_softsign(x, opt):
 
 @tf.sg_sugar_func
 def sg_softmax(x, opt):
-    r"""Computes softmax activations of a tensor with 2 dimensions or more.
-    Note that the native tensorflow function `tf.nn.softmax` must take a 2-D tensor only as its argument.
-
-    Args:
-      x: A `Tensor` with shape `[..., num_classes]`.
-         Must be one of the following types: `half`, `float32`, `float64`.
-      opt:
-        name: name: A name for the operation (optional).
-
-    Returns:
-      A `Tensor`. Has the same type and shape as input tensor `x`.
-
-    For example,
-
-    ```
-    x = [[[2, -1, 3], [3, 1, -2]]]
-    sg_softmax(x) => [[[ 0.26538792  0.01321289  0.72139919]
-                       [ 0.87560058  0.11849965  0.00589975]]]
-    ```
-    """
     return tf.nn.softmax(x, name=opt.name)
 
 
