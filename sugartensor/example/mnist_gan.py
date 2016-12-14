@@ -38,7 +38,7 @@ with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
            .sg_upconv(dim=1, act='sigmoid', bn=False))
 
 # add image summary
-tf.sg_summary_image(gen)
+tf.sg_summary_image(gen, name='fake')
 
 #
 # create discriminator
@@ -59,8 +59,8 @@ with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu'):
 # loss & train ops
 #
 
-loss_disc = disc.sg_bce(target=y_disc)  # discriminator loss
-loss_gen = disc.sg_reuse(input=gen).sg_bce(target=y)  # generator loss
+loss_disc = disc.sg_bce(target=y_disc, name='disc')  # discriminator loss
+loss_gen = disc.sg_reuse(input=gen).sg_bce(target=y, name='gen')  # generator loss
 
 
 train_disc = tf.sg_optim(loss_disc, lr=0.0001, category='discriminator')  # discriminator train ops

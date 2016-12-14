@@ -14,6 +14,7 @@ def sg_ce(tensor, opt):
         target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. 
         one_hot: Boolean. Whether to treat the labels as one-hot encoding. Default is False.
         mask: Boolean. If True, zeros in the target will be excluded from the calculation.
+        name: A `string`. A name to display in the tensor board web UI.
       
     Returns:
       A 1-D `Tensor` with the same shape as `tensor`. 
@@ -47,7 +48,7 @@ def sg_ce(tensor, opt):
         out *= tf.not_equal(opt.target, tf.zeros_like(opt.target)).sg_float()
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out
 
@@ -59,7 +60,8 @@ def sg_bce(tensor, opt):
     Args:
       tensor: A `Tensor`. Logits. Unscaled log probabilities.
       opt:
-        target: A `Tensor` with the same shape and dtype as `tensor`. Labels. 
+        target: A `Tensor` with the same shape and dtype as `tensor`. Labels.
+        name: A `string`. A name to display in the tensor board web UI.
       
     Returns:
       A `Tensor` of the same shape as `tensor`
@@ -79,7 +81,7 @@ def sg_bce(tensor, opt):
     out = tf.identity(tf.nn.sigmoid_cross_entropy_with_logits(tensor, opt.target), 'bce')
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out
 
@@ -92,6 +94,7 @@ def sg_mse(tensor, opt):
       tensor: A `Tensor`.
       opt:
         target: A `Tensor` with the same shape and dtype as `tensor`.
+        name: A `string`. A name to display in the tensor board web UI.
        
     Returns:
       A `Tensor` of the same shape and dtype as `tensor` 
@@ -111,7 +114,7 @@ def sg_mse(tensor, opt):
     out = tf.identity(tf.square(tensor - opt.target), 'mse')
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out
 
@@ -124,6 +127,7 @@ def sg_mae(tensor, opt):
       tensor: A `Tensor`.
       opt:
         target: A `Tensor` with the same shape and dtype as `tensor`.
+        name: A `string`. A name to display in the tensor board web UI.
       
     Returns:
       A `Tensor` of the same shape and dtype as `tensor` 
@@ -143,7 +147,7 @@ def sg_mae(tensor, opt):
     out = tf.identity(tf.abs(tensor - opt.target), 'mae')
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out
 
@@ -157,6 +161,7 @@ def sg_hinge(tensor, opt):
       opt:
         target: A `Tensor`. Labels.
         margin: An int. Maximum margin. Default is 1.
+        name: A `string`. A name to display in the tensor board web UI.
       
     Returns:
       A `Tensor`.
@@ -184,7 +189,7 @@ def sg_hinge(tensor, opt):
     out = tf.identity(tf.maximum(opt.margin - target * tensor, 0), 'hinge')
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out
 
@@ -197,6 +202,7 @@ def sg_ctc(tensor, opt):
       tensor: A 3-D `float Tensor`.
       opt:
         target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )
+        name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
       A 1-D `Tensor` with the same length in the first dimension of the `tensor`.
@@ -220,6 +226,6 @@ def sg_ctc(tensor, opt):
     out = tf.identity(out, 'ctc')
 
     # add summary
-    tf.sg_summary_loss(out)
+    tf.sg_summary_loss(out, name=opt.name)
 
     return out

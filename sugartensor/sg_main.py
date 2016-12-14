@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 import types
 from functools import wraps
-from functools import partial
 import importlib
 from contextlib import contextmanager
 
@@ -212,14 +211,14 @@ def sg_layer_func(func):
         if opt.name is None:
 
             # layer function name will be used as layer name
-            opt.name = func.__name__.replace('sg_', '')
+            opt.name = func.__name__.replace('sg_', 'lyr-')
 
             # find existing layer names
             exist_layers = []
             for t in tf.global_variables():
                 scope_name = tf.get_variable_scope().name
                 prefix = scope_name + '/' if len(scope_name) > 0 else ''
-                i = t.name.rfind(prefix + 'layers/' + opt.name)
+                i = t.name.rfind(prefix + opt.name)
                 if i >= 0:
                     exist_layers.append(t.name[i:].split('/')[-2])
             exist_layers = list(set(exist_layers))
@@ -230,79 +229,77 @@ def sg_layer_func(func):
             else:
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
-        # all layer variables start with 'layers/' prefix
-        with tf.variable_scope('layers', reuse=opt.reuse):
+        # all layer variables start with 'lyr-' prefix
+        with tf.variable_scope(opt.name, reuse=opt.reuse):
 
-            with tf.variable_scope(opt.name):
+            # call layer function
+            out = func(tensor, opt)
 
-                # call layer function
-                out = func(tensor, opt)
+            # apply batch normalization
+            if opt.bn:
+                # offset, scale parameter
+                beta = init.constant('beta', opt.dim, summary=False)
+                gamma = init.constant('gamma', opt.dim, value=1, summary=False)
+
+                # offset, scale parameter
+                mean_running = init.constant('mean', opt.dim, summary=False)
+                variance_running = init.constant('variance', opt.dim, value=1, summary=False)
+
+                # calc batch mean, variance
+                mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))
+
+                # update running mean, variance
+                def update_running_stat():
+                    decay = 0.99
+                    update_op = [mean_running.assign(mean_running * decay + mean * (1 - decay)),
+                                 variance_running.assign(variance_running * decay + variance * (1 - decay))]
+                    with tf.control_dependencies(update_op):
+                        return tf.identity(mean), tf.identity(variance)
+
+                # select mean, variance by training phase
+                m, v = tf.cond(_phase,
+                               update_running_stat,  # updated running stat and batch mean, variance
+                               lambda: (mean_running, variance_running))  # saved mean, variance
 
                 # apply batch normalization
-                if opt.bn:
-                    # offset, scale parameter
-                    beta = init.constant('beta', opt.dim)
-                    gamma = init.constant('gamma', opt.dim, value=1)
+                out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
 
-                    # offset, scale parameter
-                    mean_running = init.constant('mean', opt.dim)
-                    variance_running = init.constant('variance', opt.dim, value=1)
+            # apply normalization parameters
+            if opt.ln:
+                # offset, scale parameter
+                beta = init.constant('beta', opt.dim, summary=False)
+                gamma = init.constant('gamma', opt.dim, value=1, summary=False)
 
-                    # calc batch mean, variance
-                    mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))
+                # calc layer mean, variance for final axis
+                mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
 
-                    # update running mean, variance
-                    def update_running_stat():
-                        decay = 0.99
-                        update_op = [mean_running.assign(mean_running * decay + mean * (1 - decay)),
-                                     variance_running.assign(variance_running * decay + variance * (1 - decay))]
-                        with tf.control_dependencies(update_op):
-                            return tf.identity(mean), tf.identity(variance)
+                # apply normalization
+                out = (out - mean) / tf.sqrt(variance + tf.sg_eps)
+                # apply parameter
+                out = gamma * out + beta
 
-                    # select mean, variance by training phase
-                    m, v = tf.cond(_phase,
-                                   update_running_stat,  # updated running stat and batch mean, variance
-                                   lambda: (mean_running, variance_running))  # saved mean, variance
+            # apply activation
+            if opt.act:
+                out = getattr(sg_activation, 'sg_' + opt.act.lower())(out)
 
-                    # apply batch normalization
-                    out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
+            # apply dropout
+            if opt.dout:
+                out = tf.cond(_phase,
+                              lambda: tf.nn.dropout(out, 1 - opt.dout),
+                              lambda: out)
 
-                # apply normalization parameters
-                if opt.ln:
-                    # offset, scale parameter
-                    beta = init.constant('beta', opt.dim)
-                    gamma = init.constant('gamma', opt.dim, value=1)
+            # rename tensor
+            out = tf.identity(out, 'out')
 
-                    # calc layer mean, variance for final axis
-                    mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
+            # add final output summary
+            if opt.reuse is None or not opt.reuse:
+                tf.sg_summary_activation(out)
 
-                    # apply normalization
-                    out = (out - mean) / tf.sqrt(variance + tf.sg_eps)
-                    # apply parameter
-                    out = gamma * out + beta
-
-                # apply activation
-                if opt.act:
-                    out = getattr(sg_activation, 'sg_' + opt.act.lower())(out)
-
-                # apply dropout
-                if opt.dout:
-                    out = tf.cond(_phase,
-                                  lambda: tf.nn.dropout(out, 1 - opt.dout),
-                                  lambda: out)
-
-                # rename tensor
-                out = tf.identity(out, 'out')
-
-                # add final output summary
-                if opt.reuse is None or not opt.reuse:
-                    tf.sg_summary_activation(out)
-
-                # save node info for reuse
-                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
-                                       prev=tensor, is_layer=True, name=opt.name)
-                # inject reuse function
-                out.sg_reuse = types.MethodType(sg_reuse, out)
+            # save node info for reuse
+            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
+                                   prev=tensor, is_layer=True, name=opt.name)
+            # inject reuse function
+            out.sg_reuse = types.MethodType(sg_reuse, out)
 
         return out
 
@@ -347,14 +344,14 @@ def sg_rnn_layer_func(func):
         if opt.name is None:
 
             # layer function name will be used as layer name
-            opt.name = func.__name__.replace('sg_', '')
+            opt.name = func.__name__.replace('sg_', 'lyr-')
 
             # find existing layer names
             exist_layers = []
             for t in tf.global_variables():
                 scope_name = tf.get_variable_scope().name
                 prefix = scope_name + '/' if len(scope_name) > 0 else ''
-                i = t.name.rfind(prefix + 'layers/' + opt.name)
+                i = t.name.rfind(prefix + opt.name)
                 if i >= 0:
                     exist_layers.append(t.name[i:].split('/')[-2])
             exist_layers = list(set(exist_layers))
@@ -365,32 +362,30 @@ def sg_rnn_layer_func(func):
             else:
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
-        # all layer variables start with 'layers/' prefix
-        with tf.variable_scope('layers', reuse=opt.reuse):
+        # all layer variables start with 'lyr-' prefix
+        with tf.variable_scope(opt.name, reuse=opt.reuse):
 
-            with tf.variable_scope(opt.name):
+            # call layer function
+            out = func(tensor, opt)
 
-                # call layer function
-                out = func(tensor, opt)
+            # apply dropout
+            if opt.dout:
+                out = tf.cond(_phase,
+                              lambda: tf.nn.dropout(out, 1 - opt.dout),
+                              lambda: out)
 
-                # apply dropout
-                if opt.dout:
-                    out = tf.cond(_phase,
-                                  lambda: tf.nn.dropout(out, 1 - opt.dout),
-                                  lambda: out)
+            # rename tensor
+            out = tf.identity(out, 'out')
 
-                # rename tensor
-                out = tf.identity(out, 'out')
+            # add final output summary
+            if opt.reuse is None or not opt.reuse:
+                tf.sg_summary_activation(out)
 
-                # add final output summary
-                if opt.reuse is None or not opt.reuse:
-                    tf.sg_summary_activation(out)
-
-                # save node info for reuse
-                out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
-                                       prev=tensor, is_layer=True, name=opt.name)
-                # inject reuse function
-                out.sg_reuse = types.MethodType(sg_reuse, out)
+            # save node info for reuse
+            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
+                                   prev=tensor, is_layer=True, name=opt.name)
+            # inject reuse function
+            out.sg_reuse = types.MethodType(sg_reuse, out)
 
         return out
 

@@ -126,7 +126,7 @@ def sg_optim(loss, **kwargs):
       lr: A Python Scalar (optional). Learning rate. Default is .001.
       beta1: A Python Scalar (optional). Default is .9.
       beta2: A Python Scalar (optional). Default is .99.
-      category: A string. Specifies the variables that should be trained (optional). 
+      category: A string or string list. Specifies the variables that should be trained (optional).
         Only if the name of a trainable variable starts with `category`, it's value is updated.
         Default is '', which means all trainable variables are updated. 
     """
@@ -146,14 +146,22 @@ def sg_optim(loss, **kwargs):
         optim = tf.train.GradientDescentOptimizer(learning_rate=opt.lr)
 
     # get trainable variables
-    var_list = [t for t in tf.trainable_variables() if t.name.startswith(opt.category)]
+    if isinstance(opt.category, (tuple, list)):
+        var_list = []
+        for cat in opt.category:
+            var_list.extend([t for t in tf.trainable_variables() if t.name.startswith(cat)])
+    else:
+        var_list = [t for t in tf.trainable_variables() if t.name.startswith(opt.category)]
 
     # calc gradient
     gradient = optim.compute_gradients(loss, var_list=var_list)
 
     # add summary
     for v, g in zip(var_list, gradient):
-        tf.sg_summary_gradient(v, g)
+        # exclude batch normal statics
+        if 'mean' not in v.name and 'variance' not in v.name \
+                and 'beta' not in v.name and 'gamma' not in v.name:
+            tf.sg_summary_gradient(v, g)
 
     # gradient update op
     return optim.apply_gradients(gradient, global_step=tf.sg_global_step())
@@ -231,8 +239,7 @@ def sg_train_func(func):
         summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=tf.get_default_graph())
 
         # add learning rate summary
-        with tf.name_scope('summary'):
-            tf.scalar_summary('60. learning_rate/learning_rate', _learning_rate)
+        tf.scalar_summary('30.learning_rate', _learning_rate)
 
         # add evaluation metric summary
         for m in opt.eval_metric:

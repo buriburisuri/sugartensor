@@ -28,5 +28,6 @@ acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
        .sg_accuracy(target=data.valid.label, name='val'))
 
 # train
-tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch, save_dir='asset/train/conv')
+tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch, log_interval=10,
+            save_dir='asset/train/conv')
 

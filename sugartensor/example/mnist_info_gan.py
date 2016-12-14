@@ -52,7 +52,7 @@ with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
            .sg_upconv(dim=1, act='sigmoid', bn=False))
 
 # add image summary
-tf.sg_summary_image(gen)
+tf.sg_summary_image(gen, name='fake')
 
 #
 # create discriminator & recognizer
@@ -80,10 +80,10 @@ with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu'):
 # loss and train ops
 #
 
-loss_disc = tf.reduce_mean(disc.sg_bce(target=y_disc))  # discriminator loss
-loss_gen = tf.reduce_mean(disc.sg_reuse(input=gen).sg_bce(target=y))  # generator loss
-loss_recog = tf.reduce_mean(recog_cat.sg_ce(target=z_cat)) \
-             + tf.reduce_mean(recog_cont.sg_mse(target=z_cont))  # recognizer loss
+loss_disc = tf.reduce_mean(disc.sg_bce(target=y_disc, name='disc'))  # discriminator loss
+loss_gen = tf.reduce_mean(disc.sg_reuse(input=gen).sg_bce(target=y, name='gen'))  # generator loss
+loss_recog = tf.reduce_mean(recog_cat.sg_ce(target=z_cat, name='cat')) \
+             + tf.reduce_mean(recog_cont.sg_mse(target=z_cont, name='cont'))  # recognizer loss
 
 train_disc = tf.sg_optim(loss_disc + loss_recog, lr=0.0001, category='discriminator')  # discriminator train ops
 train_gen = tf.sg_optim(loss_gen + loss_recog, lr=0.001, category='generator')  # generator train ops

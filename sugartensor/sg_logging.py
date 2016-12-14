@@ -14,12 +14,13 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 # noinspection PyTypeChecker
-def sg_summary_loss(tensor, prefix='10. loss'):
+def sg_summary_loss(tensor, prefix='10.loss', name=None):
     r"""Register `tensor` to summary report as `loss`
 
     Args:
       tensor: A `Tensor` to log as loss
       prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
       None
@@ -27,20 +28,24 @@ def sg_summary_loss(tensor, prefix='10. loss'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + _pretty_name(tensor)
+    name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/avg', tf.reduce_mean(tensor))
-        tf.histogram_summary(name, tensor)
+    # noinspection PyBroadException
+    try:
+        tf.summary.scalar(name, tf.reduce_mean(tensor))
+        tf.summary.histogram(name + '-h', tensor)
+    except:
+        pass
 
 
 # noinspection PyTypeChecker
-def sg_summary_metric(tensor, prefix='20. metric'):
+def sg_summary_metric(tensor, prefix='20.metric', name=None):
     r"""Register `tensor` to summary report as `metric`
 
     Args:
       tensor: A `Tensor` to log as metric
       prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
       None
@@ -48,62 +53,24 @@ def sg_summary_metric(tensor, prefix='20. metric'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + _pretty_name(tensor)
+    name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/avg', tf.reduce_mean(tensor))
-        tf.histogram_summary(name, tensor)
+    # noinspection PyBroadException
+    try:
+        tf.summary.scalar(name, tf.reduce_mean(tensor))
+        tf.summary.histogram(name + '-h', tensor)
+    except:
+        pass
 
 
-def sg_summary_activation(tensor, prefix='30. activation'):
-    r"""Register `tensor` to summary report as `activation`
-
-    Args:
-      tensor: A `Tensor` to log as activation
-      prefix: A `string`. A prefix to display in the tensor board web UI.
-
-    Returns:
-      None
-    """
-    # defaults
-    prefix = '' if prefix is None else prefix + '/'
-    # summary name
-    name = prefix + _pretty_name(tensor)
-    # summary statistics
-    with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/norm', tf.global_norm([tensor]))
-        tf.scalar_summary(name + '/ratio',
-                          tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
-        tf.histogram_summary(name, tensor)
-
-
-def sg_summary_param(tensor, prefix='40. parameters'):
-    r"""Register `tensor` to summary report as `parameters`
-
-    Args:
-      tensor: A `Tensor` to log as parameters
-      prefix: A `string`. A prefix to display in the tensor board web UI.
-
-    Returns:
-      None
-    """
-    # defaults
-    prefix = '' if prefix is None else prefix + '/'
-    # summary name
-    name = prefix + _pretty_name(tensor)
-    # summary statistics
-    with tf.name_scope('summary'):
-        tf.scalar_summary(name + '/norm', tf.global_norm([tensor]))
-        tf.histogram_summary(name, tensor)
-
-
-def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
+def sg_summary_gradient(tensor, gradient, prefix=None, name=None):
     r"""Register `tensor` to summary report as `gradient`
 
     Args:
       tensor: A `Tensor` to log as gradient
       gradient: A 0-D `Tensor`. A gradient to log
       prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
         None
@@ -111,23 +78,72 @@ def sg_summary_gradient(tensor, gradient, prefix='50. gradient'):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + _pretty_name(tensor)
+    name = prefix + _full_name(tensor) if name is None else prefix + name
     # summary statistics
-    with tf.name_scope('summary'):
-        # noinspection PyBroadException
-        try:
-            tf.scalar_summary(name + '/norm', tf.global_norm([gradient]))
-            tf.histogram_summary(name, gradient)
-        except:
-            pass
+    # noinspection PyBroadException
+    try:
+        tf.summary.scalar(name + '/grad', tf.global_norm([gradient]))
+        tf.summary.histogram(name + '/grad-h', gradient)
+    except:
+        pass
 
 
-def sg_summary_image(tensor, prefix=None):
+def sg_summary_activation(tensor, prefix=None, name=None):
+    r"""Register `tensor` to summary report as `activation`
+
+    Args:
+      tensor: A `Tensor` to log as activation
+      prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
+
+    Returns:
+      None
+    """
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + _pretty_name(tensor) if name is None else prefix + name
+    # summary statistics
+    # noinspection PyBroadException
+    try:
+        tf.summary.scalar(name + '/ratio',
+                          tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
+        tf.summary.histogram(name + '/ratio-h', tensor)
+    except:
+        pass
+
+
+def sg_summary_param(tensor, prefix=None, name=None):
+    r"""Register `tensor` to summary report as `parameters`
+
+    Args:
+      tensor: A `Tensor` to log as parameters
+      prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
+
+    Returns:
+      None
+    """
+    # defaults
+    prefix = '' if prefix is None else prefix + '/'
+    # summary name
+    name = prefix + _pretty_name(tensor) if name is None else prefix + name
+    # summary statistics
+    # noinspection PyBroadException
+    try:
+        tf.summary.scalar(name + '/norm', tf.global_norm([tensor]))
+        tf.summary.histogram(name + '/norm-h', tensor)
+    except:
+        pass
+
+
+def sg_summary_image(tensor, prefix=None, name=None):
     r"""Register `tensor` to summary report as `image`
 
     Args:
       tensor: A tensor to log as image
       prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
         None
@@ -135,19 +151,23 @@ def sg_summary_image(tensor, prefix=None):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + _pretty_name(tensor)
+    name = prefix + _full_name(tensor) if name is None else prefix + name
     # summary statistics
-    with tf.name_scope('summary'):
-        tf.image_summary(name, tensor)
+    # noinspection PyBroadException
+    try:
+        tf.summary.image(name + '-im', tensor)
+    except:
+        pass
 
 
-def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
+def sg_summary_audio(tensor, sample_rate=16000, prefix=None, name=None):
     r"""Register `tensor` to summary report as audio
 
     Args:
       tensor: A `Tensor` to log as audio
       sample_rate : An int. Sample rate to report. Default is 16000.
       prefix: A `string`. A prefix to display in the tensor board web UI.
+      name: A `string`. A name to display in the tensor board web UI.
 
     Returns:
         None
@@ -155,14 +175,21 @@ def sg_summary_audio(tensor, sample_rate=16000, prefix=None):
     # defaults
     prefix = '' if prefix is None else prefix + '/'
     # summary name
-    name = prefix + _pretty_name(tensor)
+    name = prefix + _full_name(tensor) if name is None else prefix + name
     # summary statistics
-    with tf.name_scope('summary'):
-        tf.audio_summary(name, tensor, sample_rate)
+    # noinspection PyBroadException
+    try:
+        tf.summary.audio(name + '-au', tensor, sample_rate)
+    except:
+        pass
 
 
 def _pretty_name(tensor):
-    return ':'.join(tensor.name.split(':')[:-1])
+    return ''.join(tensor.name.split(':')[:-1]).split('/')[-1]
+
+
+def _full_name(tensor):
+    return ''.join(tensor.name.split(':')[:-1])
 
 
 #

@@ -7,7 +7,7 @@ import numpy as np
 __author__ = 'buriburisuri@gmail.com'
 
 
-def constant(name, shape, value=0, dtype=tf.sg_floatx):
+def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True):
     r"""Creates a tensor variable of which initial values are `value` and shape is `shape`.
 
     Args:
@@ -17,6 +17,7 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
       value: A Python scalar. All elements of the initialized variable
         will be set to this value. Default is 0.
       dtype: The data type. Only floating point types are supported. Default is float32.
+      summary: If True, add this constant to tensor board summary.
 
     Returns:
       A `Variable`.
@@ -26,12 +27,12 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx):
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.constant_initializer(value))
     # add summary
-    if not tf.get_variable_scope().reuse:
+    if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
+def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, summary=True):
     r"""Creates a tensor variable of which initial values are 
     random numbers based on uniform distribution.
     
@@ -44,6 +45,7 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
         If shape is an integer, it's converted to a list.
       scale: A Python scalar. All initial values should be in range `[-scale, scale)`. Default is .05.
       dtype: The data type. Only floating point types are supported. Default is float32.
+      summary: If True, add this constant to tensor board summary.
     
     Returns:
       A `Variable`.
@@ -52,12 +54,12 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx):
     x = tf.get_variable(name, shape, dtype=dtype,
                         initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale))
     # add summary
-    if not tf.get_variable_scope().reuse:
+    if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
+def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
     r"""See [He et al. 2015](http://arxiv.org/pdf/1502.01852v1.pdf)
 
     Args:
@@ -65,6 +67,7 @@ def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
       shape: A tuple/list of integers.
       scale: A Python scalar. Scale to initialize. Default is 1.
       dtype: The data type. Default is float32.
+      summary: If True, add this constant to tensor board summary.
 
     Returns:
       A `Variable`.
@@ -72,10 +75,10 @@ def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
     """
     fin, _ = _get_fans(shape)
     s = np.sqrt(1. * scale / fin)
-    return uniform(name, shape, s, dtype)
+    return uniform(name, shape, s, dtype, summary)
 
 
-def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
+def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
     r"""See [Glorot & Bengio. 2010.](http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)
 
     Args:
@@ -83,6 +86,7 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
       shape: A tuple/list of integers.
       scale: A Python scalar. Scale to initialize. Default is 1.
       dtype: The data type. Default is float32.
+      summary: If True, add this constant to tensor board summary.
 
     Returns:
       A `Variable`.
@@ -90,10 +94,10 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx):
     """
     fin, fout = _get_fans(shape)
     s = np.sqrt(6. * scale / (fin + fout))
-    return uniform(name, shape, s, dtype)
+    return uniform(name, shape, s, dtype, summary)
 
 
-def identity(name, dim, scale=1, dtype=tf.sg_floatx):
+def identity(name, dim, scale=1, dtype=tf.sg_floatx, summary=True):
     r"""Creates a tensor variable of which initial values are of
     an identity matrix.
     
@@ -114,6 +118,7 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx):
       dim: An int. The size of the first and second dimension of the output tensor.
       scale: A Python scalar. The value on the diagonal.
       dtype: The type of the elements of the resulting tensor.
+      summary: If True, add this constant to tensor board summary.
     
     Returns:
       A 2-D `Variable`.
@@ -121,12 +126,12 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx):
     x = tf.get_variable(name,
                         initializer=tf.constant(np.eye(dim) * scale, dtype=dtype))
     # add summary
-    if not tf.get_variable_scope().reuse:
+    if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
+def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True):
     r"""Creates a tensor variable of which initial values are of
     an orthogonal ndarray.
     
@@ -136,7 +141,8 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
       name: The name of new variable.
       shape: A tuple/list of integers. 
       scale: A Python scalar.
-      dtype = Eighter float32 or float64.
+      dtype: Either float32 or float64.
+      summary: If True, add this constant to tensor board summary.
     
     Returns:
       A `Variable`.
@@ -151,12 +157,12 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx):
     x = tf.get_variable(name,
                         initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype))
     # add summary
-    if not tf.get_variable_scope().reuse:
+    if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def external(name, value, dtype=tf.sg_floatx):
+def external(name, value, dtype=tf.sg_floatx, summary=True):
     r"""Creates a tensor variable of which initial values are `value`.
     
     For example,
@@ -170,6 +176,7 @@ def external(name, value, dtype=tf.sg_floatx):
       name: The name of new variable.
       value: A constant value (or list) of output type `dtype`.
       dtype: The type of the elements of the resulting tensor.
+      summary: If True, add this constant to tensor board summary.
     
     Returns:
       A `Variable`. Has the same contents as `value` of `dtype`. 
@@ -178,7 +185,7 @@ def external(name, value, dtype=tf.sg_floatx):
     x = tf.get_variable(name,
                         initializer=tf.constant(value, dtype=dtype))
     # add summary
-    if not tf.get_variable_scope().reuse:
+    if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
