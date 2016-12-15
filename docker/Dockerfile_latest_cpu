@@ -1,2 +1,2 @@
-FROM sugartensor/sugartensor:0.0.2.2-cpu
+FROM sugartensor/sugartensor:0.0.2.3-cpu
 MAINTAINER Namju Kim buriburisuri@gmail.com
