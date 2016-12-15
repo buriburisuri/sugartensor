@@ -236,17 +236,17 @@ def sg_train_func(func):
                                keep_checkpoint_every_n_hours=opt.keep_interval)
 
         # summary writer
-        summary_writer = tf.train.SummaryWriter(opt.save_dir + '/log', graph=tf.get_default_graph())
+        summary_writer = tf.summary.FileWriter(opt.save_dir + '/log', graph=tf.get_default_graph())
 
         # add learning rate summary
-        tf.scalar_summary('30.learning_rate', _learning_rate)
+        tf.summary.scalar('30.learning_rate', _learning_rate)
 
         # add evaluation metric summary
         for m in opt.eval_metric:
             tf.sg_summary_metric(m)
 
         # summary op
-        summary_op = tf.merge_all_summaries()
+        summary_op = tf.summary.merge_all()
 
         # create session
         if opt.sess:
