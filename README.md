@@ -10,7 +10,7 @@ we use pure python functions only and avoid class style conventions.
 ## Installation
 
 1. Requirements
-    1. tensorflow >= 0.12.0-rc1 
+    1. tensorflow >= 0.12.0 
     1. tqdm >= 4.8.4  ( for a console progressive bar )
 
 2. Installation
