@@ -211,7 +211,7 @@ def sg_layer_func(func):
         if opt.name is None:
 
             # layer function name will be used as layer name
-            opt.name = func.__name__.replace('sg_', 'lyr-')
+            opt.name = func.__name__.replace('sg_', '')
 
             # find existing layer names
             exist_layers = []

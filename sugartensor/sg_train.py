@@ -6,6 +6,7 @@ import os
 import time
 from tqdm import tqdm
 from functools import wraps
+from tensorflow.contrib.tensorboard.plugins import projector
 
 
 __author__ = 'buriburisuri@gmail.com'
@@ -113,22 +114,50 @@ def sg_print(tensor_list):
         with tf.sg_queue_context():
             res = sess.run(tensor_list)
             for r in res:
-                print (r, r.shape, r.dtype)
+                print(r, r.shape, r.dtype)
     return res
+
+
+def sg_restore(sess, save_path, category=''):
+    r""" Restores previously saved variables.
+
+    Args:
+      sess: A `Session` to use to restore the parameters.
+      save_path: Path where parameters were previously saved.
+      category: A `String` to filter variables starts with given category.
+
+    Returns:
+
+    """
+    # to list
+    if not isinstance(category, (tuple, list)):
+        category = [category]
+
+    # make variable list to load
+    var_list = {}
+    for cat in category:
+        for t in tf.global_variables():
+            if t.name.startswith(cat):
+                var_list[t.name[:-2]] = t
+
+    # restore parameters
+    saver = tf.train.Saver(var_list)
+    saver.restore(sess, save_path)
 
 
 def sg_optim(loss, **kwargs):
     r"""Applies gradients to variables.
 
     Args:
-      loss: A 0-D `Tensor` containing the value to minimize.
-      optim: A name for optimizer. 'MaxProp' (default), 'AdaMax', 'Adam', or 'sgd'.
-      lr: A Python Scalar (optional). Learning rate. Default is .001.
-      beta1: A Python Scalar (optional). Default is .9.
-      beta2: A Python Scalar (optional). Default is .99.
-      category: A string or string list. Specifies the variables that should be trained (optional).
-        Only if the name of a trainable variable starts with `category`, it's value is updated.
-        Default is '', which means all trainable variables are updated. 
+        loss: A 0-D `Tensor` containing the value to minimize.
+        kwargs:
+          optim: A name for optimizer. 'MaxProp' (default), 'AdaMax', 'Adam', or 'sgd'.
+          lr: A Python Scalar (optional). Learning rate. Default is .001.
+          beta1: A Python Scalar (optional). Default is .9.
+          beta2: A Python Scalar (optional). Default is .99.
+          category: A string or string list. Specifies the variables that should be trained (optional).
+            Only if the name of a trainable variable starts with `category`, it's value is updated.
+            Default is '', which means all trainable variables are updated.
     """
     opt = tf.sg_opt(kwargs)
 
@@ -203,6 +232,7 @@ def sg_train_func(func):
             tqdm: Boolean. If True (Default), progress bars are shown.
             console_log: Boolean. If True, a series of loss will be shown 
               on the console instead of tensorboard. Default is False.
+            embeds: List of Tuple. [(Tensor to add, metadata path)]
         """
         opt = tf.sg_opt(kwargs)
 
@@ -214,16 +244,15 @@ def sg_train_func(func):
                          early_stop=True, lr_reset=False,
                          eval_metric=[],
                          max_keep=5, keep_interval=1,
-                         tqdm=True, console_log=False)
+                         tqdm=True, console_log=False,
+                         embeds=[])
 
         # make directory if not exist
-        if not os.path.exists(opt.save_dir + '/log'):
-            os.makedirs(opt.save_dir + '/log')
-        if not os.path.exists(opt.save_dir + '/ckpt'):
-            os.makedirs(opt.save_dir + '/ckpt')
+        if not os.path.exists(opt.save_dir):
+            os.makedirs(opt.save_dir)
 
         # find last checkpoint
-        last_file = tf.train.latest_checkpoint(opt.save_dir + '/ckpt')
+        last_file = tf.train.latest_checkpoint(opt.save_dir)
         if last_file:
             ep = start_ep = int(last_file.split('-')[1]) + 1
             start_step = int(last_file.split('-')[2])
@@ -236,10 +265,18 @@ def sg_train_func(func):
                                keep_checkpoint_every_n_hours=opt.keep_interval)
 
         # summary writer
-        summary_writer = tf.summary.FileWriter(opt.save_dir + '/log', graph=tf.get_default_graph())
+        summary_writer = tf.summary.FileWriter(opt.save_dir, graph=tf.get_default_graph())
+
+        # embedding visualizer
+        config = projector.ProjectorConfig()
+        for e, m in opt.embeds:
+            emb = config.embeddings.add()
+            emb.tensor_name = e.name   # tensor
+            emb.metadata_path = os.path.join(opt.save_dir, m)   # metadata file
+        projector.visualize_embeddings(summary_writer, config)
 
         # add learning rate summary
-        tf.summary.scalar('30.learning_rate', _learning_rate)
+        tf.summary.scalar('learning_r', _learning_rate)
 
         # add evaluation metric summary
         for m in opt.eval_metric:
@@ -254,8 +291,8 @@ def sg_train_func(func):
         else:
             # session with multiple GPU support
             sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
-            # initialize variables
-            sg_init(sess)
+        # initialize variables
+        sg_init(sess)
 
         # restore last checkpoint
         if last_file:
@@ -306,7 +343,7 @@ def sg_train_func(func):
                         # saving
                         if time.time() - last_saved > opt.save_interval:
                             last_saved = time.time()
-                            saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
+                            saver.save(sess, opt.save_dir + '/model-%03d' % ep,
                                        write_meta_graph=False,
                                        global_step=sess.run(tf.sg_global_step()))
 
@@ -361,7 +398,7 @@ def sg_train_func(func):
                         break
         finally:
             # save last epoch
-            saver.save(sess, opt.save_dir + '/ckpt/model-%03d' % ep,
+            saver.save(sess, opt.save_dir + '/model-%03d' % ep,
                        write_meta_graph=False,
                        global_step=sess.run(tf.sg_global_step()))
 
@@ -376,3 +413,67 @@ def sg_train_func(func):
                 sess.close()
 
     return wrapper
+
+
+def sg_tsne(tensor, meta_file='metadata.tsv', save_dir='asset/tsne'):
+    r""" Manages arguments of `tf.sg_opt`.
+
+    Args:
+      **kwargs:
+        lr: A Python Scalar (optional). Learning rate. Default is .001.
+
+        eval_metric: A list of tensors containing the value to evaluate. Default is [].
+        early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.
+          i. Current loss is less than .95 * previous loss.
+          ii. Current learning rate is less than 5e-6.
+        lr_reset: Boolean. If True, learning rate is set to opt.lr. when training restarts.
+          Otherwise (Default), the value of the stored `_learning_rate` is taken.
+        save_dir: A string. The root path to which checkpoint and log files are saved.
+          Default is `asset/train`.
+        max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+        ep_size: A positive integer. Number of Total batches in an epoch.
+          For proper display of log. Default is 1e5.
+
+        save_interval: A Python scalar. The interval of saving checkpoint files.
+          By default, for every 600 seconds, a checkpoint file is written.
+        log_interval: A Python scalar. The interval of recoding logs.
+          By default, for every 60 seconds, logging is executed.
+        max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
+        keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.
+
+        tqdm: Boolean. If True (Default), progress bars are shown.
+        console_log: Boolean. If True, a series of loss will be shown
+          on the console instead of tensorboard. Default is False.
+        embeds: List of Tuple. [(Tensor to add, metadata path)]
+    """
+
+    # make directory if not exist
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    # checkpoint saver
+    saver = tf.train.Saver()
+
+    # summary writer
+    summary_writer = tf.summary.FileWriter(save_dir, graph=tf.get_default_graph())
+
+    # embedding visualizer
+    config = projector.ProjectorConfig()
+    emb = config.embeddings.add()
+    emb.tensor_name = tensor.name   # tensor
+    # emb.metadata_path = os.path.join(save_dir, meta_file)   # metadata file
+    projector.visualize_embeddings(summary_writer, config)
+
+    # create session
+    sess = tf.Session()
+    # initialize variables
+    sg_init(sess)
+
+    # save tsne
+    saver.save(sess, save_dir + '/model-tsne')
+
+    # logging
+    tf.sg_info('Tsne saved at %s' % (save_dir + '/model-tsne'))
+
+    # close session
+    sess.close()

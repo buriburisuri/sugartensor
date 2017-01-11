@@ -78,6 +78,7 @@ def sg_int(tensor, opt):
     """
     return tf.cast(tensor, tf.sg_intx, name=opt.name)
 
+
 @tf.sg_sugar_func
 def sg_expand_dims(tensor, opt):
     r"""Inserts a new dimension.
@@ -173,6 +174,7 @@ def sg_transpose(tensor, opt):
     """
     assert opt.perm is not None, 'perm is mandatory'
     return tf.transpose(tensor, opt.perm, name=opt.name)
+
 
 @tf.sg_sugar_func
 def sg_argmax(tensor, opt):
@@ -544,11 +546,11 @@ def sg_periodic_shuffle(tensor, opt):
     batch, row, col, channel = tensor.get_shape().as_list()
 
     # get target channel num
-    channel_target = channel / (opt.factor * opt.factor)
-    channel_factor = channel / channel_target
+    channel_target = channel // (opt.factor * opt.factor)
+    channel_factor = channel // channel_target
 
     # intermediate shape for shuffling
-    shape_1 = [batch, row, col, channel_factor / opt.factor, channel_factor / opt.factor]
+    shape_1 = [batch, row, col, channel_factor // opt.factor, channel_factor // opt.factor]
     shape_2 = [batch, row * opt.factor, col * opt.factor, 1]
 
     # reshape and transpose for periodic shuffling for each channel
@@ -589,8 +591,8 @@ def sg_inverse_periodic_shuffle(tensor, opt):
     channel_factor = opt.factor * opt.factor
 
     # intermediate shape for shuffling
-    shape_1 = [batch, row / opt.factor, col / opt.factor, channel_factor // opt.factor, channel_factor // opt.factor]
-    shape_2 = [batch, row / opt.factor, col / opt.factor, channel_factor]
+    shape_1 = [batch, row // opt.factor, col // opt.factor, channel_factor // opt.factor, channel_factor // opt.factor]
+    shape_2 = [batch, row // opt.factor, col // opt.factor, channel_factor]
 
     # reshape and transpose for periodic shuffling for each channel
     out = []

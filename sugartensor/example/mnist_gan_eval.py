@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sugartensor as tf
 import matplotlib.pyplot as plt
 
@@ -9,24 +8,35 @@ tf.sg_verbosity(10)
 # hyper parameters
 #
 
-batch_size = 100
+batch_size = 100  # batch size
+rand_dim = 50     # total random latent dimension
 
 
 #
-# create generator
+# create generator function
 #
 
-# random uniform seed
-z = tf.random_uniform((batch_size, 100))
+def generator(tensor):
+    # reuse flag
+    reuse = len([t for t in tf.global_variables() if t.name.startswith('generator')]) > 0
+    with tf.sg_context(name='generator', size=4, stride=2, act='leaky_relu', bn=True, reuse=reuse):
 
-with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
-    # generator network
-    gen = (z.sg_dense(dim=1024)
-           .sg_dense(dim=7*7*128)
-           .sg_reshape(shape=(-1, 7, 7, 128))
-           .sg_upconv(dim=64)
-           .sg_upconv(dim=1, act='sigmoid', bn=False)
-           .sg_squeeze())
+        # generator network
+        res = (tensor
+               .sg_dense(dim=1024, name='fc1')
+               .sg_dense(dim=7*7*128, name='fc2')
+               .sg_reshape(shape=(-1, 7, 7, 128))
+               .sg_upconv(dim=64, name='conv1')
+               .sg_upconv(dim=1, act='sigmoid', bn=False, name='conv2'))
+
+        return res
+
+
+# random normal seed
+z = tf.random_normal((batch_size, rand_dim))
+
+# generator
+gen = generator(z).sg_squeeze()
 
 
 #
@@ -34,10 +44,11 @@ with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
 #
 
 with tf.Session() as sess:
+
     tf.sg_init(sess)
+
     # restore parameters
-    saver = tf.train.Saver()
-    saver.restore(sess, tf.train.latest_checkpoint('asset/train/gan/ckpt'))
+    tf.sg_restore(sess, tf.train.latest_checkpoint('asset/train/gan'), category='generator')
 
     # run generator
     imgs = sess.run(gen)
@@ -48,6 +59,6 @@ with tf.Session() as sess:
         for j in range(10):
             ax[i][j].imshow(imgs[i * 10 + j], 'gray')
             ax[i][j].set_axis_off()
-    plt.savefig('asset/train/sample.png', dpi=600)
+    plt.savefig('asset/train/gan/sample.png', dpi=600)
     tf.sg_info('Sample image saved to "asset/train/gan/sample.png"')
     plt.close()

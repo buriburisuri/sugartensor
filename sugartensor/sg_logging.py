@@ -14,7 +14,7 @@ __author__ = 'buriburisuri@gmail.com'
 
 
 # noinspection PyTypeChecker
-def sg_summary_loss(tensor, prefix='10.loss', name=None):
+def sg_summary_loss(tensor, prefix='losses', name=None):
     r"""Register `tensor` to summary report as `loss`
 
     Args:
@@ -39,7 +39,7 @@ def sg_summary_loss(tensor, prefix='10.loss', name=None):
 
 
 # noinspection PyTypeChecker
-def sg_summary_metric(tensor, prefix='20.metric', name=None):
+def sg_summary_metric(tensor, prefix='metrics', name=None):
     r"""Register `tensor` to summary report as `metric`
 
     Args:

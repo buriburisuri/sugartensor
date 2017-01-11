@@ -1,9 +1,50 @@
-# -*- coding: utf-8 -*-
 import sugartensor as tf
 import numpy as np
 
 # set log level to debug
 tf.sg_verbosity(10)
+
+#
+# hyper parameters
+#
+
+batch_size = 32   # batch size
+rand_dim = 50     # total random latent dimension
+
+
+#
+# create generator & discriminator function
+#
+
+def generator(tensor):
+    # reuse flag
+    reuse = len([t for t in tf.global_variables() if t.name.startswith('generator')]) > 0
+    with tf.sg_context(name='generator', size=4, stride=2, act='leaky_relu', bn=True, reuse=reuse):
+
+        # generator network
+        res = (tensor
+               .sg_dense(dim=1024, name='fc1')
+               .sg_dense(dim=7*7*128, name='fc2')
+               .sg_reshape(shape=(-1, 7, 7, 128))
+               .sg_upconv(dim=64, name='conv1')
+               .sg_upconv(dim=1, act='sigmoid', bn=False, name='conv2'))
+
+        return res
+
+
+def discriminator(tensor):
+    # reuse flag
+    reuse = len([t for t in tf.global_variables() if t.name.startswith('discriminator')]) > 0
+    with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu', reuse=reuse):
+        res = (tensor
+               .sg_conv(dim=64, name='conv1')
+               .sg_conv(dim=128, name='conv2')
+               .sg_flatten()
+               .sg_dense(dim=1024, name='fc1')
+               .sg_dense(dim=1, act='linear', name='fc2')
+               .sg_squeeze())
+        return res
+
 
 #
 # inputs
@@ -15,56 +56,46 @@ data = tf.sg_data.Mnist(batch_size=32)
 # input images
 x = data.train.image
 
-# generator labels ( all ones )
-y = tf.ones(data.batch_size, dtype=tf.sg_floatx)
+# labels for discriminator
+y_real = tf.ones(batch_size)
+y_fake = tf.zeros(batch_size)
 
-# discriminator labels ( half 1s, half 0s )
-y_disc = tf.concat(0, [y, y * 0])
+# random gaussian seed
+z = tf.random_normal((data.batch_size, rand_dim))
+
 
 #
-# create generator
+# Computational graph
 #
 
-# random uniform seed
-z = tf.random_uniform((data.batch_size, 100))
-
-with tf.sg_context(name='generator', size=4, stride=2, act='relu', bn=True):
-
-    # generator network
-    gen = (z.sg_dense(dim=1024)
-           .sg_dense(dim=7*7*128)
-           .sg_reshape(shape=(-1, 7, 7, 128))
-           .sg_upconv(dim=64)
-           .sg_upconv(dim=1, act='sigmoid', bn=False))
+# generator
+gen = generator(z)
 
 # add image summary
+tf.sg_summary_image(x, name='real')
 tf.sg_summary_image(gen, name='fake')
 
-#
-# create discriminator
-#
+# discriminator
+disc_real = discriminator(x)
+disc_fake = discriminator(gen)
 
-# create real + fake image input
-xx = tf.concat(0, [x, gen])
-
-with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu'):
-    disc = (xx.sg_conv(dim=64)
-            .sg_conv(dim=128)
-            .sg_flatten()
-            .sg_dense(dim=1024)
-            .sg_dense(dim=1, act='linear')
-            .sg_squeeze())
 
 #
 # loss & train ops
 #
 
-loss_disc = disc.sg_bce(target=y_disc, name='disc')  # discriminator loss
-loss_gen = disc.sg_reuse(input=gen).sg_bce(target=y, name='gen')  # generator loss
+# discriminator loss
+loss_d_r = disc_real.sg_bce(target=y_real, name='disc_real')
+loss_d_f = disc_fake.sg_bce(target=y_fake, name='disc_fake')
+loss_d = (loss_d_r + loss_d_f) / 2
 
 
-train_disc = tf.sg_optim(loss_disc, lr=0.0001, category='discriminator')  # discriminator train ops
-train_gen = tf.sg_optim(loss_gen, lr=0.001, category='generator')  # generator train ops
+# generator loss
+loss_g = disc_fake.sg_bce(target=y_real, name='gen')
+
+# train ops
+train_disc = tf.sg_optim(loss_d, lr=0.0001, category='discriminator')  # discriminator train ops
+train_gen = tf.sg_optim(loss_g, lr=0.001, category='generator')  # generator train ops
 
 
 #
@@ -74,8 +105,8 @@ train_gen = tf.sg_optim(loss_gen, lr=0.001, category='generator')  # generator t
 # def alternate training func
 @tf.sg_train_func
 def alt_train(sess, opt):
-    l_disc = sess.run([loss_disc, train_disc])[0]  # training discriminator
-    l_gen = sess.run([loss_gen, train_gen])[0]  # training generator
+    l_disc = sess.run([loss_d, train_disc])[0]  # training discriminator
+    l_gen = sess.run([loss_g, train_gen])[0]  # training generator
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training

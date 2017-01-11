@@ -299,6 +299,50 @@ def sg_upconv1d(tensor, opt):
     return out
 
 
+@tf.sg_layer_func
+def sg_espcn(tensor, opt):
+    r"""Applies a 2-D efficient sub pixel convolution.
+       (see [Shi et al. 2016](http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)
+
+    Args:
+      tensor: A 4-D `Tensor` (automatically passed by decorator).
+      opt:
+        size: A tuple/list of positive integers of length 2 representing `[kernel height, kernel width]`.
+          Can be an integer if both values are the same.
+          If not specified, (3, 3) is set implicitly.
+        stride: A tuple/list of positive integers of length 2 or 4 representing stride dimensions.
+          If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
+          If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
+          Can be an integer. If the length is a, the stride is `[1, a, a, 1]`.
+          Default value is [1, 1, 1, 1].
+        in_dim: A positive `integer`. The size of input dimension.
+        dim: A positive `integer`. The size of output dimension.
+        pad: Either `SAME` (Default) or `VALID`.
+        bias: Boolean. If True, biases are added.
+        factor: factor to multiply shape by. Default is 2.
+
+    Returns:
+      A `Tensor` with the same type as `tensor`.
+    """
+    # default options
+    opt += tf.sg_opt(size=(3, 3), stride=(1, 1, 1, 1), pad='SAME', factor=2)
+    opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
+    opt.stride = opt.stride if isinstance(opt.stride, (tuple, list)) else [1, opt.stride, opt.stride, 1]
+    opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
+
+    # parameter initialize
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim * opt.factor * opt.factor))
+    b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
+
+    # apply convolution
+    out = tf.nn.conv2d(tensor, w, strides=opt.stride, padding=opt.pad) + b
+
+    # apply periodic shuffle
+    out = out.sg_periodic_shuffle(factor=opt.factor)
+
+    return out
+
+
 #
 # RNN layers
 #
