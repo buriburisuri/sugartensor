@@ -1,0 +1,15 @@
+# run the following command on the .. dir
+docker build -t sugartensor/suguartensor:0.0.x.x -f docker/Dockerfile
+docker build -t sugartensor/suguartensor:0.0.x.x-cpu -f docker/Dockerfile_cpu
+
+# attach tag
+docker tag xxxxxx sugartensor/sugartensor:0.0.x.x
+docker tag xxxxxx sugartensor/sugartensor:latest
+docker tag xxxxxx sugartensor/sugartensor:0.0.x.x-cpu
+docker tag xxxxxx sugartensor/sugartensor:latest-cpu
+
+# push to dockerhub
+docker push sugartensor/sugartensor
+docker push sugartensor/sugartensor:0.0.x.x
+docker push sugartensor/sugartensor:latest-cpu
+docker push sugartensor/sugartensor:0.0.x.x-cpu
