@@ -55,10 +55,10 @@ logit = (tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE))
 In the above snippet, all values returned by sugar functions are pure tensorflow's tensor variables/constants. So, the following example is completely legal.
 
 <pre><code>
-ph = tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE)   # <-- this is a tensor 
+ph = tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE))   # <-- this is a tensor 
 ph = ph.sg_dense(dim=400, act='relu', bn=True)   # <-- this is a tensor
 ph = ph * 100 + 10  # <-- this is ok.
-ph = tf.reshape(ph, (-1, 20, 20, 1)).conv(dim=30)   # <-- all tensorflow's function can be applied and chained.
+ph = tf.reshape(ph, (-1, 20, 20, 1)).sg_conv(dim=30)   # <-- all tensorflow's function can be applied and chained.
 </code></pre>
 
 ### Practical DRY (Don't repeat yourself) functions for deep learning researchers
