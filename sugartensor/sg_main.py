@@ -230,7 +230,7 @@ def sg_layer_func(func):
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
         # all layer variables start with 'lyr-' prefix
-        with tf.variable_scope(opt.name, reuse=opt.reuse):
+        with tf.variable_scope(opt.name, reuse=opt.reuse) as scope:
 
             # call layer function
             out = func(tensor, opt)
@@ -292,7 +292,7 @@ def sg_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            if opt.reuse is None or not opt.reuse:
+            if not scope.reuse:
                 tf.sg_summary_activation(out)
 
             # save node info for reuse
@@ -363,7 +363,7 @@ def sg_rnn_layer_func(func):
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
         # all layer variables start with 'lyr-' prefix
-        with tf.variable_scope(opt.name, reuse=opt.reuse):
+        with tf.variable_scope(opt.name, reuse=opt.reuse) as scope:
 
             # call layer function
             out = func(tensor, opt)
@@ -378,7 +378,7 @@ def sg_rnn_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            if opt.reuse is None or not opt.reuse:
+            if scope.reuse:
                 tf.sg_summary_activation(out)
 
             # save node info for reuse
