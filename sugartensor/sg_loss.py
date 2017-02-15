@@ -39,9 +39,9 @@ def sg_ce(tensor, opt):
     assert opt.target is not None, 'target is mandatory.'
 
     if opt.one_hot:
-        out = tf.identity(tf.nn.softmax_cross_entropy_with_logits(tensor, opt.target), 'ce')
+        out = tf.identity(tf.nn.softmax_cross_entropy_with_logits(logits=tensor, labels=opt.target), 'ce')
     else:
-        out = tf.identity(tf.nn.sparse_softmax_cross_entropy_with_logits(tensor, opt.target), 'ce')
+        out = tf.identity(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=tensor, labels=opt.target), 'ce')
 
     # masking loss
     if opt.mask:
@@ -78,7 +78,7 @@ def sg_bce(tensor, opt):
     
     assert opt.target is not None, 'target is mandatory.'
 
-    out = tf.identity(tf.nn.sigmoid_cross_entropy_with_logits(tensor, opt.target), 'bce')
+    out = tf.identity(tf.nn.sigmoid_cross_entropy_with_logits(logits=tensor, labels=opt.target), 'bce')
 
     # add summary
     tf.sg_summary_loss(out, name=opt.name)

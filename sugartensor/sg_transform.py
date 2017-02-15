@@ -215,7 +215,7 @@ def sg_concat(tensor, opt):
     assert opt.target is not None, 'target is mandatory.'
     opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
     target = opt.target if isinstance(opt.target, (tuple, list)) else [opt.target]
-    return tf.concat(opt.dim, [tensor] + target, name=opt.name)
+    return tf.concat(axis=opt.dim, values=[tensor] + target, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -278,7 +278,7 @@ def sg_sum(tensor, opt):
     Returns:
         A `Tensor`.
     """
-    return tf.reduce_sum(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_sum(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -297,7 +297,7 @@ def sg_mean(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_mean(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_mean(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -316,7 +316,7 @@ def sg_prod(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_prod(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_prod(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -335,7 +335,7 @@ def sg_min(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_min(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_min(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -354,7 +354,7 @@ def sg_max(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_max(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_max(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -373,7 +373,7 @@ def sg_all(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_all(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_all(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -392,7 +392,7 @@ def sg_any(tensor, opt):
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_any(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_any(tensor, axis=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
 
 
 #
@@ -562,7 +562,7 @@ def sg_periodic_shuffle(tensor, opt):
                    .sg_reshape(shape=shape_2))
 
     # final output
-    out = tf.concat(3, out)
+    out = tf.concat(axis=3, values=out)
 
     return tf.identity(out, name=opt.name)
 
@@ -604,6 +604,6 @@ def sg_inverse_periodic_shuffle(tensor, opt):
                    .sg_reshape(shape=shape_2))
 
     # final output
-    out = tf.concat(3, out)
+    out = tf.concat(axis=3, values=out)
 
     return tf.identity(out, name=opt.name)
