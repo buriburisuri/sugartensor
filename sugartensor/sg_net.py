@@ -468,7 +468,7 @@ def sg_densenet_layer(x, opt):
                        .sg_bypass(act=opt.act, bn=True, name=cname(3 * i + 1))
                        .sg_conv(dim=opt.dim // 4, size=1, act=opt.act, bn=True, name=cname(3 * i + 2))
                        .sg_conv(dim=opt.dim, size=3, name=cname(3 * i + 3)))
-            out = tf.concat(3, [out_new, out])
+            out = tf.concat(axis=3, values=[out_new, out])
 
         # transition layer
         if opt.trans:

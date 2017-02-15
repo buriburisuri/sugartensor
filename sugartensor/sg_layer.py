@@ -244,7 +244,7 @@ def sg_upconv(tensor, opt):
     out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
 
     # apply convolution
-    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.pack(out_shape),
+    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
                                  strides=opt.stride, padding=opt.pad) + b
     # reset shape is needed because conv2d_transpose() erase all shape information.
     # noinspection PyUnresolvedReferences
@@ -287,7 +287,7 @@ def sg_upconv1d(tensor, opt):
     out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
 
     # apply convolution
-    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.pack(out_shape),
+    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
                                  strides=opt.stride, padding=opt.pad) + b
     # reset shape is needed because conv2d_transpose() erase all shape information.
     # noinspection PyUnresolvedReferences
@@ -376,7 +376,7 @@ def sg_emb(**kwargs):
         w = tf.sg_initializer.external(opt.name, value=opt.emb)
 
     # 1st row should be zero and not be updated by backprop because of zero padding.
-    emb = tf.concat(0, [tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w])
+    emb = tf.concat(axis=0, values=[tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w])
 
     return emb
 
@@ -460,7 +460,7 @@ def sg_rnn(tensor, opt):
     if opt.last_only:
         out = out[-1].sg_squeeze(dim=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(axis=1, values=out)
 
     return out
 
@@ -535,7 +535,7 @@ def sg_gru(tensor, opt):
     if opt.last_only:
         out = out[-1].sg_squeeze(dim=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(axis=1, values=out)
 
     return out
 
@@ -615,6 +615,6 @@ def sg_lstm(tensor, opt):
     if opt.last_only:
         out = out[-1].sg_squeeze(dim=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(axis=1, values=out)
 
     return out
