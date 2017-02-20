@@ -246,7 +246,7 @@ def sg_layer_func(func):
                 variance_running = init.constant('variance', opt.dim, value=1, summary=False)
 
                 # calc batch mean, variance
-                mean, variance = tf.nn.moments(out, axes=range(len(out.get_shape()) - 1))
+                mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
 
                 # update running mean, variance
                 def update_running_stat():

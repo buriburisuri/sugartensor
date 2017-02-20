@@ -82,8 +82,8 @@ def sg_summary_gradient(tensor, gradient, prefix=None, name=None):
     # summary statistics
     # noinspection PyBroadException
     try:
-        tf.summary.scalar(name + '/grad', tf.global_norm([gradient]))
-        tf.summary.histogram(name + '/grad-h', gradient)
+        tf.summary.scalar(name + '/grad', tf.reduce_mean(tf.abs(gradient)))
+        tf.summary.histogram(name + '/grad-h', tf.abs(gradient))
     except:
         pass
 
@@ -131,8 +131,9 @@ def sg_summary_param(tensor, prefix=None, name=None):
     # summary statistics
     # noinspection PyBroadException
     try:
-        tf.summary.scalar(name + '/norm', tf.global_norm([tensor]))
-        tf.summary.histogram(name + '/norm-h', tensor)
+        norm = tensor
+        tf.summary.scalar(name + '/abs', tf.reduce_mean(tf.abs(tensor)))
+        tf.summary.histogram(name + '/abs-h', tf.abs(tensor))
     except:
         pass
 

@@ -11,7 +11,9 @@ x = data.train.image.sg_squeeze()
 y = data.train.label
 
 # create training graph ( GRU + layer normalization )
-logit = (x.sg_gru(dim=200, ln=True, last_only=True).sg_dense(dim=10))
+logit = (x
+         .sg_gru(dim=200, ln=True, last_only=True)
+         .sg_dense(dim=10))
 
 # cross entropy loss with logit ( for training set )
 loss = logit.sg_ce(target=y)

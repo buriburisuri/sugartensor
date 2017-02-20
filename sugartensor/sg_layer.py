@@ -190,18 +190,18 @@ def sg_aconv1d(tensor, opt):
         # pre-padding for causality
         if opt.pad == 'SAME':
             pad_len = (opt.size - 1) * opt.rate  # padding size
-            x = tf.pad(tensor, [[0, 0], [pad_len, 0], [0, 0]]).sg_expand_dims(dim=1)
+            x = tf.pad(tensor, [[0, 0], [pad_len, 0], [0, 0]]).sg_expand_dims(axis=1)
         else:
-            x = tensor.sg_expand_dims(dim=1)
+            x = tensor.sg_expand_dims(axis=1)
         # apply 2d convolution
         out = tf.nn.atrous_conv2d(x, w, rate=opt.rate, padding='VALID') + b
     else:
         # apply 2d convolution
-        out = tf.nn.atrous_conv2d(tensor.sg_expand_dims(dim=1),
+        out = tf.nn.atrous_conv2d(tensor.sg_expand_dims(axis=1),
                                   w, rate=opt.rate, padding=opt.pad) + b
     # reduce dimension
     # noinspection PyUnresolvedReferences
-    out = out.sg_squeeze(dim=1)
+    out = out.sg_squeeze(axis=1)
 
     return out
 
@@ -244,7 +244,7 @@ def sg_upconv(tensor, opt):
     out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
 
     # apply convolution
-    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.pack(out_shape),
+    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
                                  strides=opt.stride, padding=opt.pad) + b
     # reset shape is needed because conv2d_transpose() erase all shape information.
     # noinspection PyUnresolvedReferences
@@ -280,14 +280,14 @@ def sg_upconv1d(tensor, opt):
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # make 4-D tensor
-    tensor = tensor.sg_expand_dims(dim=2)
+    tensor = tensor.sg_expand_dims(axis=2)
 
     # tedious shape handling for conv2d_transpose
     shape = tensor.get_shape().as_list()
     out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
 
     # apply convolution
-    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.pack(out_shape),
+    out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
                                  strides=opt.stride, padding=opt.pad) + b
     # reset shape is needed because conv2d_transpose() erase all shape information.
     # noinspection PyUnresolvedReferences
@@ -376,7 +376,7 @@ def sg_emb(**kwargs):
         w = tf.sg_initializer.external(opt.name, value=opt.emb)
 
     # 1st row should be zero and not be updated by backprop because of zero padding.
-    emb = tf.concat(0, [tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w])
+    emb = tf.concat([tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w], 0)
 
     return emb
 
@@ -454,13 +454,13 @@ def sg_rnn(tensor, opt):
         # apply step func
         h = step(h, tensor[:, i, :])
         # save result
-        out.append(h.sg_expand_dims(dim=1))
+        out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
     if opt.last_only:
-        out = out[-1].sg_squeeze(dim=1)
+        out = out[-1].sg_squeeze(axis=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(out, 1)
 
     return out
 
@@ -529,13 +529,13 @@ def sg_gru(tensor, opt):
         h = step(h, tensor[:, i, :])
         # save result
         # noinspection PyUnresolvedReferences
-        out.append(h.sg_expand_dims(dim=1))
+        out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
     if opt.last_only:
-        out = out[-1].sg_squeeze(dim=1)
+        out = out[-1].sg_squeeze(axis=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(out, 1)
 
     return out
 
@@ -609,12 +609,12 @@ def sg_lstm(tensor, opt):
         # apply step function
         h, c = step(h, c, tensor[:, i, :])
         # save result
-        out.append(h.sg_expand_dims(dim=1))
+        out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
     if opt.last_only:
-        out = out[-1].sg_squeeze(dim=1)
+        out = out[-1].sg_squeeze(axis=1)
     else:
-        out = tf.concat(1, out)
+        out = tf.concat(out, 1)
 
     return out

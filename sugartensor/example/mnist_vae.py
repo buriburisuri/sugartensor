@@ -51,8 +51,8 @@ tf.sg_summary_image(x, name='origin')
 tf.sg_summary_image(xx, name='recon')
 
 # loss
-loss_recon = xx.sg_mse(target=x, name='recon').sg_mean(dims=[1, 2, 3])
-loss_kld = tf.square(mu).sg_sum(dims=1) / (28 * 28)
+loss_recon = xx.sg_mse(target=x, name='recon').sg_mean(axis=[1, 2, 3])
+loss_kld = tf.square(mu).sg_sum(axis=1) / (28 * 28)
 tf.sg_summary_loss(loss_kld, name='kld')
 loss = loss_recon + loss_kld * 0.5
 

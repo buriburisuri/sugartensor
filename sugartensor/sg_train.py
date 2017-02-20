@@ -115,7 +115,11 @@ def sg_print(tensor_list):
             res = sess.run(tensor_list)
             for r in res:
                 print(r, r.shape, r.dtype)
-    return res
+
+    if len(res) == 1:
+        return res[0]
+    else:
+        return res
 
 
 def sg_restore(sess, save_path, category=''):

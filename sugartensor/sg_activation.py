@@ -37,7 +37,7 @@ def sg_leaky_relu(x, opt):
     Returns:
       A `Tensor` with the same type and shape as `x`.
     """
-    return tf.select(tf.greater(x, 0), x, 0.01 * x, name=opt.name)
+    return tf.where(tf.greater(x, 0), x, 0.01 * x, name=opt.name)
 
 
 @tf.sg_sugar_func

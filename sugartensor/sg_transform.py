@@ -81,42 +81,42 @@ def sg_int(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_expand_dims(tensor, opt):
-    r"""Inserts a new dimension.
+    r"""Inserts a new axis.
     
     See tf.expand_dims() in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dim : Dimension to expand. Default is -1.
+        axis : Dimension to expand. Default is -1.
         name: If provided, it replaces current tensor's name.
 
     Returns:
         A `Tensor`.
     """
-    opt += tf.sg_opt(dim=-1)
-    return tf.expand_dims(tensor, opt.dim, name=opt.name)
+    opt += tf.sg_opt(axis=-1)
+    return tf.expand_dims(tensor, opt.axis, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_squeeze(tensor, opt):
-    r"""Removes dimensions of size 1 from the shape of a tensor.
+    r"""Removes axis of size 1 from the shape of a tensor.
     
     See `tf.squeeze()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dim : A tuple/list of integers or an integer.
-          Dimensions to remove. Default is -1.
+        axis : A tuple/list of integers or an integer.
+               axis to remove. Default is -1.
         name: If provided, it replaces current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    opt += tf.sg_opt(dim=[-1])
-    opt.dim = opt.dim if isinstance(opt.dim, (tuple, list)) else [opt.dim]
-    return tf.squeeze(tensor, opt.dim, name=opt.name)
+    opt += tf.sg_opt(axis=[-1])
+    opt.axis = opt.axis if isinstance(opt.axis, (tuple, list)) else [opt.axis]
+    return tf.squeeze(tensor, opt.axis, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -178,26 +178,45 @@ def sg_transpose(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_argmax(tensor, opt):
-    r"""Returns the indices of the maximum values along the specified dimension.
+    r"""Returns the indices of the maximum values along the specified axis.
     
     See `tf.argmax()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dim: Target dimension. Default is the last one.
+        axis: Target axis. Default is the last one.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
-    return tf.argmax(tensor, opt.dim, opt.name)
+    opt += tf.sg_opt(axis=tensor.get_shape().ndims-1)
+    return tf.argmax(tensor, opt.axis, opt.name)
+
+
+@tf.sg_sugar_func
+def sg_argmin(tensor, opt):
+    r"""Returns the indices of the minimum values along the specified axis.
+
+    See `tf.argin()` in tensorflow.
+
+    Args:
+      tensor: A `Tensor` (automatically given by chain).
+      opt:
+        axis: Target axis. Default is the last one.
+        name: If provided, replace current tensor's name.
+
+    Returns:
+      A `Tensor`.
+    """
+    opt += tf.sg_opt(axis=tensor.get_shape().ndims - 1)
+    return tf.argmin(tensor, opt.axis, opt.name)
 
 
 @tf.sg_sugar_func
 def sg_concat(tensor, opt):
-    r"""Concatenates tensors along one dimension.
+    r"""Concatenates tensors along a axis.
 
     See `tf.concat()` in tensorflow.
 
@@ -206,16 +225,16 @@ def sg_concat(tensor, opt):
       opt:
         target: A `Tensor`. Must have the same rank as `tensor`, and
           all dimensions except `opt.dim` must be equal.
-        dim : Target dimension. Default is the last one.
+        axis : Target axis. Default is the last one.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
     assert opt.target is not None, 'target is mandatory.'
-    opt += tf.sg_opt(dim=tensor.get_shape().ndims-1)
+    opt += tf.sg_opt(axis=tensor.get_shape().ndims-1)
     target = opt.target if isinstance(opt.target, (tuple, list)) else [opt.target]
-    return tf.concat(opt.dim, [tensor] + target, name=opt.name)
+    return tf.concat([tensor] + target, opt.axis, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -264,135 +283,135 @@ def sg_to_sparse(tensor, opt):
 
 @tf.sg_sugar_func
 def sg_sum(tensor, opt):
-    r"""Computes the sum of elements across dimensions of a tensor.
+    r"""Computes the sum of elements across axis of a tensor.
     
     See `tf.reduce_sum()` in tensorflow.
 
     Args:
       tensor: A `Tensor` with zero-padding (automatically given by chain).
       opt:
-        dims: A tuple/list of integers or an integer. The dimensions to reduce.
+        axis: A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
         A `Tensor`.
     """
-    return tf.reduce_sum(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_sum(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_mean(tensor, opt):
-    r"""Computes the mean of elements across dimensions of a tensor.
+    r"""Computes the mean of elements across axis of a tensor.
     
     See `tf.reduce_mean()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_mean(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_mean(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_prod(tensor, opt):
-    r"""Computes the product of elements across dimensions of a tensor.
+    r"""Computes the product of elements across axis of a tensor.
 
     See `tf.reduce_prod()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_prod(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_prod(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_min(tensor, opt):
-    r"""Computes the minimum of elements across dimensions of a tensor.
+    r"""Computes the minimum of elements across axis of a tensor.
 
     See `tf.reduce_min()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_min(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_min(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_max(tensor, opt):
-    r"""Computes the maximum of elements across dimensions of a tensor.
+    r"""Computes the maximum of elements across axis of a tensor.
 
     See `tf.reduce_max()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_max(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_max(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_all(tensor, opt):
-    r"""Computes the "logical and" of elements across dimensions of a tensor.
+    r"""Computes the "logical and" of elements across axis of a tensor.
     
     See `tf.reduce_all()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_all(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_all(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 @tf.sg_sugar_func
 def sg_any(tensor, opt):
-    r"""Computes the "logical or" of elements across dimensions of a tensor.
+    r"""Computes the "logical or" of elements across axis of a tensor.
 
     See `tf.reduce_any()` in tensorflow.
 
     Args:
       tensor: A `Tensor` (automatically given by chain).
       opt:
-        dims : A tuple/list of integers or an integer. The dimensions to reduce.
+        axis : A tuple/list of integers or an integer. The axis to reduce.
         keep_dims: If true, retains reduced dimensions with length 1.
         name: If provided, replace current tensor's name.
 
     Returns:
       A `Tensor`.
     """
-    return tf.reduce_any(tensor, reduction_indices=opt.dims, keep_dims=opt.keep_dims, name=opt.name)
+    return tf.reduce_any(tensor, axis=opt.axis, keep_dims=opt.keep_dims, name=opt.name)
 
 
 #
@@ -467,13 +486,13 @@ def sg_pool1d(tensor, opt):
     opt += tf.sg_opt(size=opt.stride)
 
     if opt.avg:
-        out = tf.nn.avg_pool(tensor.sg_expand_dims(dim=2),
+        out = tf.nn.avg_pool(tensor.sg_expand_dims(axis=2),
                              (1, opt.size, 1, 1), (1, opt.stride, 1, 1), opt.pad)
     else:
-        out = tf.nn.max_pool(tensor.sg_expand_dims(dim=2),
+        out = tf.nn.max_pool(tensor.sg_expand_dims(axis=2),
                              (1, opt.size, 1, 1), (1, opt.stride, 1, 1), opt.pad)
 
-    return tf.identity(out.sg_squeeze(dim=2), name=opt.name)
+    return tf.identity(out.sg_squeeze(axis=2), name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -513,16 +532,16 @@ def sg_reverse_seq(tensor, opt):
     Args:
       tensor: A 2-D `Tensor` (automatically given by chain).
       opt:
-        dim: Dimension to reverse. Default is 1.
+        axis: Axis to reverse. Default is 1.
         name : If provided, it replaces current tensor's name.
 
     Returns:
       A `Tensor` with the same shape and type as `tensor`.
     """
     # default sequence dimension
-    opt += tf.sg_opt(dim=1)
-    seq_len = tf.not_equal(tensor, tf.zeros_like(tensor)).sg_int().sg_sum(dims=opt.dim)
-    return tf.reverse_sequence(tensor, seq_len, opt.dim, name=opt.name)
+    opt += tf.sg_opt(axis=1)
+    seq_len = tf.not_equal(tensor, tf.zeros_like(tensor)).sg_int().sg_sum(axis=opt.axis)
+    return tf.reverse_sequence(tensor, seq_len, opt.axis, name=opt.name)
 
 
 @tf.sg_sugar_func
@@ -562,7 +581,7 @@ def sg_periodic_shuffle(tensor, opt):
                    .sg_reshape(shape=shape_2))
 
     # final output
-    out = tf.concat(3, out)
+    out = tf.concat(out, 3)
 
     return tf.identity(out, name=opt.name)
 
@@ -604,6 +623,6 @@ def sg_inverse_periodic_shuffle(tensor, opt):
                    .sg_reshape(shape=shape_2))
 
     # final output
-    out = tf.concat(3, out)
+    out = tf.concat(out, 3)
 
     return tf.identity(out, name=opt.name)

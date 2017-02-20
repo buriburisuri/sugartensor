@@ -67,7 +67,7 @@ def sg_vgg_16(tensor, opt):
         return conv
     else:
         if opt.squeeze:
-            return fc.sg_squeeze(dim=(1, 2))
+            return fc.sg_squeeze(axis=(1, 2))
         else:
             return fc
 
@@ -132,7 +132,7 @@ def sg_vgg_19(tensor, opt):
         return conv
     else:
         if opt.squeeze:
-            return fc.sg_squeeze(dim=(1, 2))
+            return fc.sg_squeeze(axis=(1, 2))
         else:
             return fc
 
@@ -419,7 +419,7 @@ def _resnet_graph(x, opt, nums):
         return conv
     else:
         if opt.squeeze:
-            return fc.sg_squeeze(dim=(1, 2))
+            return fc.sg_squeeze(axis=(1, 2))
         else:
             return fc
 
@@ -468,7 +468,7 @@ def sg_densenet_layer(x, opt):
                        .sg_bypass(act=opt.act, bn=True, name=cname(3 * i + 1))
                        .sg_conv(dim=opt.dim // 4, size=1, act=opt.act, bn=True, name=cname(3 * i + 2))
                        .sg_conv(dim=opt.dim, size=3, name=cname(3 * i + 3)))
-            out = tf.concat(3, [out_new, out])
+            out = tf.concat([out_new, out], 3)
 
         # transition layer
         if opt.trans:
@@ -506,6 +506,6 @@ def _densenet_graph(x, opt, nums):
         return conv
     else:
         if opt.squeeze:
-            return fc.sg_squeeze(dim=(1, 2))
+            return fc.sg_squeeze(axis=(1, 2))
         else:
             return fc
