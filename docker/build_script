@@ -1,4 +1,4 @@
-# run the following command on the .. dir
+# run the following command on the sugartensor/sugartensor/ dir
 docker build -t sugartensor/suguartensor:0.0.x.x -f docker/Dockerfile
 docker build -t sugartensor/suguartensor:0.0.x.x-cpu -f docker/Dockerfile_cpu
 
