@@ -1,12 +1,15 @@
-# run the following command on the sugartensor/sugartensor/ dir
-docker build -t sugartensor/suguartensor:0.0.x.x -f docker/Dockerfile
-docker build -t sugartensor/suguartensor:0.0.x.x-cpu -f docker/Dockerfile_cpu
+# run the following command on the sugartensor directory.
+docker build -t suguartensor -f docker/Dockerfile .
+docker build -t suguartensor-cpu -f docker/Dockerfile_cpu .
+
+# test docker
+nvidia-docker run -it image_id bash
 
 # attach tag
-docker tag xxxxxx sugartensor/sugartensor:0.0.x.x
-docker tag xxxxxx sugartensor/sugartensor:latest
-docker tag xxxxxx sugartensor/sugartensor:0.0.x.x-cpu
-docker tag xxxxxx sugartensor/sugartensor:latest-cpu
+docker tag image_id sugartensor/sugartensor:0.0.x.x
+docker tag image_id sugartensor/sugartensor:latest
+docker tag image_id sugartensor/sugartensor:0.0.x.x-cpu
+docker tag image_id sugartensor/sugartensor:latest-cpu
 
 # push to dockerhub
 docker push sugartensor/sugartensor
