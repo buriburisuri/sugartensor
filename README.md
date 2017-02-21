@@ -10,8 +10,7 @@ we use pure python functions only and avoid class style conventions.
 ## Installation
 
 1. Requirements
-    1. tensorflow = 1.0.0
-    1. tqdm >= 4.8.4  ( for a console progressive bar )
+    1. tensorflow == __***1.0.0***__
 
 2. Installation
 
@@ -157,4 +156,4 @@ or [WaveNet example code](https://github.com/buriburisuri/speech-to-text-wavenet
 
 # Author
 
-Namju Kim (buriburisuri@gmail.com) at Jamonglabs Co., Ltd.
+Namju Kim (buriburisuri@gmail.com) at KakaoBrain Corp.
