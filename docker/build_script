@@ -3,13 +3,14 @@ docker build -t suguartensor -f docker/Dockerfile .
 docker build -t suguartensor-cpu -f docker/Dockerfile_cpu .
 
 # attach tag
-docker tag image_id sugartensor/sugartensor:0.0.x.x
 docker tag image_id sugartensor/sugartensor:latest
-docker tag image_id sugartensor/sugartensor:0.0.x.x-cpu
+docker tag image_id sugartensor/sugartensor:0.0.x.x
 docker tag image_id sugartensor/sugartensor:latest-cpu
+docker tag image_id sugartensor/sugartensor:0.0.x.x-cpu
+
 
 # docker login
-docker login sugartensor
+docker login
 
 # push to dockerhub
 docker push sugartensor/sugartensor

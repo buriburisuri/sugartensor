@@ -16,7 +16,7 @@ we use pure python functions only and avoid class style conventions.
 
 python 2
 
-<pre><code>pip install sugartensor</code></pre>
+<pre><code>pip install --upgrade sugartensor</code></pre>
 
 python 3
 

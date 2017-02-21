@@ -54,13 +54,13 @@ sudo service docker restart
 Run sugartensor container with GPU support
 
 ```
-nvidia-docker run -it -p 2222:22 -d sugartensor/sugartensor
+nvidia-docker run -p 2222:22 -d sugartensor/sugartensor
 ```
 
 Run sugartensor container with CPU only support
 
 ```
-docker run -it -p 2222:22 -d sugartensor/sugartensor:latest-cpu 
+docker run -p 2222:22 -d sugartensor/sugartensor:latest-cpu 
 ```
 
 ## Connect to the sugartensor SSH server container using ssh
