@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # SugarTensor documentation build configuration file, created by
-# sphinx-quickstart on Wed Feb 22 17:34:27 2017.
+# sphinx-quickstart on Wed Feb 22 18:05:51 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -17,9 +17,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, '/home/ubuntu/prj/sugartensor/sugartensor')
+import os
+import sys
+sys.path.insert(0, '/home/ubuntu/prj/sugartensor/sugartensor')
 
 
 # -- General configuration ------------------------------------------------
@@ -85,7 +85,7 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
