@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # SugarTensor documentation build configuration file, created by
-# sphinx-quickstart on Wed Feb 22 18:05:51 2017.
+# sphinx-quickstart on Wed Feb 22 18:10:16 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
