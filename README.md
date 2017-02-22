@@ -29,6 +29,9 @@ python 3
 
 docker installation : See docker [README.md](docker/README.md).
 
+## API Document
+
+See [SugarTensor's official API documentation]( http://sugartensor.readthedocs.io/en/latest/ ).
 
 ## Quick start
 
