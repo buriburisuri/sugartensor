@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_initializer module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_layer module" href="sugartensor.sg_layer.html" />
+    <link rel="prev" title="sugartensor.sg_data module" href="sugartensor.sg_data.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_layer.html" title="sugartensor.sg_layer module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_data.html" title="sugartensor.sg_data module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_initializer">
+<span id="sugartensor-sg-initializer-module"></span><h1>sugartensor.sg_initializer module<a class="headerlink" href="#module-sugartensor.sg_initializer" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_initializer.constant">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">constant</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>value=0</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#constant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.constant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a tensor variable of which initial values are <cite>value</cite> and shape is <cite>shape</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">name: The name of new variable.
+shape: A tuple/list of integers or an integer.</p>
+<blockquote>
+<div>If shape is an integer, it is converted to a list.</div></blockquote>
+<dl class="docutils">
+<dt>value: A Python scalar. All elements of the initialized variable</dt>
+<dd>will be set to this value. Default is 0.</dd>
+</dl>
+<p class="last">dtype: The data type. Only floating point types are supported. Default is float32.
+summary: If True, add this constant to tensor board summary.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.external">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">external</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#external"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.external" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a tensor variable of which initial values are <cite>value</cite>.</p>
+<p>For example,</p>
+<p><code class="docutils literal"><span class="pre">`</span>
+<span class="pre">external(&quot;external&quot;,</span> <span class="pre">[3,3,1,2])</span>
+<span class="pre">=&gt;</span> <span class="pre">[3.</span> <span class="pre">3.</span> <span class="pre">1.</span> <span class="pre">2.]</span>
+<span class="pre">`</span></code></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name: The name of new variable.
+value: A constant value (or list) of output type <cite>dtype</cite>.
+dtype: The type of the elements of the resulting tensor.
+summary: If True, add this constant to tensor board summary.</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>. Has the same contents as <cite>value</cite> of <cite>dtype</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.glorot_uniform">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">glorot_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#glorot_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.glorot_uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>See [Glorot &amp; Bengio. 2010.](<a class="reference external" href="http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf">http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf</a>)</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name: The name of new variable
+shape: A tuple/list of integers.
+scale: A Python scalar. Scale to initialize. Default is 1.
+dtype: The data type. Default is float32.
+summary: If True, add this constant to tensor board summary.</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.he_uniform">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">he_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#he_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.he_uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>See [He et al. 2015](<a class="reference external" href="http://arxiv.org/pdf/1502.01852v1.pdf">http://arxiv.org/pdf/1502.01852v1.pdf</a>)</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name: The name of new variable
+shape: A tuple/list of integers.
+scale: A Python scalar. Scale to initialize. Default is 1.
+dtype: The data type. Default is float32.
+summary: If True, add this constant to tensor board summary.</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.identity">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">identity</code><span class="sig-paren">(</span><em>name</em>, <em>dim</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a tensor variable of which initial values are of
+an identity matrix.</p>
+<p>Note that the default value of <cite>scale</cite> (=0.05) is different from 
+the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.</p>
+<p>For example,</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+identity(&#8220;identity&#8221;, 3, 2) =&gt;
+[[2. 0. 0.]</p>
+<blockquote>
+<div>[0. 2. 0.]
+[0. 0. 2.]]</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name: The name of new variable.
+dim: An int. The size of the first and second dimension of the output tensor.
+scale: A Python scalar. The value on the diagonal.
+dtype: The type of the elements of the resulting tensor.
+summary: If True, add this constant to tensor board summary.</dd>
+<dt>Returns:</dt>
+<dd>A 2-D <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.orthogonal">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">orthogonal</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1.1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#orthogonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.orthogonal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a tensor variable of which initial values are of
+an orthogonal ndarray.</p>
+<p>See [Saxe et al. 2014.](<a class="reference external" href="http://arxiv.org/pdf/1312.6120.pdf">http://arxiv.org/pdf/1312.6120.pdf</a>)</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>name: The name of new variable.
+shape: A tuple/list of integers. 
+scale: A Python scalar.
+dtype: Either float32 or float64.
+summary: If True, add this constant to tensor board summary.</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_initializer.uniform">
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=0.05</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a tensor variable of which initial values are 
+random numbers based on uniform distribution.</p>
+<p>Note that the default value of <cite>scale</cite> (=0.05) is different from 
+the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">name: The name of the new variable.
+shape: A tuple/list of integers or an integer.</p>
+<blockquote>
+<div>If shape is an integer, it&#8217;s converted to a list.</div></blockquote>
+<p class="last">scale: A Python scalar. All initial values should be in range <cite>[-scale, scale)</cite>. Default is .05.
+dtype: The data type. Only floating point types are supported. Default is float32.
+summary: If True, add this constant to tensor board summary.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Variable</cite>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_data.html"
+                        title="previous chapter">sugartensor.sg_data module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_layer.html"
+                        title="next chapter">sugartensor.sg_layer module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_initializer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_layer.html" title="sugartensor.sg_layer module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_data.html" title="sugartensor.sg_data module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

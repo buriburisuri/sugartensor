@@ -1,0 +1,642 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_transform module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_util module" href="sugartensor.sg_util.html" />
+    <link rel="prev" title="sugartensor.sg_train module" href="sugartensor.sg_train.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_util.html" title="sugartensor.sg_util module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_train.html" title="sugartensor.sg_train module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_transform">
+<span id="sugartensor-sg-transform-module"></span><h1>sugartensor.sg_transform module<a class="headerlink" href="#module-sugartensor.sg_transform" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_all">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_all</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the &#8220;logical and&#8221; of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_all()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_any">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_any</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the &#8220;logical or&#8221; of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_any()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_argmax">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_argmax</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_argmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_argmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices of the maximum values along the specified axis.</p>
+<p>See <cite>tf.argmax()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis: Target axis. Default is the last one.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_argmin">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_argmin</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_argmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_argmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices of the minimum values along the specified axis.</p>
+<p>See <cite>tf.argin()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis: Target axis. Default is the last one.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_cast">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_cast</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_cast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Casts a tensor to a new type.</p>
+<p>See <cite>tf.cast()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> or <cite>SparseTensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>dtype : The destination type.
+name : If provided, it replaces current tensor&#8217;s name</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> or <cite>SparseTensor</cite> with same shape as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_concat">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_concat</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_concat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_concat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates tensors along a axis.</p>
+<p>See <cite>tf.concat()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>target: A <cite>Tensor</cite>. Must have the same rank as <cite>tensor</cite>, and</dt>
+<dd>all dimensions except <cite>opt.dim</cite> must be equal.</dd>
+</dl>
+<p>axis : Target axis. Default is the last one.
+name: If provided, replace current tensor&#8217;s name.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_expand_dims">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_expand_dims</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_expand_dims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_expand_dims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a new axis.</p>
+<p>See tf.expand_dims() in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : Dimension to expand. Default is -1.
+name: If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_flatten">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_flatten</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshapes a tensor to <cite>batch_size x -1</cite>.</p>
+<p>See <cite>tf.reshape()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>name: If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A 2-D tensor.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_float">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_float</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Casts a tensor to floatx.</p>
+<p>See <cite>tf.cast()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> or <cite>SparseTensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>name : If provided, it replaces current tensor&#8217;s name</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> or <cite>SparseTensor</cite> with same shape as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_identity">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_identity</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the same tensor</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>name : If provided, it replaces current tensor&#8217;s name</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>. Has the same content as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_int">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_int</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Casts a tensor to intx.</p>
+<p>See <cite>tf.cast()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> or <cite>SparseTensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>name: If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> or <cite>SparseTensor</cite> with same shape as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_inverse_periodic_shuffle">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_inverse_periodic_shuffle</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_inverse_periodic_shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_inverse_periodic_shuffle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Inverse periodic shuffle transformation for SubPixel CNN.</dt>
+<dd>(see [Shi et al. 2016](<a class="reference external" href="http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf">http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf</a>)</dd>
+<dt>Args:</dt>
+<dd><p class="first">tensor: A tensor (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>factor: factor to multiply shape by. Default is 2.
+name : If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A tensor</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_lookup">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_lookup</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the <cite>tensor</cite>, which is the embedding matrix.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A tensor ( automatically given by chain )
+opt:</p>
+<blockquote class="last">
+<div>emb: A 2-D <cite>Tensor</cite>. An embedding matrix.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_max">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_max</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the maximum of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_max()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_mean">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_mean</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the mean of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_mean()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_min">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_min</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the minimum of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_min()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_one_hot">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_one_hot</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_one_hot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_one_hot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a tensor into a one-hot tensor.</p>
+<p>See <cite>tf.one_hot()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> ( automatically given by chain )
+opt:</p>
+<blockquote class="last">
+<div>depth: The number of classes.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_periodic_shuffle">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_periodic_shuffle</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_periodic_shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_periodic_shuffle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Periodic shuffle transformation for SubPixel CNN.</dt>
+<dd>(see [Shi et al. 2016](<a class="reference external" href="http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf">http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf</a>)</dd>
+<dt>Args:</dt>
+<dd><p class="first">tensor: A tensor (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>factor: factor to multiply shape by. Default is 2.
+name : If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A tensor</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_pool">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_pool</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_pool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_pool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the 2-D pooling on the <cite>tensor</cite>.
+Mostly used with sg_conv().</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 4-D <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A tuple or list of integers of length 2 representing <cite>[kernel height, kernel width]</cite>.</dt>
+<dd>Can be an int if both values are the same.
+If not specified, (2, 2) is set implicitly.</dd>
+<dt>stride: A tuple or list of integers of length 2 or 4 representing stride dimensions.</dt>
+<dd>If the length is 2, i.e., (a, b), the stride is <cite>[1, a, b, 1]</cite>.
+If the length is 4, i.e., (a, b, c, d), the stride is <cite>[a, b, c, d]</cite>.
+Can be an int. If the length is an int, i.e., a, the stride is <cite>[1, a, a, 1]</cite>.
+The default value is [1, 1, 1, 1].</dd>
+</dl>
+<p>avg: Boolean. If True, average pooling is applied. Otherwise, max pooling.
+name: If provided, replace current tensor&#8217;s name.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>. The max pooled output tensor.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_pool1d">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_pool1d</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_pool1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_pool1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the 1-D pooling on the <cite>tensor</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A positive <cite>integer</cite> representing <cite>[kernel width]</cite>.</dt>
+<dd>Default is 2.</dd>
+<dt>stride: A positive <cite>integer</cite>. The number of entries by which</dt>
+<dd>the filter is moved right at each step. Default is 2.</dd>
+</dl>
+<p>avg: Boolean. If True, average pooling is applied. Otherwise, max pooling.
+name: If provided, replace current tensor&#8217;s name.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A tensor</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_prod">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_prod</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_prod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the product of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_prod()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis : A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_reshape">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_reshape</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_reshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_reshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshapes a tensor.</p>
+<p>See <cite>tf.reshape()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>shape: A tuple/list of integers. The destination shape.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_reverse_seq">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_reverse_seq</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_reverse_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_reverse_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverses variable length slices.</p>
+<dl class="docutils">
+<dt>Before applying the pure tensorflow function tf.reverse_sequence,</dt>
+<dd>this function calculates sequence lengths by counting non-zeros.</dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+tensor = [[1, 2, 3, 0, 0], [4, 5, 0, 0, 0]]
+tensor.sg_reverse_seq()
+=&gt; [[3 2 1 0 0]</p>
+<blockquote>
+<div>[5 4 0 0 0]]</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 2-D <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis: Axis to reverse. Default is 1.
+name : If provided, it replaces current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same shape and type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_squeeze">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_squeeze</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_squeeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_squeeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes axis of size 1 from the shape of a tensor.</p>
+<p>See <cite>tf.squeeze()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>axis <span class="classifier-delimiter">:</span> <span class="classifier">A tuple/list of integers or an integer.</span></dt>
+<dd>axis to remove. Default is -1.</dd>
+</dl>
+<p>name: If provided, it replaces current tensor&#8217;s name.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_sum">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_sum</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the sum of elements across axis of a tensor.</p>
+<p>See <cite>tf.reduce_sum()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> with zero-padding (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>axis: A tuple/list of integers or an integer. The axis to reduce.
+keep_dims: If true, retains reduced dimensions with length 1.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_to_sparse">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_to_sparse</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_to_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_to_sparse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a dense tensor into a sparse tensor.</p>
+<p>See <cite>tf.SparseTensor()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> with zero-padding (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>SparseTensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_transpose">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_transpose</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permutes the dimensions according to <cite>opt.perm</cite>.</p>
+<p>See <cite>tf.transpose()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chain).
+opt:</p>
+<blockquote class="last">
+<div>perm: A permutation of the dimensions of <cite>tensor</cite>. The target shape.
+name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_train.html"
+                        title="previous chapter">sugartensor.sg_train module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_util.html"
+                        title="next chapter">sugartensor.sg_util module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_transform.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_util.html" title="sugartensor.sg_util module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_train.html" title="sugartensor.sg_train module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

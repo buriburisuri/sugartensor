@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_logging &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_logging</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># summary function</span>
+<span class="c1">#</span>
+
+
+<span class="c1"># noinspection PyTypeChecker</span>
+<div class="viewcode-block" id="sg_summary_loss"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_loss">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_loss</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;losses&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `loss`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as loss</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_pretty_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;-h&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<span class="c1"># noinspection PyTypeChecker</span>
+<div class="viewcode-block" id="sg_summary_metric"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_metric">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_metric</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;metrics&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `metric`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as metric</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_pretty_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;-h&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="sg_summary_gradient"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_gradient">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_gradient</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `gradient`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as gradient</span>
+<span class="sd">      gradient: A 0-D `Tensor`. A gradient to log</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_full_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/grad&#39;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gradient</span><span class="p">)))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/grad-h&#39;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gradient</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="sg_summary_activation"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_activation">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_activation</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `activation`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as activation</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_pretty_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/ratio&#39;</span><span class="p">,</span>
+                          <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">)))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/ratio-h&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="sg_summary_param"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_param">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_param</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `parameters`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as parameters</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_pretty_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">tensor</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/abs&#39;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/abs-h&#39;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="sg_summary_image"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_image">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_image</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as `image`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A tensor to log as image</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_full_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;-im&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="sg_summary_audio"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_summary_audio">[docs]</a><span class="k">def</span> <span class="nf">sg_summary_audio</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Register `tensor` to summary report as audio</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` to log as audio</span>
+<span class="sd">      sample_rate : An int. Sample rate to report. Default is 16000.</span>
+<span class="sd">      prefix: A `string`. A prefix to display in the tensor board web UI.</span>
+<span class="sd">      name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># defaults</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+    <span class="c1"># summary name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">_full_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="c1"># summary statistics</span>
+    <span class="c1"># noinspection PyBroadException</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">audio</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;-au&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<span class="k">def</span> <span class="nf">_pretty_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_full_name</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># logger wrappers</span>
+<span class="c1">#</span>
+
+<span class="c1"># use tensorflow logger</span>
+<span class="c1"># pylint: disable=protected-access</span>
+<span class="c1"># noinspection PyProtectedMember</span>
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">_logger</span>
+
+
+<span class="k">def</span> <span class="nf">_log_prefix</span><span class="p">():</span>
+
+    <span class="c1"># Returns (filename, line number) for the stack frame.</span>
+    <span class="k">def</span> <span class="nf">_get_file_line</span><span class="p">():</span>
+
+        <span class="c1"># pylint: disable=protected-access</span>
+        <span class="c1"># noinspection PyProtectedMember</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span>
+        <span class="c1"># pylint: enable=protected-access</span>
+        <span class="n">our_file</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">f_back</span>
+        <span class="k">while</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">f_code</span>
+            <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">co_filename</span> <span class="o">!=</span> <span class="n">our_file</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">f_lineno</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">f_back</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;unknown&gt;&#39;</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="c1"># current time</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">now_tuple</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">now_millisecond</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">now</span> <span class="o">%</span> <span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="c1"># current filename and line</span>
+    <span class="n">filename</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">_get_file_line</span><span class="p">()</span>
+    <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%02d%02d</span><span class="s1">:</span><span class="si">%02d</span><span class="s1">:</span><span class="si">%02d</span><span class="s1">:</span><span class="si">%02d</span><span class="s1">.</span><span class="si">%03d</span><span class="s1">:</span><span class="si">%s</span><span class="s1">:</span><span class="si">%d</span><span class="s1">] &#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">now_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># month</span>
+        <span class="n">now_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># day</span>
+        <span class="n">now_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># hour</span>
+        <span class="n">now_tuple</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>  <span class="c1"># min</span>
+        <span class="n">now_tuple</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>  <span class="c1"># sec</span>
+        <span class="n">now_millisecond</span><span class="p">,</span>
+        <span class="n">basename</span><span class="p">,</span>
+        <span class="n">line</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<div class="viewcode-block" id="sg_verbosity"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_verbosity">[docs]</a><span class="k">def</span> <span class="nf">sg_verbosity</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">verbosity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_debug"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_debug">[docs]</a><span class="k">def</span> <span class="nf">sg_debug</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">_log_prefix</span><span class="p">()</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_info"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_info">[docs]</a><span class="k">def</span> <span class="nf">sg_info</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_log_prefix</span><span class="p">()</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_warn"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_warn">[docs]</a><span class="k">def</span> <span class="nf">sg_warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_log_prefix</span><span class="p">()</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_error"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_error">[docs]</a><span class="k">def</span> <span class="nf">sg_error</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_log_prefix</span><span class="p">()</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_fatal"><a class="viewcode-back" href="../../sugartensor.sg_logging.html#sugartensor.sg_logging.sg_fatal">[docs]</a><span class="k">def</span> <span class="nf">sg_fatal</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="n">_log_prefix</span><span class="p">()</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

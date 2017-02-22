@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_train module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_transform module" href="sugartensor.sg_transform.html" />
+    <link rel="prev" title="sugartensor.sg_queue module" href="sugartensor.sg_queue.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_transform.html" title="sugartensor.sg_transform module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_queue.html" title="sugartensor.sg_queue module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_train">
+<span id="sugartensor-sg-train-module"></span><h1>sugartensor.sg_train module<a class="headerlink" href="#module-sugartensor.sg_train" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_init">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_init</code><span class="sig-paren">(</span><em>sess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes session variables.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sess: Session to initialize.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_optim">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_optim</code><span class="sig-paren">(</span><em>loss</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_optim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_optim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies gradients to variables.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">loss: A 0-D <cite>Tensor</cite> containing the value to minimize.
+kwargs:</p>
+<blockquote class="last">
+<div><p>optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, or &#8216;sgd&#8217;.
+lr: A Python Scalar (optional). Learning rate. Default is .001.
+beta1: A Python Scalar (optional). Default is .9.
+beta2: A Python Scalar (optional). Default is .99.
+category: A string or string list. Specifies the variables that should be trained (optional).</p>
+<blockquote>
+<div>Only if the name of a trainable variable starts with <cite>category</cite>, it&#8217;s value is updated.
+Default is &#8216;&#8217;, which means all trainable variables are updated.</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_print">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_print</code><span class="sig-paren">(</span><em>tensor_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple tensor printing function for debugging.
+Prints the value, shape, and data type of each tensor in the list.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor_list: A list/tuple of tensors or a single tensor.</dd>
+<dt>Returns:</dt>
+<dd>The value of the tensors.</dd>
+</dl>
+<p>For example,</p>
+<p><code class="docutils literal"><span class="pre">`python</span>
+<span class="pre">import</span> <span class="pre">sugartensor</span> <span class="pre">as</span> <span class="pre">tf</span>
+<span class="pre">a</span> <span class="pre">=</span> <span class="pre">tf.constant([1.])</span>
+<span class="pre">b</span> <span class="pre">=</span> <span class="pre">tf.constant([2.])</span>
+<span class="pre">out</span> <span class="pre">=</span> <span class="pre">tf.sg_print([a,</span> <span class="pre">b])</span>
+<span class="pre">#</span> <span class="pre">Should</span> <span class="pre">print</span> <span class="pre">[</span> <span class="pre">1.]</span> <span class="pre">(1,)</span> <span class="pre">float32</span>
+<span class="pre">#</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">[</span> <span class="pre">2.]</span> <span class="pre">(1,)</span> <span class="pre">float32</span>
+<span class="pre">print(out)</span>
+<span class="pre">#</span> <span class="pre">Should</span> <span class="pre">print</span> <span class="pre">[array([</span> <span class="pre">1.],</span> <span class="pre">dtype=float32),</span> <span class="pre">array([</span> <span class="pre">2.],</span> <span class="pre">dtype=float32)]</span>
+<span class="pre">`</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_restore">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_restore</code><span class="sig-paren">(</span><em>sess</em>, <em>save_path</em>, <em>category=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_restore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restores previously saved variables.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sess: A <cite>Session</cite> to use to restore the parameters.
+save_path: Path where parameters were previously saved.
+category: A <cite>String</cite> to filter variables starts with given category.</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_train">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_train</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the model.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs:</dt>
+<dd><p class="first">optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, or &#8216;sgd&#8217;.
+loss: A 0-D <cite>Tensor</cite> containing the value to minimize.
+lr: A Python Scalar (optional). Learning rate. Default is .001.
+beta1: A Python Scalar (optional). Default is .9.
+beta2: A Python Scalar (optional). Default is .99.</p>
+<p>eval_metric: A list of tensors containing the value to evaluate. Default is [].
+early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.</p>
+<blockquote>
+<div><ol class="lowerroman simple">
+<li>Current loss is less than .95 * previous loss.</li>
+<li>Current learning rate is less than 5e-6.</li>
+</ol>
+</div></blockquote>
+<dl class="docutils">
+<dt>lr_reset: Boolean. If True, learning rate is set to opt.lr. when training restarts.</dt>
+<dd>Otherwise (Default), the value of the stored <cite>_learning_rate</cite> is taken.</dd>
+<dt>save_dir: A string. The root path to which checkpoint and log files are saved.</dt>
+<dd>Default is <cite>asset/train</cite>.</dd>
+</dl>
+<p>max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
+ep_size: A positive integer. Number of Total batches in an epoch.</p>
+<blockquote>
+<div>For proper display of log. Default is 1e5.</div></blockquote>
+<dl class="docutils">
+<dt>save_interval: A Python scalar. The interval of saving checkpoint files.</dt>
+<dd>By default, for every 600 seconds, a checkpoint file is written.</dd>
+<dt>log_interval: A Python scalar. The interval of recoding logs.</dt>
+<dd>By default, for every 60 seconds, logging is executed.</dd>
+</dl>
+<p>max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
+keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.</p>
+<p>category: Scope name or list to train</p>
+<p>tqdm: Boolean. If True (Default), progress bars are shown.
+console_log: Boolean. If True, a series of loss will be shown</p>
+<blockquote class="last">
+<div>on the console instead of tensorboard. Default is False.</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_train.sg_train_func">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_train_func</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_train_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_train_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates a function <cite>func</cite> as sg_train_func.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>func: A function to decorate</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_queue.html"
+                        title="previous chapter">sugartensor.sg_queue module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_transform.html"
+                        title="next chapter">sugartensor.sg_transform module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_train.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_transform.html" title="sugartensor.sg_transform module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_queue.html" title="sugartensor.sg_queue module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

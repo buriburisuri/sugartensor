@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_loss module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_main module" href="sugartensor.sg_main.html" />
+    <link rel="prev" title="sugartensor.sg_logging module" href="sugartensor.sg_logging.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_main.html" title="sugartensor.sg_main module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_logging.html" title="sugartensor.sg_logging module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_loss">
+<span id="sugartensor-sg-loss-module"></span><h1>sugartensor.sg_loss module<a class="headerlink" href="#module-sugartensor.sg_loss" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_bce">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_bce</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_bce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_bce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns sigmoid cross entropy loss between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>. Logits. Unscaled log probabilities.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite> with the same shape and dtype as <cite>tensor</cite>. Labels.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> of the same shape as <cite>tensor</cite></dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+tensor = [[2, -1, 3], [3, 1, -2]]
+target = [[0, 1, 1], [1, 1, 0]]
+tensor.sg_bce(target=target) =&gt;     [[ 2.12692809  1.31326163  0.04858733]</p>
+<blockquote>
+<div>[ 0.04858733  0.31326166  0.12692805]]</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_ce">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_ce</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_ce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_ce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns softmax cross entropy loss between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>. Logits. Unscaled log probabilities.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite> with the same length in the first dimension as the <cite>tensor</cite>. Labels. 
+one_hot: Boolean. Whether to treat the labels as one-hot encoding. Default is False.
+mask: Boolean. If True, zeros in the target will be excluded from the calculation.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A 1-D <cite>Tensor</cite> with the same shape as <cite>tensor</cite>.</dd>
+</dl>
+<p>For example,</p>
+<p><code class="docutils literal"><span class="pre">`</span>
+<span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[[[2,</span> <span class="pre">-1,</span> <span class="pre">3],</span> <span class="pre">[3,</span> <span class="pre">1,</span> <span class="pre">-2]]]</span>
+<span class="pre">target</span> <span class="pre">=</span> <span class="pre">[[2,</span> <span class="pre">1]]</span>
+<span class="pre">tensor.sg_ce(target=target)</span> <span class="pre">=&gt;</span> <span class="pre">[[</span> <span class="pre">0.32656264</span>&#160; <span class="pre">2.13284516]]</span>
+<span class="pre">`</span></code></p>
+<p>For example,</p>
+<p><code class="docutils literal"><span class="pre">`</span>
+<span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[[2,</span> <span class="pre">-1,</span> <span class="pre">3],</span> <span class="pre">[3,</span> <span class="pre">1,</span> <span class="pre">-2]]</span>
+<span class="pre">target</span> <span class="pre">=</span> <span class="pre">[[0,</span> <span class="pre">0,</span> <span class="pre">1],</span> <span class="pre">[1,</span> <span class="pre">0,</span> <span class="pre">0]]</span>
+<span class="pre">tensor.sg_ce(target=target,</span> <span class="pre">one_hot=True)</span> <span class="pre">=&gt;</span> <span class="pre">[</span> <span class="pre">0.32656264</span>&#160; <span class="pre">0.13284527]</span>
+<span class="pre">`</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_ctc">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_ctc</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_ctc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_ctc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the CTC (Connectionist Temporal Classification) Loss between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>float Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite> with the same length in the first dimension as the <cite>tensor</cite>. Labels. ( Dense tensor )
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A 1-D <cite>Tensor</cite> with the same length in the first dimension of the <cite>tensor</cite>.</dd>
+</dl>
+<p>For example,</p>
+<p><code class="docutils literal"><span class="pre">`</span>
+<span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[[[2.,</span> <span class="pre">-1.,</span> <span class="pre">3.],</span> <span class="pre">[3.,</span> <span class="pre">1.,</span> <span class="pre">-2.]],</span> <span class="pre">[[1.,</span> <span class="pre">-1.,</span> <span class="pre">2.],</span> <span class="pre">[3.,</span> <span class="pre">1.,</span> <span class="pre">-2.]]]</span>
+<span class="pre">target</span> <span class="pre">=</span> <span class="pre">[[2.,</span> <span class="pre">1.],</span> <span class="pre">[2.,</span> <span class="pre">3.]]</span>
+<span class="pre">tensor.sg_ctc(target=target)</span> <span class="pre">=&gt;</span> <span class="pre">[</span> <span class="pre">4.45940781</span>&#160; <span class="pre">2.43091154]</span>
+<span class="pre">`</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_hinge">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_hinge</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_hinge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_hinge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns hinge loss between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite>. Labels.
+margin: An int. Maximum margin. Default is 1.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a>`
+tensor = [[30, 10, 40], [13, 30, 42]]
+target = [[0, 0, 1], [0, 1, 0]]
+tensor.sg_hinge(target=target, one_hot=True) =&gt;     [[ 1.  1.  0.]</p>
+<blockquote>
+<div>[ 1.  0.  1.]]</div></blockquote>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_mae">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_mae</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_mae"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_mae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns absolute error between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite> with the same shape and dtype as <cite>tensor</cite>.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> of the same shape and dtype as <cite>tensor</cite></dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a>`
+tensor = [[34, 11, 40], [13, 30, 42]]
+target = [[34, 10, 41], [14, 31, 40]]
+tensor.sg_mse(target=target) =&gt; [[ 0.  1.  1.]</p>
+<blockquote>
+<div>[ 1.  1.  2.]]</div></blockquote>
+<p><a href="#id15"><span class="problematic" id="id16">``</span></a><a href="#id17"><span class="problematic" id="id18">`</span></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_loss.sg_mse">
+<code class="descclassname">sugartensor.sg_loss.</code><code class="descname">sg_mse</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_loss.html#sg_mse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_loss.sg_mse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns squared error between <cite>tensor</cite> and <cite>target</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>target: A <cite>Tensor</cite> with the same shape and dtype as <cite>tensor</cite>.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> of the same shape and dtype as <cite>tensor</cite></dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id19"><span class="problematic" id="id20">``</span></a>`
+tensor = [[34, 11, 40], [13, 30, 42]]
+target = [[34, 10, 41], [14, 31, 40]]
+tensor.sg_mse(target=target) =&gt; [[ 0.  1.  1.]</p>
+<blockquote>
+<div>[ 1.  1.  4.]]</div></blockquote>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_logging.html"
+                        title="previous chapter">sugartensor.sg_logging module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_main.html"
+                        title="next chapter">sugartensor.sg_main module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_loss.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_main.html" title="sugartensor.sg_main module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_logging.html" title="sugartensor.sg_logging module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

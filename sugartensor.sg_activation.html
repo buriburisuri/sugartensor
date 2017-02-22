@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_activation module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_data module" href="sugartensor.sg_data.html" />
+    <link rel="prev" title="sugartensor package" href="sugartensor.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_data.html" title="sugartensor.sg_data module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.html" title="sugartensor package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_activation">
+<span id="sugartensor-sg-activation-module"></span><h1>sugartensor.sg_activation module<a class="headerlink" href="#module-sugartensor.sg_activation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_elu">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_elu</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_elu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_elu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_leaky_relu">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_leaky_relu</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_leaky_relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_leaky_relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8220;See [Xu, et al. 2015](<a class="reference external" href="https://arxiv.org/pdf/1505.00853v2.pdf">https://arxiv.org/pdf/1505.00853v2.pdf</a>)</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">x: A tensor
+opt:</p>
+<blockquote class="last">
+<div>name: A name for the operation (optional).</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type and shape as <cite>x</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_linear">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_linear</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_linear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_relu">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_relu</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_relu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_relu6">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_relu6</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_relu6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_relu6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_sigmoid">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_sigmoid</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_sigmoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_softmax">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_softmax</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_softmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_softplus">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_softplus</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_softplus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_softplus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_softsign">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_softsign</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_softsign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_softsign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_activation.sg_tanh">
+<code class="descclassname">sugartensor.sg_activation.</code><code class="descname">sg_tanh</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_activation.html#sg_tanh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_activation.sg_tanh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.html"
+                        title="previous chapter">sugartensor package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_data.html"
+                        title="next chapter">sugartensor.sg_data module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_activation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_data.html" title="sugartensor.sg_data module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.html" title="sugartensor package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

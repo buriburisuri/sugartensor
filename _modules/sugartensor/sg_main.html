@@ -1,0 +1,673 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_main &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_main</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># default float, int precision</span>
+<span class="c1">#</span>
+
+
+<span class="n">sg_floatx</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span>
+<span class="n">sg_intx</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">int32</span>
+<span class="n">sg_eps</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+<span class="c1">#</span>
+<span class="c1"># global step</span>
+<span class="c1">#</span>
+
+<span class="n">_global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;global_step&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="sg_global_step"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_global_step">[docs]</a><span class="k">def</span> <span class="nf">sg_global_step</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gets global step count</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A 0-D `Tensor`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_global_step</span>
+    <span class="k">return</span> <span class="n">_global_step</span></div>
+
+<span class="c1">#</span>
+<span class="c1"># global phase(train or infer) flag</span>
+<span class="c1">#</span>
+
+<span class="n">_phase</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;phase&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">LOCAL_VARIABLES</span><span class="p">])</span>
+<span class="n">_phase_train</span> <span class="o">=</span> <span class="n">_phase</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>    <span class="c1"># phase set ops ( to train )</span>
+<span class="n">_phase_infer</span> <span class="o">=</span> <span class="n">_phase</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># phase set ops ( to infer )</span>
+
+
+<div class="viewcode-block" id="sg_phase"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_phase">[docs]</a><span class="k">def</span> <span class="nf">sg_phase</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Gets current training phase</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A boolean `Tensor`. If True, it is in the training phase, otherwise inference phase.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_phase</span>
+    <span class="k">return</span> <span class="n">_phase</span></div>
+
+
+<div class="viewcode-block" id="sg_set_train"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_set_train">[docs]</a><span class="k">def</span> <span class="nf">sg_set_train</span><span class="p">(</span><span class="n">sess</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set current phase as training mode</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      sess: session to work</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_phase_train</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sg_set_infer"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_set_infer">[docs]</a><span class="k">def</span> <span class="nf">sg_set_infer</span><span class="p">(</span><span class="n">sess</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sets current phase as inference mode</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      sess: session to work</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_phase_infer</span><span class="p">)</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># context helpers</span>
+<span class="c1">#</span>
+
+<span class="n">_context</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">()</span>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="sg_context"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_context">[docs]</a><span class="k">def</span> <span class="nf">sg_context</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Context helper for computational graph building.</span>
+<span class="sd">    Makes all elements within the with Block share the parameters.</span>
+
+<span class="sd">    For example, in the following example, the default value of parameter `bn` will be set to True</span>
+<span class="sd">    in the all layers within the with block.</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    with tf.sg_context(bn=True):</span>
+<span class="sd">        ...</span>
+<span class="sd">        ...</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      **kwargs:</span>
+<span class="sd">        in_dim: An integer. The size of input dimension, which is set to the last one by default.</span>
+<span class="sd">        dim: An integer. The size of output dimension. Has the same value as in_dim by default.</span>
+<span class="sd">        bn: Boolean. If True, batch normalization is applied.</span>
+<span class="sd">        ln: Boolean. If True, layer normalization is applied.</span>
+<span class="sd">        dout: A float of range [0, 100). A dropout rate. Default is 0..</span>
+<span class="sd">        bias: Boolean. If True (Default), biases are added.</span>
+<span class="sd">        name: A name for the layer. By default, the function name is assigned.</span>
+<span class="sd">        act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.</span>
+<span class="sd">        reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope</span>
+<span class="sd">          as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_context</span>
+    <span class="c1"># set options when enter</span>
+    <span class="n">_context</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_context</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="n">_context</span><span class="o">.</span><span class="n">context_name</span> <span class="o">=</span> <span class="n">_context</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">_context</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="n">_context</span><span class="o">.</span><span class="n">context_name</span><span class="p">):</span>
+            <span class="k">yield</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="c1"># clear options when exit</span>
+    <span class="n">_context</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">()</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># sugar function annotator</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="sg_sugar_func"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_sugar_func">[docs]</a><span class="k">def</span> <span class="nf">sg_sugar_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Decorates a function `func` so that it can be a sugar function. </span>
+<span class="sd">    Sugar function can be used in a chainable manner.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func: function to decorate</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A sugar function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># call sugar function</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="c1"># save node info for reuse</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">_sugar</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span><span class="o">+</span><span class="n">_context</span><span class="p">,</span> <span class="n">prev</span><span class="o">=</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="c1"># inject reuse function</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">sg_reuse</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">(</span><span class="n">sg_reuse</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># layer function annotator</span>
+<span class="c1">#</span>
+
+
+<div class="viewcode-block" id="sg_layer_func"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_layer_func">[docs]</a><span class="k">def</span> <span class="nf">sg_layer_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Decorates a function `func` as a sg_layer function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func: function to decorate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Manages arguments of `tf.sg_opt`.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">          tensor: A `tensor` (automatically passed by decorator).</span>
+<span class="sd">          kwargs:</span>
+<span class="sd">            shape:  A list of integers. The shape of `tensor`. Inferred if not specified.</span>
+<span class="sd">            in_dim: An integer. The size of input dimension, which is set to the last one by default.</span>
+<span class="sd">            dim: An integer. The size of output dimension. Has the same value as in_dim by default.</span>
+<span class="sd">            bn: Boolean. If True, batch normalization is applied.</span>
+<span class="sd">            ln: Boolean. If True, layer normalization is applied.</span>
+<span class="sd">            dout: A float of range [0, 100). A dropout rate. Set to 0 by default.</span>
+<span class="sd">            bias: Boolean. If True, biases are added. As a default, it is set to True </span>
+<span class="sd">            name: A name for the layer. As a default, the function name is assigned.</span>
+<span class="sd">            act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.</span>
+<span class="sd">            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope </span>
+<span class="sd">              as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">sg_initializer</span> <span class="k">as</span> <span class="n">init</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">sg_activation</span>
+
+        <span class="c1"># kwargs parsing</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">_context</span>
+
+        <span class="c1"># set default argument</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
+            <span class="c1"># batch normalization off, layer normalization off, dropout off</span>
+            <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">in_dim</span><span class="o">=</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">bn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ln</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dout</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">bn</span> <span class="ow">and</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">),</span> <span class="s1">&#39;one of batch normalization and layer normalization is available.&#39;</span>
+
+            <span class="c1"># disable bias when normalization on</span>
+            <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">bias</span><span class="o">=</span><span class="ow">not</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">bn</span> <span class="ow">or</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">))</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># automatic layer naming</span>
+        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># layer function name will be used as layer name</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;sg_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># find existing layer names</span>
+            <span class="n">exist_layers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables</span><span class="p">():</span>
+                <span class="n">scope_name</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">scope_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scope_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">exist_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">exist_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">exist_layers</span><span class="p">))</span>
+
+            <span class="c1"># layer name numbering</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exist_layers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_1&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">exist_layers</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">reuse</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
+
+            <span class="c1"># call layer function</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
+
+            <span class="c1"># apply batch normalization</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bn</span><span class="p">:</span>
+                <span class="c1"># offset, scale parameter</span>
+                <span class="n">beta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+                <span class="n">gamma</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># offset, scale parameter</span>
+                <span class="n">mean_running</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+                <span class="n">variance_running</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;variance&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># calc batch mean, variance</span>
+                <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+
+                <span class="c1"># add running mean, variance to UPDATE_OP collection</span>
+                <span class="n">decay</span> <span class="o">=</span> <span class="mf">0.99</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">UPDATE_OPS</span><span class="p">,</span> <span class="n">mean_running</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">mean_running</span> <span class="o">*</span> <span class="n">decay</span> <span class="o">+</span> <span class="n">mean</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">decay</span><span class="p">)))</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">UPDATE_OPS</span><span class="p">,</span> <span class="n">variance_running</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">variance_running</span> <span class="o">*</span> <span class="n">decay</span> <span class="o">+</span> <span class="n">variance</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">decay</span><span class="p">)))</span>
+
+                <span class="c1"># select mean, variance by training phase</span>
+                <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">_phase</span><span class="p">,</span>
+                               <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">variance</span><span class="p">),</span>  <span class="c1"># batch mean, variance</span>
+                               <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="n">mean_running</span><span class="p">,</span> <span class="n">variance_running</span><span class="p">))</span>  <span class="c1"># saved mean, variance</span>
+
+                <span class="c1"># apply batch normalization</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_eps</span><span class="p">)</span>
+
+            <span class="c1"># apply layer normalization</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">:</span>
+                <span class="c1"># offset, scale parameter</span>
+                <span class="n">beta</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+                <span class="n">gamma</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># calc layer mean, variance for final axis</span>
+                <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get_shape</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="c1"># apply normalization</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_eps</span><span class="p">)</span>
+                <span class="c1"># apply parameter</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">out</span> <span class="o">+</span> <span class="n">beta</span>
+
+            <span class="c1"># apply activation</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">act</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sg_activation</span><span class="p">,</span> <span class="s1">&#39;sg_&#39;</span> <span class="o">+</span> <span class="n">opt</span><span class="o">.</span><span class="n">act</span><span class="o">.</span><span class="n">lower</span><span class="p">())(</span><span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># apply dropout</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">dout</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">_phase</span><span class="p">,</span>
+                              <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">opt</span><span class="o">.</span><span class="n">dout</span><span class="p">),</span>
+                              <span class="k">lambda</span><span class="p">:</span> <span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># rename tensor</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">)</span>
+
+            <span class="c1"># add final output summary</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">scope</span><span class="o">.</span><span class="n">reuse</span><span class="p">:</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_activation</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># save node info for reuse</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">_sugar</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">_context</span><span class="p">,</span>
+                                   <span class="n">prev</span><span class="o">=</span><span class="n">tensor</span><span class="p">,</span> <span class="n">is_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># inject reuse function</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">sg_reuse</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">(</span><span class="n">sg_reuse</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<div class="viewcode-block" id="sg_rnn_layer_func"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_rnn_layer_func">[docs]</a><span class="k">def</span> <span class="nf">sg_rnn_layer_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Decorates function as sg_rnn_layer functions.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        func: function to decorate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Manages arguments of `tf.sg_opt`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          tensor: automatically passed by decorator</span>
+<span class="sd">          kwargs:</span>
+<span class="sd">              in_dim: An integer. The size of input dimension, which is set to the last one by default.</span>
+<span class="sd">              dim: An integer. The size of output dimension. Has the same value as in_dim by default.</span>
+<span class="sd">              ln: Boolean. If True, layer normalization is applied.</span>
+<span class="sd">              bias: Boolean. If True, biases are added. As a default, it is set to True</span>
+<span class="sd">              name: A name for the layer. As a default, the function name is assigned.</span>
+<span class="sd">              reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope</span>
+<span class="sd">                as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># kwargs parsing</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">_context</span>
+
+        <span class="c1"># set default argument</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
+            <span class="c1"># dropout off</span>
+            <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">in_dim</span><span class="o">=</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dout</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># disable bias when normalization on</span>
+            <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">bias</span><span class="o">=</span><span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># automatic layer naming</span>
+        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># layer function name will be used as layer name</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;sg_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># find existing layer names</span>
+            <span class="n">exist_layers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables</span><span class="p">():</span>
+                <span class="n">scope_name</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">scope_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scope_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">exist_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">exist_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">exist_layers</span><span class="p">))</span>
+
+            <span class="c1"># layer name numbering</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exist_layers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_1&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">opt</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">exist_layers</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">reuse</span><span class="p">)</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
+
+            <span class="c1"># call layer function</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
+
+            <span class="c1"># apply dropout</span>
+            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">dout</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">_phase</span><span class="p">,</span>
+                              <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">opt</span><span class="o">.</span><span class="n">dout</span><span class="p">),</span>
+                              <span class="k">lambda</span><span class="p">:</span> <span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># rename tensor</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">)</span>
+
+            <span class="c1"># add final output summary</span>
+            <span class="k">if</span> <span class="n">scope</span><span class="o">.</span><span class="n">reuse</span><span class="p">:</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_activation</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+            <span class="c1"># save node info for reuse</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">_sugar</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">_context</span><span class="p">,</span>
+                                   <span class="n">prev</span><span class="o">=</span><span class="n">tensor</span><span class="p">,</span> <span class="n">is_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># inject reuse function</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">sg_reuse</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">(</span><span class="n">sg_reuse</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># reuse functions for graph cloning</span>
+<span class="c1">#</span>
+
+
+<span class="c1"># noinspection PyProtectedMember</span>
+<div class="viewcode-block" id="sg_reuse"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_reuse">[docs]</a><span class="k">def</span> <span class="nf">sg_reuse</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Reconstruct computational graph of `tensor` so all the parameters </span>
+<span class="sd">    can be reused and replace its input tensor with `opt.input`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor` (automatically given by chaining).</span>
+<span class="sd">      **opt:</span>
+<span class="sd">        input: A `Tensor` that will replace the original input tensor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Reconstructed tensor nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="s1">&#39;_sugar&#39;</span><span class="p">),</span> <span class="s1">&#39;cannot reuse this node.&#39;</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;input is mandatory.&#39;</span>
+
+    <span class="c1"># get all nodes in this graph</span>
+    <span class="n">nodes</span><span class="p">,</span> <span class="n">prev</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensor</span><span class="p">],</span> <span class="n">tensor</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">prev</span>
+    <span class="k">while</span> <span class="n">prev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">prev</span><span class="p">]</span> <span class="o">+</span> <span class="n">nodes</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">prev</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="s1">&#39;_sugar&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># create graph again for this input</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">input</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># exclude head node</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">is_layer</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_layer_func</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">arg</span><span class="o">.</span><span class="n">context_name</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">arg</span><span class="o">.</span><span class="n">context_name</span><span class="p">):</span>
+                    <span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">arg</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">arg</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">_sugar</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># input wrapper function</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="sg_input"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_input">[docs]</a><span class="k">def</span> <span class="nf">sg_input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a placeholder.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      shape: A tuple/list of integers. If an integers is given, it will turn to a list.</span>
+<span class="sd">      dtype: A data type. Default is float32.</span>
+<span class="sd">      name: A name for the placeholder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A wrapped placeholder `Tensor`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">shape</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># helper function for sugar and layer function injection</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="sg_inject"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_inject">[docs]</a><span class="k">def</span> <span class="nf">sg_inject</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mod_name</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Converts all functions in the given Python module to sugar functions</span>
+<span class="sd">    so that they can be used in a chainable manner.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      path: A string. Path to the Python module</span>
+<span class="sd">      mod_name: A string. The name of the Python module to inject.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import module</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="n">mod_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+    <span class="c1"># find functions</span>
+    <span class="k">for</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">globals</span><span class="p">()[</span><span class="n">mod_name</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">globals</span><span class="p">()[</span><span class="n">mod_name</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_name</span><span class="p">),</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">func_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="c1"># inject to tf.Variable type</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;tf.Variable.</span><span class="si">%s</span><span class="s1"> = </span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">mod_name</span><span class="p">,</span> <span class="n">func_name</span><span class="p">))</span>
+                <span class="c1"># inject to tf.Tensor type</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;tf.Tensor.</span><span class="si">%s</span><span class="s1"> = </span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">mod_name</span><span class="p">,</span> <span class="n">func_name</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="sg_inject_func"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_inject_func">[docs]</a><span class="k">def</span> <span class="nf">sg_inject_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Converts the function `func` to a sugar function</span>
+<span class="sd">    so that it can be used in a chainable manner.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      func: A function to inject.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># inject to tf.Variable type</span>
+    <span class="n">exec</span> <span class="p">(</span><span class="s1">&#39;tf.Variable.</span><span class="si">%s</span><span class="s1"> = func&#39;</span> <span class="o">%</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="c1"># inject to tf.Tensor type</span>
+    <span class="n">exec</span> <span class="p">(</span><span class="s1">&#39;tf.Tensor.</span><span class="si">%s</span><span class="s1"> = func&#39;</span> <span class="o">%</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># Queue Wrapper Annotator</span>
+<span class="c1">#</span>
+
+<span class="c1"># noinspection PyUnboundLocalVariable</span>
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="sg_queue_context"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_queue_context">[docs]</a><span class="k">def</span> <span class="nf">sg_queue_context</span><span class="p">(</span><span class="n">sess</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Context helper for queue routines.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      sess: A session to open queues. If not specified, a new session is created.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># default session</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_session</span><span class="p">()</span> <span class="k">if</span> <span class="n">sess</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sess</span>
+
+    <span class="c1"># thread coordinator</span>
+    <span class="n">coord</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Coordinator</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># start queue thread</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">start_queue_runners</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">coord</span><span class="p">)</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># stop queue thread</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">request_stop</span><span class="p">()</span>
+        <span class="c1"># wait thread to exit.</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># Command line argument util funcs</span>
+<span class="c1">#</span>
+
+<span class="c1"># noinspection PyProtectedMember</span>
+<div class="viewcode-block" id="sg_arg"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_arg">[docs]</a><span class="k">def</span> <span class="nf">sg_arg</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gets current command line options</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      tf.sg_opt instance that is updated with current commandd line options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">FLAGS</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;__parsed&#39;</span><span class="p">]:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">FLAGS</span><span class="o">.</span><span class="n">_parse_flags</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">FLAGS</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;__flags&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="sg_arg_def"><a class="viewcode-back" href="../../sugartensor.sg_main.html#sugartensor.sg_main.sg_arg_def">[docs]</a><span class="k">def</span> <span class="nf">sg_arg_def</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Defines command line options</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      **kwargs:</span>
+<span class="sd">        key: A name for the option.</span>
+<span class="sd">        value : Default value or a tuple of (default value, description).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      None</span>
+
+<span class="sd">    For example, </span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    # Either of the following two lines will define `--n_epoch` command line argument and set its default value as 1.</span>
+<span class="sd">    </span>
+<span class="sd">    tf.sg_arg_def(n_epoch=1) </span>
+<span class="sd">    tf.sg_arg_def(n_epoch=(1, &#39;total number of epochs&#39;))</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">DEFINE_integer</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">DEFINE_float</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

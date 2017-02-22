@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_loss &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_loss</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_ce"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_ce">[docs]</a><span class="k">def</span> <span class="nf">sg_ce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns softmax cross entropy loss between `tensor` and `target`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor`. Logits. Unscaled log probabilities.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. </span>
+<span class="sd">        one_hot: Boolean. Whether to treat the labels as one-hot encoding. Default is False.</span>
+<span class="sd">        mask: Boolean. If True, zeros in the target will be excluded from the calculation.</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+<span class="sd">      </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A 1-D `Tensor` with the same shape as `tensor`. </span>
+<span class="sd">    </span>
+<span class="sd">    For example, </span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[[2, -1, 3], [3, 1, -2]]]</span>
+<span class="sd">    target = [[2, 1]]</span>
+<span class="sd">    tensor.sg_ce(target=target) =&gt; [[ 0.32656264  2.13284516]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[2, -1, 3], [3, 1, -2]]</span>
+<span class="sd">    target = [[0, 0, 1], [1, 0, 0]]</span>
+<span class="sd">    tensor.sg_ce(target=target, one_hot=True) =&gt; [ 0.32656264  0.13284527]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">one_hot</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">tensor</span><span class="p">),</span> <span class="s1">&#39;ce&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sparse_softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">tensor</span><span class="p">),</span> <span class="s1">&#39;ce&#39;</span><span class="p">)</span>
+
+    <span class="c1"># masking loss</span>
+    <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">mask</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">*=</span> <span class="n">tf</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">))</span><span class="o">.</span><span class="n">sg_float</span><span class="p">()</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_bce"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_bce">[docs]</a><span class="k">def</span> <span class="nf">sg_bce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns sigmoid cross entropy loss between `tensor` and `target`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor`. Logits. Unscaled log probabilities.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor` with the same shape and dtype as `tensor`. Labels.</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+<span class="sd">      </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Tensor` of the same shape as `tensor`</span>
+<span class="sd">    </span>
+<span class="sd">    For example, </span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[2, -1, 3], [3, 1, -2]]</span>
+<span class="sd">    target = [[0, 1, 1], [1, 1, 0]]</span>
+<span class="sd">    tensor.sg_bce(target=target) =&gt;     [[ 2.12692809  1.31326163  0.04858733]</span>
+<span class="sd">                                         [ 0.04858733  0.31326166  0.12692805]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">tensor</span><span class="p">),</span> <span class="s1">&#39;bce&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_mse"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_mse">[docs]</a><span class="k">def</span> <span class="nf">sg_mse</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns squared error between `tensor` and `target`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor`.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor` with the same shape and dtype as `tensor`.</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+<span class="sd">       </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Tensor` of the same shape and dtype as `tensor` </span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[34, 11, 40], [13, 30, 42]]</span>
+<span class="sd">    target = [[34, 10, 41], [14, 31, 40]]</span>
+<span class="sd">    tensor.sg_mse(target=target) =&gt; [[ 0.  1.  1.]</span>
+<span class="sd">                                     [ 1.  1.  4.]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="c1"># squared error</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">),</span> <span class="s1">&#39;mse&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_mae"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_mae">[docs]</a><span class="k">def</span> <span class="nf">sg_mae</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns absolute error between `tensor` and `target`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor`.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor` with the same shape and dtype as `tensor`.</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+<span class="sd">      </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Tensor` of the same shape and dtype as `tensor` </span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[34, 11, 40], [13, 30, 42]]</span>
+<span class="sd">    target = [[34, 10, 41], [14, 31, 40]]</span>
+<span class="sd">    tensor.sg_mse(target=target) =&gt; [[ 0.  1.  1.]</span>
+<span class="sd">                                     [ 1.  1.  2.]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="c1"># absolute error</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">),</span> <span class="s1">&#39;mae&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_hinge"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_hinge">[docs]</a><span class="k">def</span> <span class="nf">sg_hinge</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns hinge loss between `tensor` and `target`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A `Tensor`.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor`. Labels.</span>
+<span class="sd">        margin: An int. Maximum margin. Default is 1.</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+<span class="sd">      </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Tensor`.</span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[30, 10, 40], [13, 30, 42]]</span>
+<span class="sd">    target = [[0, 0, 1], [0, 1, 0]]</span>
+<span class="sd">    tensor.sg_hinge(target=target, one_hot=True) =&gt;     [[ 1.  1.  0.]</span>
+<span class="sd">                                                         [ 1.  0.  1.]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="c1"># default margin</span>
+    <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># reshape target</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
+    <span class="n">broadcast_shape</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">broadcast_shape</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">)</span>
+    
+    <span class="c1"># hinge loss</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">margin</span> <span class="o">-</span> <span class="n">target</span> <span class="o">*</span> <span class="n">tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;hinge&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_ctc"><a class="viewcode-back" href="../../sugartensor.sg_loss.html#sugartensor.sg_loss.sg_ctc">[docs]</a><span class="k">def</span> <span class="nf">sg_ctc</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the CTC (Connectionist Temporal Classification) Loss between `tensor` and `target`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      tensor: A 3-D `float Tensor`.</span>
+<span class="sd">      opt:</span>
+<span class="sd">        target: A `Tensor` with the same length in the first dimension as the `tensor`. Labels. ( Dense tensor )</span>
+<span class="sd">        name: A `string`. A name to display in the tensor board web UI.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A 1-D `Tensor` with the same length in the first dimension of the `tensor`.</span>
+
+<span class="sd">    For example,</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    tensor = [[[2., -1., 3.], [3., 1., -2.]], [[1., -1., 2.], [3., 1., -2.]]]</span>
+<span class="sd">    target = [[2., 1.], [2., 3.]]</span>
+<span class="sd">    tensor.sg_ctc(target=target) =&gt; [ 4.45940781  2.43091154]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;target is mandatory.&#39;</span>
+
+    <span class="c1"># default sequence length</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">seq_len</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_intx</span><span class="p">)</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># ctc loss</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ctc_loss</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">sg_to_sparse</span><span class="p">(),</span> <span class="n">opt</span><span class="o">.</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">time_major</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s1">&#39;ctc&#39;</span><span class="p">)</span>
+
+    <span class="c1"># add summary</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_logging module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_loss module" href="sugartensor.sg_loss.html" />
+    <link rel="prev" title="sugartensor.sg_layer module" href="sugartensor.sg_layer.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_loss.html" title="sugartensor.sg_loss module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_layer.html" title="sugartensor.sg_layer module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_logging">
+<span id="sugartensor-sg-logging-module"></span><h1>sugartensor.sg_logging module<a class="headerlink" href="#module-sugartensor.sg_logging" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_debug">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_debug</code><span class="sig-paren">(</span><em>msg</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_error">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_error</code><span class="sig-paren">(</span><em>msg</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_fatal">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_fatal</code><span class="sig-paren">(</span><em>msg</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_fatal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_fatal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_info">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_info</code><span class="sig-paren">(</span><em>msg</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_activation">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_activation</code><span class="sig-paren">(</span><em>tensor</em>, <em>prefix=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_activation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_activation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>activation</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as activation
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_audio">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_audio</code><span class="sig-paren">(</span><em>tensor</em>, <em>sample_rate=16000</em>, <em>prefix=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_audio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as audio</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as audio
+sample_rate : An int. Sample rate to report. Default is 16000.
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_gradient">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_gradient</code><span class="sig-paren">(</span><em>tensor</em>, <em>gradient</em>, <em>prefix=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>gradient</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as gradient
+gradient: A 0-D <cite>Tensor</cite>. A gradient to log
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_image">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_image</code><span class="sig-paren">(</span><em>tensor</em>, <em>prefix=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>image</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A tensor to log as image
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_loss">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_loss</code><span class="sig-paren">(</span><em>tensor</em>, <em>prefix='losses'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>loss</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as loss
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_metric">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_metric</code><span class="sig-paren">(</span><em>tensor</em>, <em>prefix='metrics'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_metric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>metric</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as metric
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_summary_param">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_summary_param</code><span class="sig-paren">(</span><em>tensor</em>, <em>prefix=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_summary_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_summary_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <cite>tensor</cite> to summary report as <cite>parameters</cite></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tensor: A <cite>Tensor</cite> to log as parameters
+prefix: A <cite>string</cite>. A prefix to display in the tensor board web UI.
+name: A <cite>string</cite>. A name to display in the tensor board web UI.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_verbosity">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_verbosity</code><span class="sig-paren">(</span><em>verbosity=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_verbosity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_verbosity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_logging.sg_warn">
+<code class="descclassname">sugartensor.sg_logging.</code><code class="descname">sg_warn</code><span class="sig-paren">(</span><em>msg</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_logging.html#sg_warn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_logging.sg_warn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_layer.html"
+                        title="previous chapter">sugartensor.sg_layer module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_loss.html"
+                        title="next chapter">sugartensor.sg_loss module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_logging.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_loss.html" title="sugartensor.sg_loss module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_layer.html" title="sugartensor.sg_layer module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

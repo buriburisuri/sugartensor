@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_layer module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_logging module" href="sugartensor.sg_logging.html" />
+    <link rel="prev" title="sugartensor.sg_initializer module" href="sugartensor.sg_initializer.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_logging.html" title="sugartensor.sg_logging module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_initializer.html" title="sugartensor.sg_initializer module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_layer">
+<span id="sugartensor-sg-layer-module"></span><h1>sugartensor.sg_layer module<a class="headerlink" href="#module-sugartensor.sg_layer" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_aconv">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_aconv</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_aconv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_aconv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a 2-D atrous (or dilated) convolution.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 4-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A tuple/list of positive integers of length 2 representing <cite>[kernel height, kernel width]</cite>.</dt>
+<dd>Can be an integer if both values are the same.
+If not specified, (3, 3) is set automatically.</dd>
+<dt>rate: A positive integer. The stride with which we sample input values across</dt>
+<dd>the <cite>height</cite> and <cite>width</cite> dimensions. Default is 2.</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
+bias: Boolean. If True, biases are added.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_aconv1d">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_aconv1d</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_aconv1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_aconv1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies 1-D atrous (or dilated) convolution.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>causal: Boolean. If True, zeros are padded before the time axis such that</dt>
+<dd>each activation unit doesn&#8217;t have receptive neurons beyond the equivalent time step.</dd>
+<dt>size: A positive <cite>integer</cite> representing <cite>[kernel width]</cite>. As a default it is set to 2</dt>
+<dd>if causal is True, 3 otherwise.</dd>
+<dt>rate: A positive <cite>integer</cite>. The stride with which we sample input values across</dt>
+<dd>the <cite>height</cite> and <cite>width</cite> dimensions. Default is 1.</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
+bias: Boolean. If True, biases are added.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_bypass">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_bypass</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_bypass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_bypass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the input tensor itself.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>bn: Boolean. If True, batch normalization is applied.
+ln: Boolean. If True, layer normalization is applied.
+dout: A float of range [0, 100). A dropout rate. Default is 0.
+act: A name of activation function. e.g., <cite>sigmoid</cite>, <cite>tanh</cite>, etc.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>The same tensor as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_conv">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_conv</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a 2-D convolution.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 4-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A tuple/list of positive integers of length 2 representing <cite>[kernel height, kernel width]</cite>.</dt>
+<dd>Can be an integer if both values are the same.
+If not specified, (3, 3) is set implicitly.</dd>
+<dt>stride: A tuple/list of positive integers of length 2 or 4 representing stride dimensions.</dt>
+<dd>If the length is 2, i.e., (a, b), the stride is <cite>[1, a, b, 1]</cite>.
+If the length is 4, i.e., (a, b, c, d), the stride is <cite>[a, b, c, d]</cite>.
+Can be an integer. If the length is a, the stride is <cite>[1, a, a, 1]</cite>.
+Default value is [1, 1, 1, 1].</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>. 
+bias: Boolean. If True, biases are added.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_conv1d">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_conv1d</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_conv1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_conv1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a 1-D convolution.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A positive <cite>integer</cite> representing <cite>[kernel width]</cite>.</dt>
+<dd>If not specified, 2 is set implicitly.</dd>
+<dt>stride: A positive <cite>integer</cite>. The number of entries by which</dt>
+<dd>the filter is moved right at each step.</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
+bias: Boolean. If True, biases are added.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_dense">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_dense</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a full connection.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 2-D tensor (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>in_dim: An <cite>integer</cite>. The size of input dimension.
+dim: An <cite>integer</cite>. The size of output dimension.
+bias: Boolean. If True, biases are added.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_emb">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_emb</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_emb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_emb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a look-up table for embedding.</p>
+<dl class="docutils">
+<dt>kwargs:</dt>
+<dd><p class="first">name: A name for the layer.
+emb: A 2-D array (optional).</p>
+<blockquote>
+<div>If None, the resulting tensor should have the shape of 
+<cite>[vocabulary size, embedding dimension size]</cite>.
+Note that its first row is filled with 0&#8217;s associated with padding.</div></blockquote>
+<p class="last">in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+voca_size: A positive integer. The size of vocabulary.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>A 2-D <cite>Tensor</cite> of float32.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_espcn">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_espcn</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_espcn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_espcn" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Applies a 2-D efficient sub pixel convolution.</dt>
+<dd>(see [Shi et al. 2016](<a class="reference external" href="http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf">http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf</a>)</dd>
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 4-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A tuple/list of positive integers of length 2 representing <cite>[kernel height, kernel width]</cite>.</dt>
+<dd>Can be an integer if both values are the same.
+If not specified, (3, 3) is set implicitly.</dd>
+<dt>stride: A tuple/list of positive integers of length 2 or 4 representing stride dimensions.</dt>
+<dd>If the length is 2, i.e., (a, b), the stride is <cite>[1, a, b, 1]</cite>.
+If the length is 4, i.e., (a, b, c, d), the stride is <cite>[a, b, c, d]</cite>.
+Can be an integer. If the length is a, the stride is <cite>[1, a, a, 1]</cite>.
+Default value is [1, 1, 1, 1].</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
+bias: Boolean. If True, biases are added.
+factor: factor to multiply shape by. Default is 2.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_gru">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_gru</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_gru"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_gru" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a GRU.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+bias: Boolean. If True, biases are added.
+ln: Boolean. If True, layer normalization is applied.   
+init_state: A 2-D <cite>Tensor</cite>. If None, the initial state is set to zeros.
+last_only: Boolean. If True, the outputs in the last time step are returned.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>. If last_only is True, the output tensor has shape [batch size, dim].
+Otherwise, [batch size, time steps, dim].</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_lstm">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_lstm</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_lstm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_lstm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies an LSTM.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+bias: Boolean. If True, biases are added.
+ln: Boolean. If True, layer normalization is applied.   
+init_state: A 2-D <cite>Tensor</cite>. If None, the initial state is set to zeros.
+last_only: Boolean. If True, the outputs in the last time step are returned.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>. If last_only is True, the output tensor has shape [batch size, dim].
+Otherwise, [batch size, time steps, dim].</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_rnn">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_rnn</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_rnn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_rnn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a simple rnn.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+bias: Boolean. If True, biases are added.
+ln: Boolean. If True, layer normalization is applied.   
+init_state: A 2-D <cite>Tensor</cite>. If None, the initial state is set to zeros.
+last_only: Boolean. If True, the outputs in the last time step are returned.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>. If last_only is True, the output tensor has shape [batch size, dim].
+Otherwise, [batch size, time steps, dim].</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_upconv">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_upconv</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_upconv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_upconv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a up convolution (or convolution transpose).</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 4-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>size: A tuple/list of integers of length 2 representing <cite>[kernel height, kernel width]</cite>.</dt>
+<dd>Can be an integer if both values are the same.
+If not specified, (4, 4) is set implicitly.
+Default value is [1, 2, 2, 1].</dd>
+<dt>stride: A tuple/list of integers of length 2 or 4 representing stride dimensions.</dt>
+<dd>If the length is 2, i.e., (a, b), the stride is <cite>[1, a, b, 1]</cite>.
+If the length is 4, i.e., (a, b, c, d), the stride is <cite>[a, b, c, d]</cite>.
+Can be an integer. If the length is a, the stride is <cite>[1, a, a, 1]</cite>.</dd>
+</dl>
+<p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>. 
+bias: Boolean. If True, biases are added.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_layer.sg_upconv1d">
+<code class="descclassname">sugartensor.sg_layer.</code><code class="descname">sg_upconv1d</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_layer.html#sg_upconv1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_layer.sg_upconv1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies 1-D a up convolution (or convolution transpose).</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
+opt:</p>
+<blockquote class="last">
+<div>size:  A positive <cite>integer</cite> representing <cite>[kernel width]</cite>. As a default it is set to 4
+stride: A positive <cite>integer</cite> representing stride dimension. As a default it is set to 2
+in_dim: A positive <cite>integer</cite>. The size of input dimension.
+dim: A positive <cite>integer</cite>. The size of output dimension.
+pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
+bias: Boolean. If True, biases are added.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_initializer.html"
+                        title="previous chapter">sugartensor.sg_initializer module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_logging.html"
+                        title="next chapter">sugartensor.sg_logging module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_layer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_logging.html" title="sugartensor.sg_logging module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_initializer.html" title="sugartensor.sg_initializer module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

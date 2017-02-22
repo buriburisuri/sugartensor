@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_main module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_metric module" href="sugartensor.sg_metric.html" />
+    <link rel="prev" title="sugartensor.sg_loss module" href="sugartensor.sg_loss.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_metric.html" title="sugartensor.sg_metric module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_loss.html" title="sugartensor.sg_loss module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_main">
+<span id="sugartensor-sg-main-module"></span><h1>sugartensor.sg_main module<a class="headerlink" href="#module-sugartensor.sg_main" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_arg">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_arg</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_arg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_arg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets current command line options</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>tf.sg_opt instance that is updated with current commandd line options.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_arg_def">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_arg_def</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_arg_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_arg_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines command line options</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs:</dt>
+<dd>key: A name for the option.
+value : Default value or a tuple of (default value, description).</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+<p>For example,</p>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a>`
+# Either of the following two lines will define <cite>&#8211;n_epoch</cite> command line argument and set its default value as 1.</p>
+<p>tf.sg_arg_def(n_epoch=1) 
+tf.sg_arg_def(n_epoch=(1, &#8216;total number of epochs&#8217;))
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_context">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_context</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context helper for computational graph building.
+Makes all elements within the with Block share the parameters.</p>
+<p>For example, in the following example, the default value of parameter <cite>bn</cite> will be set to True
+in the all layers within the with block.</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a>`
+with tf.sg_context(bn=True):</p>
+<blockquote>
+<div></div></blockquote>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id15"><span class="problematic" id="id16">**</span></a>kwargs:</dt>
+<dd><p class="first">in_dim: An integer. The size of input dimension, which is set to the last one by default.
+dim: An integer. The size of output dimension. Has the same value as in_dim by default.
+bn: Boolean. If True, batch normalization is applied.
+ln: Boolean. If True, layer normalization is applied.
+dout: A float of range [0, 100). A dropout rate. Default is 0..
+bias: Boolean. If True (Default), biases are added.
+name: A name for the layer. By default, the function name is assigned.
+act: A name of activation function. e.g., <cite>sigmoid</cite>, <cite>tanh</cite>, etc.
+reuse: <cite>True</cite> or <cite>None</cite>; if <cite>True</cite>, we go into reuse mode for this <cite>layer</cite> scope</p>
+<blockquote class="last">
+<div>as well as all sub-scopes; if <cite>None</cite>, we just inherit the parent scope reuse.</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_global_step">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_global_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_global_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_global_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets global step count</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A 0-D <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_inject">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_inject</code><span class="sig-paren">(</span><em>path</em>, <em>mod_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_inject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_inject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts all functions in the given Python module to sugar functions
+so that they can be used in a chainable manner.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>path: A string. Path to the Python module
+mod_name: A string. The name of the Python module to inject.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_inject_func">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_inject_func</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_inject_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_inject_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the function <cite>func</cite> to a sugar function
+so that it can be used in a chainable manner.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>func: A function to inject.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_input">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_input</code><span class="sig-paren">(</span><em>shape=None</em>, <em>dtype=tf.float32</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a placeholder.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>shape: A tuple/list of integers. If an integers is given, it will turn to a list.
+dtype: A data type. Default is float32.
+name: A name for the placeholder.</dd>
+<dt>Returns:</dt>
+<dd>A wrapped placeholder <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_layer_func">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_layer_func</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_layer_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_layer_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates a function <cite>func</cite> as a sg_layer function.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>func: function to decorate</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_phase">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_phase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets current training phase</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A boolean <cite>Tensor</cite>. If True, it is in the training phase, otherwise inference phase.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_queue_context">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_queue_context</code><span class="sig-paren">(</span><em>sess=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_queue_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_queue_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context helper for queue routines.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sess: A session to open queues. If not specified, a new session is created.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_reuse">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_reuse</code><span class="sig-paren">(</span><em>tensor</em>, <em>**opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_reuse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_reuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct computational graph of <cite>tensor</cite> so all the parameters 
+can be reused and replace its input tensor with <cite>opt.input</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> (automatically given by chaining).
+<a href="#id17"><span class="problematic" id="id18">**</span></a>opt:</p>
+<blockquote class="last">
+<div>input: A <cite>Tensor</cite> that will replace the original input tensor.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>Reconstructed tensor nodes.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_rnn_layer_func">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_rnn_layer_func</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_rnn_layer_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_rnn_layer_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates function as sg_rnn_layer functions.
+Args:</p>
+<blockquote>
+<div>func: function to decorate</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_set_infer">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_set_infer</code><span class="sig-paren">(</span><em>sess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_set_infer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_set_infer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets current phase as inference mode</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sess: session to work</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_set_train">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_set_train</code><span class="sig-paren">(</span><em>sess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_set_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_set_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current phase as training mode</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sess: session to work</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_sugar_func">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_sugar_func</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_sugar_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_sugar_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates a function <cite>func</cite> so that it can be a sugar function. 
+Sugar function can be used in a chainable manner.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>func: function to decorate</dd>
+<dt>Returns:</dt>
+<dd>A sugar function.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_loss.html"
+                        title="previous chapter">sugartensor.sg_loss module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_metric.html"
+                        title="next chapter">sugartensor.sg_metric module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_main.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_metric.html" title="sugartensor.sg_metric module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_loss.html" title="sugartensor.sg_loss module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

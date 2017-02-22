@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_net module &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sugartensor.sg_optimize module" href="sugartensor.sg_optimize.html" />
+    <link rel="prev" title="sugartensor.sg_metric module" href="sugartensor.sg_metric.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_optimize.html" title="sugartensor.sg_optimize module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_metric.html" title="sugartensor.sg_metric module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" accesskey="U">sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sugartensor.sg_net">
+<span id="sugartensor-sg-net-module"></span><h1>sugartensor.sg_net module<a class="headerlink" href="#module-sugartensor.sg_net" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_densenet_121">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_densenet_121</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_densenet_121"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_densenet_121" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies dense net 121 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture</dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>k: An integer. The Growth rate of densenet. Default is 32.
+num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_densenet_161">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_densenet_161</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_densenet_161"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_densenet_161" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies dense net 161 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture</dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>k: An integer. The Growth rate of densenet. Default is 48.
+num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_densenet_169">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_densenet_169</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_densenet_169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_densenet_169" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies dense net 169 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture</dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>k: An integer. The Growth rate of densenet. Default is 32.
+num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_densenet_201">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_densenet_201</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_densenet_201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_densenet_201" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies dense net 201 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture</dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>k: An integer. The Growth rate of densenet. Default is 32.
+num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_densenet_layer">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_densenet_layer</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_densenet_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_densenet_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies basic architecture of densenet layer.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture</dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>dim: An integer. Dimension for this resnet layer
+num: Number of times to repeat
+act: String. &#8216;relu&#8217; (default). the activation function name
+trans: Boolean. If True(default), transition layer will be applied.
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String. (optional) Used as convolution layer prefix</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_resnet_101">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_resnet_101</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_resnet_101"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_resnet_101" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies residual net 101 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_resnet_152">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_resnet_152</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_resnet_152"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_resnet_152" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies residual net 152 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_resnet_200">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_resnet_200</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_resnet_200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_resnet_200" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies residual net 200 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_resnet_50">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_resnet_50</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_resnet_50"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_resnet_50" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies residual net 50 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_resnet_layer">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_resnet_layer</code><span class="sig-paren">(</span><em>x</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_resnet_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_resnet_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies basic architecture of residual net.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">x: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>dim: An integer. Dimension for this resnet layer
+num: Number of times to repeat
+act: String. &#8216;relu&#8217; (default). the activation function name
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String. (optional) Used as convolution layer prefix</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_vgg_16">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_vgg_16</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_vgg_16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_vgg_16" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies vgg 16 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+bn: True or False(default). If True, batch normal will be applied
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_net.sg_vgg_19">
+<code class="descclassname">sugartensor.sg_net.</code><code class="descname">sg_vgg_19</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_net.html#sg_vgg_19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_net.sg_vgg_19" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies vgg 19 model.</p>
+<dl class="docutils">
+<dt>Note that the fc layers in the original architecture </dt>
+<dd>will be replaced with fully convolutional layers.
+For convenience, We still call them fc layers, though.</dd>
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite>.
+opt:</p>
+<blockquote class="last">
+<div>num_class: An integer. Number of class. Default is 1000.
+conv_only: Boolean. If True, fc layers are not applied. Default is False.
+squeeze: Boolean. If True (default), the dimensions with size 1 in the final outputs will be removed.
+act: String. &#8216;relu&#8217; (default). the activation function name
+bn: True or False(default). If True, batch normal will be applied
+reuse: Boolean(Optional). If True, all variables will be loaded from previous network.
+name: String(Optional). If provided, used as the scope name of this network</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sugartensor.sg_metric.html"
+                        title="previous chapter">sugartensor.sg_metric module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sugartensor.sg_optimize.html"
+                        title="next chapter">sugartensor.sg_optimize module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sugartensor.sg_net.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_optimize.html" title="sugartensor.sg_optimize module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sugartensor.sg_metric.html" title="sugartensor.sg_metric module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="sugartensor.html" >sugartensor package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

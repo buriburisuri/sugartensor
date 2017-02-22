@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_data &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.examples.tutorials.mnist</span> <span class="k">import</span> <span class="n">input_data</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;mansour&#39;</span>
+
+
+<span class="c1"># constant sg_data to tensor conversion with queue support</span>
+<span class="k">def</span> <span class="nf">_data_to_tensor</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns batch queues from the whole data. </span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      data_list: A list of ndarrays. Every array must have the same size in the first dimension.</span>
+<span class="sd">      batch_size: An integer.</span>
+<span class="sd">      name: A name for the operations (optional).</span>
+<span class="sd">      </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A list of tensors of `batch_size`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># convert to constant tensor</span>
+    <span class="n">const_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">]</span>
+
+    <span class="c1"># create queue from constant tensor</span>
+    <span class="n">queue_list</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">slice_input_producer</span><span class="p">(</span><span class="n">const_list</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="n">batch_size</span><span class="o">*</span><span class="mi">128</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># create batch queue</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">shuffle_batch</span><span class="p">(</span><span class="n">queue_list</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="n">batch_size</span><span class="o">*</span><span class="mi">128</span><span class="p">,</span>
+                                  <span class="n">min_after_dequeue</span><span class="o">=</span><span class="n">batch_size</span><span class="o">*</span><span class="mi">32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Mnist"><a class="viewcode-back" href="../../sugartensor.sg_data.html#sugartensor.sg_data.Mnist">[docs]</a><span class="k">class</span> <span class="nc">Mnist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Downloads Mnist datasets and puts them in queues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_data_dir</span> <span class="o">=</span> <span class="s1">&#39;./asset/data/mnist&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">reshape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="c1"># load sg_data set</span>
+        <span class="n">data_set</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="n">Mnist</span><span class="o">.</span><span class="n">_data_dir</span><span class="p">,</span> <span class="n">reshape</span><span class="o">=</span><span class="n">reshape</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+
+        <span class="c1"># save each sg_data set</span>
+        <span class="n">_train</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">train</span>
+        <span class="n">_valid</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">validation</span>
+        <span class="n">_test</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">test</span>
+
+        <span class="c1"># member initialize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">()</span>
+
+        <span class="c1"># convert to tensor queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> \
+            <span class="n">_data_to_tensor</span><span class="p">([</span><span class="n">_train</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">_train</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)],</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> \
+            <span class="n">_data_to_tensor</span><span class="p">([</span><span class="n">_valid</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">_valid</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)],</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> \
+            <span class="n">_data_to_tensor</span><span class="p">([</span><span class="n">_test</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">_test</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)],</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+
+        <span class="c1"># calc total batch count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_batch</span> <span class="o">=</span> <span class="n">_train</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">num_batch</span> <span class="o">=</span> <span class="n">_valid</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">num_batch</span> <span class="o">=</span> <span class="n">_test</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">batch_size</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

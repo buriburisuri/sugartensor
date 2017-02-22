@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_initializer &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_initializer</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="c1"># noinspection PyPackageRequirements</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+
+
+<div class="viewcode-block" id="constant"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.constant">[docs]</a><span class="k">def</span> <span class="nf">constant</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a tensor variable of which initial values are `value` and shape is `shape`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable.</span>
+<span class="sd">      shape: A tuple/list of integers or an integer. </span>
+<span class="sd">        If shape is an integer, it is converted to a list.</span>
+<span class="sd">      value: A Python scalar. All elements of the initialized variable</span>
+<span class="sd">        will be set to this value. Default is 0.</span>
+<span class="sd">      dtype: The data type. Only floating point types are supported. Default is float32.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">shape</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="c1"># add summary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">and</span> <span class="n">summary</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_param</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="uniform"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.uniform">[docs]</a><span class="k">def</span> <span class="nf">uniform</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a tensor variable of which initial values are </span>
+<span class="sd">    random numbers based on uniform distribution.</span>
+<span class="sd">    </span>
+<span class="sd">    Note that the default value of `scale` (=0.05) is different from </span>
+<span class="sd">    the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of the new variable.</span>
+<span class="sd">      shape: A tuple/list of integers or an integer. </span>
+<span class="sd">        If shape is an integer, it&#39;s converted to a list.</span>
+<span class="sd">      scale: A Python scalar. All initial values should be in range `[-scale, scale)`. Default is .05.</span>
+<span class="sd">      dtype: The data type. Only floating point types are supported. Default is float32.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">shape</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform_initializer</span><span class="p">(</span><span class="n">minval</span><span class="o">=-</span><span class="n">scale</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">scale</span><span class="p">))</span>
+    <span class="c1"># add summary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">and</span> <span class="n">summary</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_param</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="he_uniform"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.he_uniform">[docs]</a><span class="k">def</span> <span class="nf">he_uniform</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;See [He et al. 2015](http://arxiv.org/pdf/1502.01852v1.pdf)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable</span>
+<span class="sd">      shape: A tuple/list of integers.</span>
+<span class="sd">      scale: A Python scalar. Scale to initialize. Default is 1.</span>
+<span class="sd">      dtype: The data type. Default is float32.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fin</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_fans</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">/</span> <span class="n">fin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uniform</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="glorot_uniform"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.glorot_uniform">[docs]</a><span class="k">def</span> <span class="nf">glorot_uniform</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;See [Glorot &amp; Bengio. 2010.](http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable</span>
+<span class="sd">      shape: A tuple/list of integers.</span>
+<span class="sd">      scale: A Python scalar. Scale to initialize. Default is 1.</span>
+<span class="sd">      dtype: The data type. Default is float32.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fin</span><span class="p">,</span> <span class="n">fout</span> <span class="o">=</span> <span class="n">_get_fans</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">6.</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">/</span> <span class="p">(</span><span class="n">fin</span> <span class="o">+</span> <span class="n">fout</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">uniform</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="identity"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.identity">[docs]</a><span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a tensor variable of which initial values are of</span>
+<span class="sd">    an identity matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    Note that the default value of `scale` (=0.05) is different from </span>
+<span class="sd">    the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.</span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    identity(&quot;identity&quot;, 3, 2) =&gt;</span>
+<span class="sd">    [[2. 0. 0.]</span>
+<span class="sd">     [0. 2. 0.]</span>
+<span class="sd">     [0. 0. 2.]]</span>
+<span class="sd">    ```</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable.</span>
+<span class="sd">      dim: An int. The size of the first and second dimension of the output tensor.</span>
+<span class="sd">      scale: A Python scalar. The value on the diagonal.</span>
+<span class="sd">      dtype: The type of the elements of the resulting tensor.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A 2-D `Variable`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+    <span class="c1"># add summary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">and</span> <span class="n">summary</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_param</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="orthogonal"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.orthogonal">[docs]</a><span class="k">def</span> <span class="nf">orthogonal</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a tensor variable of which initial values are of</span>
+<span class="sd">    an orthogonal ndarray.</span>
+<span class="sd">    </span>
+<span class="sd">    See [Saxe et al. 2014.](http://arxiv.org/pdf/1312.6120.pdf)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable.</span>
+<span class="sd">      shape: A tuple/list of integers. </span>
+<span class="sd">      scale: A Python scalar.</span>
+<span class="sd">      dtype: Either float32 or float64.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">flat_shape</span><span class="p">)</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># pick the one with the correct shape</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">u</span> <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">flat_shape</span> <span class="k">else</span> <span class="n">v</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c1"># create variable</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">q</span><span class="p">[:</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+    <span class="c1"># add summary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">and</span> <span class="n">summary</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_param</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="external"><a class="viewcode-back" href="../../sugartensor.sg_initializer.html#sugartensor.sg_initializer.external">[docs]</a><span class="k">def</span> <span class="nf">external</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a tensor variable of which initial values are `value`.</span>
+<span class="sd">    </span>
+<span class="sd">    For example,</span>
+<span class="sd">    </span>
+<span class="sd">    ```</span>
+<span class="sd">    external(&quot;external&quot;, [3,3,1,2])</span>
+<span class="sd">    =&gt; [3. 3. 1. 2.]</span>
+<span class="sd">    ```</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      name: The name of new variable.</span>
+<span class="sd">      value: A constant value (or list) of output type `dtype`.</span>
+<span class="sd">      dtype: The type of the elements of the resulting tensor.</span>
+<span class="sd">      summary: If True, add this constant to tensor board summary.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Variable`. Has the same contents as `value` of `dtype`. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># create variable</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+    <span class="c1"># add summary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable_scope</span><span class="p">()</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">and</span> <span class="n">summary</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_param</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_fans</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the size of input dimension and output dimension, given `shape`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">      shape: A list of integers.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      fan_in: An int. The value of input dimension.</span>
+<span class="sd">      fan_out: An int. The value of output dimension.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">fan_in</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">fan_out</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="c1"># assuming convolution kernels (2D or 3D).</span>
+        <span class="n">kernel_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">fan_in</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel_size</span>
+        <span class="n">fan_out</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># no specific assumptions</span>
+        <span class="n">fan_in</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+        <span class="n">fan_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">fan_in</span><span class="p">,</span> <span class="n">fan_out</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

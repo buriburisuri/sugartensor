@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sugartensor.sg_activation &#8212; SugarTensor 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sugartensor.sg_activation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_sigmoid"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_sigmoid">[docs]</a><span class="k">def</span> <span class="nf">sg_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_tanh"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_tanh">[docs]</a><span class="k">def</span> <span class="nf">sg_tanh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_relu"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_relu">[docs]</a><span class="k">def</span> <span class="nf">sg_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_relu6"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_relu6">[docs]</a><span class="k">def</span> <span class="nf">sg_relu6</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu6</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_leaky_relu"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_leaky_relu">[docs]</a><span class="k">def</span> <span class="nf">sg_leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;&quot;See [Xu, et al. 2015](https://arxiv.org/pdf/1505.00853v2.pdf)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x: A tensor</span>
+<span class="sd">        opt:</span>
+<span class="sd">          name: A name for the operation (optional).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">      A `Tensor` with the same type and shape as `x`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_elu"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_elu">[docs]</a><span class="k">def</span> <span class="nf">sg_elu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">elu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_softplus"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_softplus">[docs]</a><span class="k">def</span> <span class="nf">sg_softplus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_softsign"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_softsign">[docs]</a><span class="k">def</span> <span class="nf">sg_softsign</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softsign</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_softmax"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_softmax">[docs]</a><span class="k">def</span> <span class="nf">sg_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="c1"># noinspection PyUnusedLocal</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
+<div class="viewcode-block" id="sg_linear"><a class="viewcode-back" href="../../sugartensor.sg_activation.html#sugartensor.sg_activation.sg_linear">[docs]</a><span class="k">def</span> <span class="nf">sg_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Namju Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>
