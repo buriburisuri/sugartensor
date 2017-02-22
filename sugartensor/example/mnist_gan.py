@@ -35,13 +35,13 @@ def generator(tensor):
 def discriminator(tensor):
     # reuse flag
     reuse = len([t for t in tf.global_variables() if t.name.startswith('discriminator')]) > 0
-    with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu', reuse=reuse):
+    with tf.sg_context(name='discriminator', size=4, stride=2, act='leaky_relu', bn=True, reuse=reuse):
         res = (tensor
                .sg_conv(dim=64, name='conv1')
                .sg_conv(dim=128, name='conv2')
                .sg_flatten()
                .sg_dense(dim=1024, name='fc1')
-               .sg_dense(dim=1, act='linear', name='fc2')
+               .sg_dense(dim=1, act='linear', bn=False, name='fc2')
                .sg_squeeze())
         return res
 
@@ -105,8 +105,8 @@ train_gen = tf.sg_optim(loss_g, lr=0.001, category='generator')  # generator tra
 # def alternate training func
 @tf.sg_train_func
 def alt_train(sess, opt):
-    l_disc = sess.run([loss_d, train_disc])[0]  # training discriminator
-    l_gen = sess.run([loss_g, train_gen])[0]  # training generator
+    l_disc = sess.run([loss_d] + train_disc)[0]  # training discriminator
+    l_gen = sess.run([loss_g] + train_gen)[0]  # training generator
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training

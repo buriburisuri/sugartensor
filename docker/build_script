@@ -13,7 +13,7 @@ docker tag image_id sugartensor/sugartensor:0.0.x.x-cpu
 docker login
 
 # push to dockerhub
-docker push sugartensor/sugartensor
+docker push sugartensor/sugartensor:latest
 docker push sugartensor/sugartensor:0.0.x.x
 docker push sugartensor/sugartensor:latest-cpu
 docker push sugartensor/sugartensor:0.0.x.x-cpu

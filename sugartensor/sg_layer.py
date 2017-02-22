@@ -441,8 +441,8 @@ def sg_rnn(tensor, opt):
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_initializer.constant('beta', opt.dim, summary=False)
-        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1, summary=False)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \
@@ -515,8 +515,8 @@ def sg_gru(tensor, opt):
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_initializer.constant('beta', opt.dim, summary=False)
-        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1, summary=False)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \
@@ -596,8 +596,8 @@ def sg_lstm(tensor, opt):
     # layer normalization parameters
     if opt.ln:
         # offset, scale parameter
-        beta = tf.sg_initializer.constant('beta', opt.dim, summary=False)
-        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1, summary=False)
+        beta = tf.sg_initializer.constant('beta', opt.dim)
+        gamma = tf.sg_initializer.constant('gamma', opt.dim, value=1)
 
     # initial state
     init_h = opt.init_state if opt.init_state is not None \

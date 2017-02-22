@@ -1,6 +1,8 @@
 # Sugar Tensor - A slim tensorflow wrapper that provides syntactic sugar for tensor variables
 Sugar Tensor aims to help deep learning researchers/practitioners. It adds some syntactic sugar functions to tensorflow to avoid tedious repetitive tasks. Sugar Tensor was developed under the following principles:
 
+Current Version : __***1.0.0.0***__
+
 ## Principles
 1. Don't mess up tensorflow. We provide no wrapping classes. Instead, we use a tensor itself so that developers can program freely as before with tensorflow. 
 1. Don't mess up the python style.  We believe python source codes should look pretty and simple. Practical deep learning codes are very different from those of complex GUI programs. Do we really need inheritance 
@@ -11,8 +13,11 @@ we use pure python functions only and avoid class style conventions.
 
 1. Requirements
     1. tensorflow == __***1.0.0***__
+    
+2. Dependencies ( Will be installed automatically )
+    1. tqdm >= 4.8.4
 
-2. Installation
+3. Installation
 
 python 2
 

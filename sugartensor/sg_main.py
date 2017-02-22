@@ -229,7 +229,6 @@ def sg_layer_func(func):
             else:
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
-        # all layer variables start with 'lyr-' prefix
         with tf.variable_scope(opt.name, reuse=opt.reuse) as scope:
 
             # call layer function
@@ -238,37 +237,34 @@ def sg_layer_func(func):
             # apply batch normalization
             if opt.bn:
                 # offset, scale parameter
-                beta = init.constant('beta', opt.dim, summary=False)
-                gamma = init.constant('gamma', opt.dim, value=1, summary=False)
+                beta = init.constant('beta', opt.dim)
+                gamma = init.constant('gamma', opt.dim, value=1)
 
                 # offset, scale parameter
-                mean_running = init.constant('mean', opt.dim, summary=False)
-                variance_running = init.constant('variance', opt.dim, value=1, summary=False)
+                mean_running = init.constant('mean', opt.dim)
+                variance_running = init.constant('variance', opt.dim, value=1)
 
                 # calc batch mean, variance
                 mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
 
-                # update running mean, variance
-                def update_running_stat():
-                    decay = 0.99
-                    update_op = [mean_running.assign(mean_running * decay + mean * (1 - decay)),
-                                 variance_running.assign(variance_running * decay + variance * (1 - decay))]
-                    with tf.control_dependencies(update_op):
-                        return tf.identity(mean), tf.identity(variance)
+                # add running mean, variance to UPDATE_OP collection
+                decay = 0.99
+                tf.add_to_collection(tf.GraphKeys.UPDATE_OPS, mean_running.assign(mean_running * decay + mean * (1 - decay)))
+                tf.add_to_collection(tf.GraphKeys.UPDATE_OPS, variance_running.assign(variance_running * decay + variance * (1 - decay)))
 
                 # select mean, variance by training phase
                 m, v = tf.cond(_phase,
-                               update_running_stat,  # updated running stat and batch mean, variance
+                               lambda: (mean, variance),  # batch mean, variance
                                lambda: (mean_running, variance_running))  # saved mean, variance
 
                 # apply batch normalization
                 out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
 
-            # apply normalization parameters
+            # apply layer normalization
             if opt.ln:
                 # offset, scale parameter
-                beta = init.constant('beta', opt.dim, summary=False)
-                gamma = init.constant('gamma', opt.dim, value=1, summary=False)
+                beta = init.constant('beta', opt.dim)
+                gamma = init.constant('gamma', opt.dim, value=1)
 
                 # calc layer mean, variance for final axis
                 mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
@@ -344,7 +340,7 @@ def sg_rnn_layer_func(func):
         if opt.name is None:
 
             # layer function name will be used as layer name
-            opt.name = func.__name__.replace('sg_', 'lyr-')
+            opt.name = func.__name__.replace('sg_', '')
 
             # find existing layer names
             exist_layers = []
@@ -362,7 +358,6 @@ def sg_rnn_layer_func(func):
             else:
                 opt.name += '_%d' % (max([int(n.split('_')[-1]) for n in exist_layers]) + 1)
 
-        # all layer variables start with 'lyr-' prefix
         with tf.variable_scope(opt.name, reuse=opt.reuse) as scope:
 
             # call layer function
