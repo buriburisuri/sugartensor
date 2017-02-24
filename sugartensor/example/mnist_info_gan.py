@@ -70,14 +70,10 @@ data = tf.sg_data.Mnist(batch_size=batch_size)
 
 # input images and label
 x = data.train.image
-y = data.train.label
 
 # labels for discriminator
 y_real = tf.ones(batch_size)
 y_fake = tf.zeros(batch_size)
-
-# discriminator labels ( half 1s, half 0s )
-y_disc = tf.concat([y, y * 0], 0)
 
 # categorical latent variable
 z_cat = tf.multinomial(tf.ones((batch_size, cat_dim), dtype=tf.sg_floatx) / cat_dim, 1).sg_squeeze().sg_int()

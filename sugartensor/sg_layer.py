@@ -294,7 +294,7 @@ def sg_upconv1d(tensor, opt):
     out.set_shape([None, out_shape[1], out_shape[2], opt.dim])
 
     # squeeze
-    out = out.sq_squeeze(dim=2)
+    out = out.sq_squeeze(axis=2)
 
     return out
 
