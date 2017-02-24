@@ -118,7 +118,7 @@ loss_g = disc_fake.sg_bce(target=y_real, name='gen')
 loss_c = cat_fake.sg_ce(target=z_cat, name='cat')
 
 # continuous factor loss
-loss_con = con_fake.sg_mse(target=z_con, name='con').sg_mean(dims=1)
+loss_con = con_fake.sg_mse(target=z_con, name='con').sg_mean(axis=1)
 
 
 #
