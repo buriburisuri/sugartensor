@@ -4,9 +4,9 @@ docker build -t suguartensor-cpu -f docker/Dockerfile_cpu .
 
 # attach tag
 docker tag image_id sugartensor/sugartensor:latest
-docker tag image_id sugartensor/sugartensor:1.0.0.x
+docker tag image_id sugartensor/sugartensor:1.0.0.1
 docker tag image_id sugartensor/sugartensor:latest-cpu
-docker tag image_id sugartensor/sugartensor:1.0.0.x-cpu
+docker tag image_id sugartensor/sugartensor:1.0.0.1-cpu
 
 
 # docker login
@@ -14,6 +14,6 @@ docker login
 
 # push to dockerhub
 docker push sugartensor/sugartensor:latest
-docker push sugartensor/sugartensor:1.0.0.x
+docker push sugartensor/sugartensor:1.0.0.1
 docker push sugartensor/sugartensor:latest-cpu
-docker push sugartensor/sugartensor:1.0.0.x-cpu
+docker push sugartensor/sugartensor:1.0.0.1-cpu

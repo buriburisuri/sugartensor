@@ -216,11 +216,11 @@ def sg_upconv(tensor, opt):
         size: A tuple/list of integers of length 2 representing `[kernel height, kernel width]`.
           Can be an integer if both values are the same.
           If not specified, (4, 4) is set implicitly.
-          Default value is [1, 2, 2, 1].
         stride: A tuple/list of integers of length 2 or 4 representing stride dimensions.
           If the length is 2, i.e., (a, b), the stride is `[1, a, b, 1]`.
           If the length is 4, i.e., (a, b, c, d), the stride is `[a, b, c, d]`.
           Can be an integer. If the length is a, the stride is `[1, a, a, 1]`.
+          Default value is [1, 2, 2, 1].
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`. 
@@ -241,7 +241,11 @@ def sg_upconv(tensor, opt):
 
     # tedious shape handling for conv2d_transpose
     shape = tensor.get_shape().as_list()
-    out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
+    if opt.pad == "SAME":
+        out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
+    else:
+        out_shape = [tf.shape(tensor)[0], (shape[1] - 1) * opt.stride[1] + opt.size[0],
+                     (shape[2] - 1) * opt.stride[2] + opt.size[1], opt.dim]
 
     # apply convolution
     out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
@@ -284,7 +288,11 @@ def sg_upconv1d(tensor, opt):
 
     # tedious shape handling for conv2d_transpose
     shape = tensor.get_shape().as_list()
-    out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
+    if opt.pad == "SAME":
+        out_shape = [tf.shape(tensor)[0], shape[1] * opt.stride[1], shape[2] * opt.stride[2], opt.dim]
+    else:
+        out_shape = [tf.shape(tensor)[0], (shape[1] - 1) * opt.stride[1] + opt.size[0],
+                     (shape[2] - 1) * opt.stride[2] + opt.size[1], opt.dim]
 
     # apply convolution
     out = tf.nn.conv2d_transpose(tensor, w, output_shape=tf.stack(out_shape),
@@ -417,7 +425,10 @@ def sg_rnn(tensor, opt):
         ln: Boolean. If True, layer normalization is applied.   
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
-    
+        mask: Boolean 2-D `Tensor` or None(default).
+            For false elements values are excluded from the calculation.
+            As a result, the outputs for the locations become 0.
+
     Returns:
       A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].
       Otherwise, [batch size, time steps, dim].
@@ -457,12 +468,26 @@ def sg_rnn(tensor, opt):
         out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
-    if opt.last_only:
-        out = out[-1].sg_squeeze(axis=1)
-    else:
-        out = tf.concat(out, 1)
+    out = tf.concat(out, 1)
 
-    return out
+    # apply mask
+    if opt.mask is None:
+        if opt.last_only:
+            return out[:, -1, :]
+        else:
+            return out
+    else:
+        # apply mask
+        out *= opt.mask.sg_expand_dims(axis=2).sg_float()
+
+        if opt.last_only:
+            # calc sequence length using given mask
+            seq_len = opt.mask.sg_int().sg_sum(axis=1)
+            # get last output
+            rev = tf.reverse_sequence(out, seq_len, seq_axis=1)
+            return rev[:, 0, :]
+        else:
+            return out
 
 
 @tf.sg_rnn_layer_func
@@ -478,7 +503,10 @@ def sg_gru(tensor, opt):
         ln: Boolean. If True, layer normalization is applied.   
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
-    
+        mask: Boolean 2-D `Tensor` or None(default).
+            For false elements values are excluded from the calculation.
+            As a result, the outputs for the locations become 0.
+
     Returns:
       A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].
       Otherwise, [batch size, time steps, dim].
@@ -532,12 +560,26 @@ def sg_gru(tensor, opt):
         out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
-    if opt.last_only:
-        out = out[-1].sg_squeeze(axis=1)
-    else:
-        out = tf.concat(out, 1)
+    out = tf.concat(out, 1)
 
-    return out
+    # apply mask
+    if opt.mask is None:
+        if opt.last_only:
+            return out[:, -1, :]
+        else:
+            return out
+    else:
+        # apply mask
+        out *= opt.mask.sg_expand_dims(axis=2).sg_float()
+
+        if opt.last_only:
+            # calc sequence length using given mask
+            seq_len = opt.mask.sg_int().sg_sum(axis=1)
+            # get last output
+            rev = tf.reverse_sequence(out, seq_len, seq_axis=1)
+            return rev[:, 0, :]
+        else:
+            return out
 
 
 @tf.sg_rnn_layer_func
@@ -553,6 +595,9 @@ def sg_lstm(tensor, opt):
         ln: Boolean. If True, layer normalization is applied.   
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
+        mask: Boolean 2-D `Tensor` or None(default).
+            For false elements values are excluded from the calculation.
+            As a result, the outputs for the locations become 0.
     
     Returns:
       A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].
@@ -612,9 +657,23 @@ def sg_lstm(tensor, opt):
         out.append(h.sg_expand_dims(axis=1))
 
     # merge tensor
-    if opt.last_only:
-        out = out[-1].sg_squeeze(axis=1)
-    else:
-        out = tf.concat(out, 1)
+    out = tf.concat(out, 1)
 
-    return out
+    # apply mask
+    if opt.mask is None:
+        if opt.last_only:
+            return out[:, -1, :]
+        else:
+            return out
+    else:
+        # apply mask
+        out *= opt.mask.sg_expand_dims(axis=2).sg_float()
+
+        if opt.last_only:
+            # calc sequence length using given mask
+            seq_len = opt.mask.sg_int().sg_sum(axis=1)
+            # get last output
+            rev = tf.reverse_sequence(out, seq_len, seq_axis=1)
+            return rev[:, 0, :]
+        else:
+            return out

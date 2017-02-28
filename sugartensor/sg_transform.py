@@ -274,7 +274,7 @@ def sg_to_sparse(tensor, opt):
     indices = tf.where(tf.not_equal(tensor.sg_float(), 0.))
     return tf.SparseTensor(indices=indices,
                            values=tf.gather_nd(tensor, indices) - 1,  # for zero-based index
-                           shape=tf.shape(tensor).sg_cast(dtype=tf.int64))
+                           dense_shape=tf.shape(tensor).sg_cast(dtype=tf.int64))
 
 
 #

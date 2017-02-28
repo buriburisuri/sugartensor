@@ -161,6 +161,7 @@ def sg_optim(loss, **kwargs):
           lr: A Python Scalar (optional). Learning rate. Default is .001.
           beta1: A Python Scalar (optional). Default is .9.
           beta2: A Python Scalar (optional). Default is .99.
+          momentum : A Python Scalar for RMSProp optimizer (optional). Default is 0.
           category: A string or string list. Specifies the variables that should be trained (optional).
             Only if the name of a trainable variable starts with `category`, it's value is updated.
             Default is '', which means all trainable variables are updated.
@@ -168,7 +169,7 @@ def sg_optim(loss, **kwargs):
     opt = tf.sg_opt(kwargs)
 
     # default training options
-    opt += tf.sg_opt(optim='MaxProp', lr=0.001, beta1=0.9, beta2=0.99, category='')
+    opt += tf.sg_opt(optim='MaxProp', lr=0.001, beta1=0.9, beta2=0.99, momentum=0., category='')
 
     # select optimizer
     if opt.optim == 'MaxProp':
@@ -177,6 +178,8 @@ def sg_optim(loss, **kwargs):
         optim = tf.sg_optimize.AdaMaxOptimizer(learning_rate=opt.lr, beta1=opt.beta1, beta2=opt.beta2)
     elif opt.optim == 'Adam':
         optim = tf.train.AdamOptimizer(learning_rate=opt.lr, beta1=opt.beta1, beta2=opt.beta2)
+    elif opt.optim == 'RMSProp':
+        optim = tf.train.RMSPropOptimizer(learning_rate=opt.lr, decay=opt.beta1, momentum=opt.momentum)
     else:
         optim = tf.train.GradientDescentOptimizer(learning_rate=opt.lr)
 
@@ -296,7 +299,7 @@ def sg_train_func(func):
             sess = opt.sess
         else:
             # session with multiple GPU support
-            sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
+            sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True))
         # initialize variables
         sg_init(sess)
 

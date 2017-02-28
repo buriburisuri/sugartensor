@@ -219,10 +219,11 @@ def sg_ctc(tensor, opt):
 
     # default sequence length
     shape = tf.shape(tensor)
-    opt += tf.sg_opt(seq_len=tf.ones((shape[0],), dtype=tf.sg_intx) * shape[1])
+    opt += tf.sg_opt(seq_len=tf.ones((shape[0],), dtype=tf.sg_intx) * shape[1], merge=True)
 
     # ctc loss
-    out = tf.nn.ctc_loss(tensor, opt.target.sg_to_sparse(), opt.seq_len, time_major=False)
+    out = tf.nn.ctc_loss(opt.target.sg_to_sparse(), tensor, opt.seq_len,
+                         ctc_merge_repeated=opt.merge, time_major=False)
     out = tf.identity(out, 'ctc')
 
     # add summary
