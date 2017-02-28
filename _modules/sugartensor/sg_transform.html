@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>sugartensor.sg_transform &#8212; SugarTensor 1.0.0.0 documentation</title>
+    <title>sugartensor.sg_transform &#8212; SugarTensor 1.0.0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.0.0.0',
+        VERSION:     '1.0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -25,22 +25,16 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -62,7 +56,7 @@
 <span class="c1">#</span>
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_identity"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_identity">[docs]</a><span class="k">def</span> <span class="nf">sg_identity</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_identity"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_identity">[docs]</a><span class="k">def</span> <span class="nf">sg_identity</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the same tensor</span>
 
 <span class="sd">    Args:</span>
@@ -77,7 +71,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_cast"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_cast">[docs]</a><span class="k">def</span> <span class="nf">sg_cast</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_cast"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_cast">[docs]</a><span class="k">def</span> <span class="nf">sg_cast</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Casts a tensor to a new type.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.cast()` in tensorflow.</span>
@@ -96,7 +90,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_float"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_float">[docs]</a><span class="k">def</span> <span class="nf">sg_float</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_float"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_float">[docs]</a><span class="k">def</span> <span class="nf">sg_float</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Casts a tensor to floatx.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.cast()` in tensorflow.</span>
@@ -113,7 +107,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_int"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_int">[docs]</a><span class="k">def</span> <span class="nf">sg_int</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_int"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_int">[docs]</a><span class="k">def</span> <span class="nf">sg_int</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Casts a tensor to intx.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.cast()` in tensorflow.</span>
@@ -130,7 +124,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_expand_dims"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_expand_dims">[docs]</a><span class="k">def</span> <span class="nf">sg_expand_dims</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_expand_dims"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_expand_dims">[docs]</a><span class="k">def</span> <span class="nf">sg_expand_dims</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Inserts a new axis.</span>
 <span class="sd">    </span>
 <span class="sd">    See tf.expand_dims() in tensorflow.</span>
@@ -149,7 +143,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_squeeze"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_squeeze">[docs]</a><span class="k">def</span> <span class="nf">sg_squeeze</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_squeeze"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_squeeze">[docs]</a><span class="k">def</span> <span class="nf">sg_squeeze</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Removes axis of size 1 from the shape of a tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.squeeze()` in tensorflow.</span>
@@ -170,7 +164,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_flatten"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_flatten">[docs]</a><span class="k">def</span> <span class="nf">sg_flatten</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_flatten"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_flatten">[docs]</a><span class="k">def</span> <span class="nf">sg_flatten</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Reshapes a tensor to `batch_size x -1`.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.reshape()` in tensorflow.</span>
@@ -189,7 +183,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_reshape"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_reshape">[docs]</a><span class="k">def</span> <span class="nf">sg_reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_reshape"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_reshape">[docs]</a><span class="k">def</span> <span class="nf">sg_reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Reshapes a tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.reshape()` in tensorflow.</span>
@@ -208,7 +202,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_transpose"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_transpose">[docs]</a><span class="k">def</span> <span class="nf">sg_transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_transpose"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_transpose">[docs]</a><span class="k">def</span> <span class="nf">sg_transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Permutes the dimensions according to `opt.perm`.</span>
 
 <span class="sd">    See `tf.transpose()` in tensorflow.</span>
@@ -227,7 +221,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_argmax"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_argmax">[docs]</a><span class="k">def</span> <span class="nf">sg_argmax</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_argmax"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_argmax">[docs]</a><span class="k">def</span> <span class="nf">sg_argmax</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the indices of the maximum values along the specified axis.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.argmax()` in tensorflow.</span>
@@ -246,7 +240,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_argmin"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_argmin">[docs]</a><span class="k">def</span> <span class="nf">sg_argmin</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_argmin"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_argmin">[docs]</a><span class="k">def</span> <span class="nf">sg_argmin</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the indices of the minimum values along the specified axis.</span>
 
 <span class="sd">    See `tf.argin()` in tensorflow.</span>
@@ -265,7 +259,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_concat"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_concat">[docs]</a><span class="k">def</span> <span class="nf">sg_concat</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_concat"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_concat">[docs]</a><span class="k">def</span> <span class="nf">sg_concat</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenates tensors along a axis.</span>
 
 <span class="sd">    See `tf.concat()` in tensorflow.</span>
@@ -288,7 +282,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_one_hot"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_one_hot">[docs]</a><span class="k">def</span> <span class="nf">sg_one_hot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_one_hot"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_one_hot">[docs]</a><span class="k">def</span> <span class="nf">sg_one_hot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Converts a tensor into a one-hot tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.one_hot()` in tensorflow.</span>
@@ -308,7 +302,7 @@
 
 <span class="c1"># noinspection PyUnusedLocal</span>
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_to_sparse"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_to_sparse">[docs]</a><span class="k">def</span> <span class="nf">sg_to_sparse</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_to_sparse"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_to_sparse">[docs]</a><span class="k">def</span> <span class="nf">sg_to_sparse</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Converts a dense tensor into a sparse tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.SparseTensor()` in tensorflow.</span>
@@ -324,7 +318,7 @@
     <span class="n">indices</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">sg_float</span><span class="p">(),</span> <span class="mf">0.</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">SparseTensor</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">,</span>
                            <span class="n">values</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">gather_nd</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># for zero-based index</span>
-                           <span class="n">shape</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">.</span><span class="n">sg_cast</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span></div>
+                           <span class="n">dense_shape</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">.</span><span class="n">sg_cast</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span></div>
 
 
 <span class="c1">#</span>
@@ -332,7 +326,7 @@
 <span class="c1">#</span>
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_sum"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_sum">[docs]</a><span class="k">def</span> <span class="nf">sg_sum</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_sum"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_sum">[docs]</a><span class="k">def</span> <span class="nf">sg_sum</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the sum of elements across axis of a tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.reduce_sum()` in tensorflow.</span>
@@ -351,7 +345,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_mean"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_mean">[docs]</a><span class="k">def</span> <span class="nf">sg_mean</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_mean"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_mean">[docs]</a><span class="k">def</span> <span class="nf">sg_mean</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the mean of elements across axis of a tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.reduce_mean()` in tensorflow.</span>
@@ -370,7 +364,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_prod"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_prod">[docs]</a><span class="k">def</span> <span class="nf">sg_prod</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_prod"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_prod">[docs]</a><span class="k">def</span> <span class="nf">sg_prod</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the product of elements across axis of a tensor.</span>
 
 <span class="sd">    See `tf.reduce_prod()` in tensorflow.</span>
@@ -389,7 +383,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_min"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_min">[docs]</a><span class="k">def</span> <span class="nf">sg_min</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_min"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_min">[docs]</a><span class="k">def</span> <span class="nf">sg_min</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the minimum of elements across axis of a tensor.</span>
 
 <span class="sd">    See `tf.reduce_min()` in tensorflow.</span>
@@ -408,7 +402,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_max"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_max">[docs]</a><span class="k">def</span> <span class="nf">sg_max</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_max"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_max">[docs]</a><span class="k">def</span> <span class="nf">sg_max</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the maximum of elements across axis of a tensor.</span>
 
 <span class="sd">    See `tf.reduce_max()` in tensorflow.</span>
@@ -427,7 +421,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_all"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_all">[docs]</a><span class="k">def</span> <span class="nf">sg_all</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_all"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_all">[docs]</a><span class="k">def</span> <span class="nf">sg_all</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the &quot;logical and&quot; of elements across axis of a tensor.</span>
 <span class="sd">    </span>
 <span class="sd">    See `tf.reduce_all()` in tensorflow.</span>
@@ -446,7 +440,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_any"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_any">[docs]</a><span class="k">def</span> <span class="nf">sg_any</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_any"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_any">[docs]</a><span class="k">def</span> <span class="nf">sg_any</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Computes the &quot;logical or&quot; of elements across axis of a tensor.</span>
 
 <span class="sd">    See `tf.reduce_any()` in tensorflow.</span>
@@ -470,7 +464,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_pool"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_pool">[docs]</a><span class="k">def</span> <span class="nf">sg_pool</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_pool"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_pool">[docs]</a><span class="k">def</span> <span class="nf">sg_pool</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs the 2-D pooling on the `tensor`.</span>
 <span class="sd">    Mostly used with sg_conv().</span>
 
@@ -513,7 +507,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_pool1d"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_pool1d">[docs]</a><span class="k">def</span> <span class="nf">sg_pool1d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_pool1d"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_pool1d">[docs]</a><span class="k">def</span> <span class="nf">sg_pool1d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Performs the 1-D pooling on the `tensor`.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
@@ -546,7 +540,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_lookup"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_lookup">[docs]</a><span class="k">def</span> <span class="nf">sg_lookup</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_lookup"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_lookup">[docs]</a><span class="k">def</span> <span class="nf">sg_lookup</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Looks up the `tensor`, which is the embedding matrix.</span>
 
 <span class="sd">    Args:</span>
@@ -564,7 +558,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_reverse_seq"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_reverse_seq">[docs]</a><span class="k">def</span> <span class="nf">sg_reverse_seq</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_reverse_seq"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_reverse_seq">[docs]</a><span class="k">def</span> <span class="nf">sg_reverse_seq</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Reverses variable length slices.</span>
 
 <span class="sd">    Before applying the pure tensorflow function tf.reverse_sequence,</span>
@@ -595,7 +589,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_periodic_shuffle"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_periodic_shuffle">[docs]</a><span class="k">def</span> <span class="nf">sg_periodic_shuffle</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_periodic_shuffle"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_periodic_shuffle">[docs]</a><span class="k">def</span> <span class="nf">sg_periodic_shuffle</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Periodic shuffle transformation for SubPixel CNN.</span>
 <span class="sd">        (see [Shi et al. 2016](http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)</span>
 <span class="sd">        </span>
@@ -637,7 +631,7 @@
 
 
 <span class="nd">@tf</span><span class="o">.</span><span class="n">sg_sugar_func</span>
-<div class="viewcode-block" id="sg_inverse_periodic_shuffle"><a class="viewcode-back" href="../../sugartensor.sg_transform.html#sugartensor.sg_transform.sg_inverse_periodic_shuffle">[docs]</a><span class="k">def</span> <span class="nf">sg_inverse_periodic_shuffle</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="sg_inverse_periodic_shuffle"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_transform.sg_inverse_periodic_shuffle">[docs]</a><span class="k">def</span> <span class="nf">sg_inverse_periodic_shuffle</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Inverse periodic shuffle transformation for SubPixel CNN.</span>
 <span class="sd">        (see [Shi et al. 2016](http://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Shi_Real-Time_Single_Image_CVPR_2016_paper.pdf)</span>
 <span class="sd">        </span>
@@ -682,7 +676,15 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
@@ -697,22 +699,17 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SugarTensor 1.0.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2017, Namju Kim.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Namju Kim.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
-    </div>
+
+    
+
+    
   </body>
 </html>
