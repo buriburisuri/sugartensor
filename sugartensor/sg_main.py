@@ -54,23 +54,6 @@ def sg_phase():
 
 
 #
-# global learning rate
-#
-
-_lr = tf.Variable(0.001, dtype=sg_floatx, name='learning_rate', trainable=False)
-
-
-def sg_lr():
-    r""" Gets current running rate
-
-    Returns:
-      A 0-D float `Tensor`.
-    """
-    global _lr
-    return _lr
-
-
-#
 # context helpers
 #
 

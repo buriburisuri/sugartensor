@@ -2,11 +2,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 import sugartensor as tf
 # noinspection PyPackageRequirements
 import numpy as np
-import os
 import time
 from tqdm import tqdm
 from functools import wraps
-from tensorflow.contrib.tensorboard.plugins import projector
 
 
 __author__ = 'buriburisuri@gmail.com'
@@ -51,7 +49,7 @@ def sg_train(**kwargs):
     opt += tf.sg_opt(optim='MaxProp', lr=0.001, beta1=0.9, beta2=0.99, category='')
 
     # get optimizer
-    train_op = sg_optim(opt.loss, optim=opt.optim, lr=tf.sg_lr(),
+    train_op = sg_optim(opt.loss, optim=opt.optim, lr=0.001,
                         beta1=opt.beta1, beta2=opt.beta2, category=opt.category)
 
     # define train function
@@ -253,27 +251,30 @@ def sg_train_func(func):
         # training epoch and loss
         epoch, loss = -1, None
 
-        # console logging function
-        def console_log(sess_):
-            if epoch >= 0:
-                tf.sg_info('\tEpoch[%03d:lr=%7.5f:gs=%d] - loss = %s' %
-                           (epoch, sess_.run(tf.sg_lr()), sess_.run(tf.sg_global_step()),
-                            ('NA' if loss is None else '%8.6f' % loss)))
-
         # checkpoint saver
         saver = tf.train.Saver(max_to_keep=opt.max_keep,
                                keep_checkpoint_every_n_hours=opt.keep_interval)
 
-        # summary op
+        # add evaluation summary
         for m in opt.eval_metric:
             tf.sg_summary_metric(m)
-        summary_op = tf.summary.merge_all()
+
+        # summary writer
+        log_dir = opt.save_dir + '/run-%02d%02d-%02d%02d' % tuple(time.localtime(time.time()))[1:5]
+        summary_writer = tf.summary.FileWriter(log_dir)
+
+        # console logging function
+        def console_log(sess_):
+            if epoch >= 0:
+                tf.sg_info('\tEpoch[%03d:gs=%d] - loss = %s' %
+                           (epoch, sess_.run(tf.sg_global_step()),
+                            ('NA' if loss is None else '%8.6f' % loss)))
 
         # create supervisor
         sv = tf.train.Supervisor(logdir=opt.save_dir,
                                  saver=saver,
                                  save_model_secs=opt.save_interval,
-                                 summary_op=summary_op,
+                                 summary_writer=summary_writer,
                                  save_summaries_secs=opt.log_interval,
                                  global_step=tf.sg_global_step(),
                                  local_init_op=tf.sg_phase().assign(True))
