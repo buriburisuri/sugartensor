@@ -7,7 +7,7 @@ import numpy as np
 __author__ = 'buriburisuri@gmail.com'
 
 
-def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True):
+def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""Creates a tensor variable of which initial values are `value` and shape is `shape`.
 
     Args:
@@ -18,6 +18,8 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True):
         will be set to this value. Default is 0.
       dtype: The data type. Only floating point types are supported. Default is float32.
       summary: If True, add this constant to tensor board summary.
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
 
     Returns:
       A `Variable`.
@@ -25,14 +27,15 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True):
     """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
-                        initializer=tf.constant_initializer(value))
+                        initializer=tf.constant_initializer(value),
+                        regularizer=regularizer)
     # add summary
     if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, summary=True):
+def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""Creates a tensor variable of which initial values are 
     random numbers based on uniform distribution.
     
@@ -46,20 +49,23 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, summary=True):
       scale: A Python scalar. All initial values should be in range `[-scale, scale)`. Default is .05.
       dtype: The data type. Only floating point types are supported. Default is float32.
       summary: If True, add this constant to tensor board summary.
-    
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Variable`.
     """
     shape = shape if isinstance(shape, (tuple, list)) else [shape]
     x = tf.get_variable(name, shape, dtype=dtype,
-                        initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale))
+                        initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale),
+                        regularizer=regularizer)
     # add summary
     if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
+def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""See [He et al. 2015](http://arxiv.org/pdf/1502.01852v1.pdf)
 
     Args:
@@ -68,6 +74,9 @@ def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
       scale: A Python scalar. Scale to initialize. Default is 1.
       dtype: The data type. Default is float32.
       summary: If True, add this constant to tensor board summary.
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
 
     Returns:
       A `Variable`.
@@ -75,10 +84,10 @@ def he_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
     """
     fin, _ = _get_fans(shape)
     s = np.sqrt(1. * scale / fin)
-    return uniform(name, shape, s, dtype, summary)
+    return uniform(name, shape, s, dtype, summary, regularizer)
 
 
-def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
+def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""See [Glorot & Bengio. 2010.](http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf)
 
     Args:
@@ -87,6 +96,8 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
       scale: A Python scalar. Scale to initialize. Default is 1.
       dtype: The data type. Default is float32.
       summary: If True, add this constant to tensor board summary.
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
 
     Returns:
       A `Variable`.
@@ -94,10 +105,10 @@ def glorot_uniform(name, shape, scale=1, dtype=tf.sg_floatx, summary=True):
     """
     fin, fout = _get_fans(shape)
     s = np.sqrt(6. * scale / (fin + fout))
-    return uniform(name, shape, s, dtype, summary)
+    return uniform(name, shape, s, dtype, summary, regularizer)
 
 
-def identity(name, dim, scale=1, dtype=tf.sg_floatx, summary=True):
+def identity(name, dim, scale=1, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""Creates a tensor variable of which initial values are of
     an identity matrix.
     
@@ -119,19 +130,22 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx, summary=True):
       scale: A Python scalar. The value on the diagonal.
       dtype: The type of the elements of the resulting tensor.
       summary: If True, add this constant to tensor board summary.
-    
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A 2-D `Variable`.
     """
     x = tf.get_variable(name,
-                        initializer=tf.constant(np.eye(dim) * scale, dtype=dtype))
+                        initializer=tf.constant(np.eye(dim) * scale, dtype=dtype),
+                        regularizer=regularizer)
     # add summary
     if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True):
+def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""Creates a tensor variable of which initial values are of
     an orthogonal ndarray.
     
@@ -143,7 +157,9 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True):
       scale: A Python scalar.
       dtype: Either float32 or float64.
       summary: If True, add this constant to tensor board summary.
-    
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Variable`.
     """
@@ -155,14 +171,15 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True):
     q = q.reshape(shape)
     # create variable
     x = tf.get_variable(name,
-                        initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype))
+                        initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype),
+                        regularizer=regularizer)
     # add summary
     if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)
     return x
 
 
-def external(name, value, dtype=tf.sg_floatx, summary=True):
+def external(name, value, dtype=tf.sg_floatx, summary=True, regularizer=None):
     r"""Creates a tensor variable of which initial values are `value`.
     
     For example,
@@ -177,13 +194,16 @@ def external(name, value, dtype=tf.sg_floatx, summary=True):
       value: A constant value (or list) of output type `dtype`.
       dtype: The type of the elements of the resulting tensor.
       summary: If True, add this constant to tensor board summary.
-    
+      regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+        will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Variable`. Has the same contents as `value` of `dtype`. 
     """
     # create variable
     x = tf.get_variable(name,
-                        initializer=tf.constant(value, dtype=dtype))
+                        initializer=tf.constant(value, dtype=dtype),
+                        regularizer=regularizer)
     # add summary
     if not tf.get_variable_scope().reuse and summary:
         tf.sg_summary_param(x)

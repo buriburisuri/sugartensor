@@ -39,12 +39,15 @@ def sg_dense(tensor, opt):
         in_dim: An `integer`. The size of input dimension.
         dim: An `integer`. The size of output dimension.
         bias: Boolean. If True, biases are added.
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
       
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
     # parameter initialize
-    w = tf.sg_initializer.he_uniform('W', (opt.in_dim, opt.dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.in_dim, opt.dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply transform
@@ -72,6 +75,8 @@ def sg_conv(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`. 
         bias: Boolean. If True, biases are added.
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
 
     Returns:
       A `Tensor` with the same type as `tensor`.
@@ -83,7 +88,7 @@ def sg_conv(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter initialize
-    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
@@ -107,7 +112,9 @@ def sg_conv1d(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
-      
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
@@ -115,7 +122,7 @@ def sg_conv1d(tensor, opt):
     opt += tf.sg_opt(size=2, stride=1, pad='SAME')
 
     # parameter tf.sg_initializer
-    w = tf.sg_initializer.he_uniform('W', (opt.size, opt.in_dim, opt.dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.size, opt.in_dim, opt.dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
@@ -140,7 +147,9 @@ def sg_aconv(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
-            
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
@@ -149,7 +158,7 @@ def sg_aconv(tensor, opt):
     opt.size = opt.size if isinstance(opt.size, (tuple, list)) else [opt.size, opt.size]
 
     # parameter tf.sg_initializer
-    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
@@ -175,7 +184,9 @@ def sg_aconv1d(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
-            
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
@@ -183,7 +194,7 @@ def sg_aconv1d(tensor, opt):
     opt += tf.sg_opt(size=(2 if opt.causal else 3), rate=1, pad='SAME')
 
     # parameter tf.sg_initializer
-    w = tf.sg_initializer.he_uniform('W', (1, opt.size, opt.in_dim, opt.dim))
+    w = tf.sg_initializer.he_uniform('W', (1, opt.size, opt.in_dim, opt.dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     if opt.causal:
@@ -225,7 +236,9 @@ def sg_upconv(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`. 
         bias: Boolean. If True, biases are added.
-            
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
+
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
@@ -236,7 +249,7 @@ def sg_upconv(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter tf.sg_initializer
-    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # tedious shape handling for conv2d_transpose
@@ -270,6 +283,8 @@ def sg_upconv1d(tensor, opt):
         dim: A positive `integer`. The size of output dimension.
         pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
 
     Returns:
       A `Tensor` with the same type as `tensor`.
@@ -280,7 +295,7 @@ def sg_upconv1d(tensor, opt):
     opt.stride = [1, opt.stride, 1, 1]
 
     # parameter tf.sg_initializer
-    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim))
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.dim, opt.in_dim), regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # make 4-D tensor
@@ -328,6 +343,8 @@ def sg_espcn(tensor, opt):
         pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
         factor: factor to multiply shape by. Default is 2.
+        regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
+          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
 
     Returns:
       A `Tensor` with the same type as `tensor`.
@@ -339,7 +356,8 @@ def sg_espcn(tensor, opt):
     opt.stride = [1, opt.stride[0], opt.stride[1], 1] if len(opt.stride) == 2 else opt.stride
 
     # parameter initialize
-    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim * opt.factor * opt.factor))
+    w = tf.sg_initializer.he_uniform('W', (opt.size[0], opt.size[1], opt.in_dim, opt.dim * opt.factor * opt.factor),
+                                     regularizer=opt.regularizer)
     b = tf.sg_initializer.constant('b', opt.dim) if opt.bias else 0
 
     # apply convolution
@@ -367,7 +385,7 @@ def sg_emb(**kwargs):
       in_dim: A positive `integer`. The size of input dimension.
       dim: A positive `integer`. The size of output dimension.
       voca_size: A positive integer. The size of vocabulary.
-      
+
     Returns:
       A 2-D `Tensor` of float32.
     """
@@ -398,7 +416,7 @@ def _ln_rnn(x, gamma, beta):
       x: A `Tensor`.
       gamma: A constant `Tensor`. Scale parameter. Default is 1.
       beta: A constant `Tensor`. Offset parameter. Default is 0.
-    
+
     Returns:
       A `Tensor` with the same shape as `x`.
     """
@@ -598,7 +616,7 @@ def sg_lstm(tensor, opt):
         mask: Boolean 2-D `Tensor` or None(default).
             For false elements values are excluded from the calculation.
             As a result, the outputs for the locations become 0.
-    
+
     Returns:
       A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].
       Otherwise, [batch size, time steps, dim].

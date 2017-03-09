@@ -41,8 +41,6 @@ def sg_global_step():
 #
 
 _phase = tf.Variable(False, name='phase', trainable=False, collections=[tf.GraphKeys.LOCAL_VARIABLES])
-_phase_train = _phase.assign(True)    # phase set ops ( to train )
-_phase_infer = _phase.assign(False)   # phase set ops ( to infer )
 
 
 def sg_phase():
@@ -55,28 +53,21 @@ def sg_phase():
     return _phase
 
 
-def sg_set_train(sess):
-    r"""Set current phase as training mode
+#
+# global learning rate
+#
 
-    Args:
-      sess: session to work
-
-    Returns:
-      None
-    """
-    sess.run(_phase_train)
+_lr = tf.Variable(0.001, dtype=sg_floatx, name='learning_rate', trainable=False)
 
 
-def sg_set_infer(sess):
-    r"""Sets current phase as inference mode
-
-    Args:
-      sess: session to work
+def sg_lr():
+    r""" Gets current running rate
 
     Returns:
-      None
+      A 0-D float `Tensor`.
     """
-    sess.run(_phase_infer)
+    global _lr
+    return _lr
 
 
 #

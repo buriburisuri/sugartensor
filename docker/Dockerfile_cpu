@@ -3,7 +3,7 @@ MAINTAINER Namju Kim buriburisuri@gmail.com
 
 # requirements
 RUN pip install --upgrade pip
-RUN pip install sugartensor==1.0.0.1
+RUN pip install sugartensor==1.0.0.2
 
 # SSH support
 RUN apt-get update && apt-get install -y openssh-server

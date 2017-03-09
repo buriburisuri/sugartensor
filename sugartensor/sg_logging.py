@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import sugartensor as tf
+import logging
 import os
 import time
 import sys
@@ -197,10 +198,8 @@ def _full_name(tensor):
 # logger wrappers
 #
 
-# use tensorflow logger
-# pylint: disable=protected-access
-# noinspection PyProtectedMember
-_logger = tf.logging._logger
+_logger = logging.getLogger('SugarTensor')
+_logger.addHandler(logging.StreamHandler())
 
 
 def _log_prefix():
@@ -248,20 +247,20 @@ def sg_verbosity(verbosity=0):
 
 
 def sg_debug(msg, *args, **kwargs):
-    _logger.debug(_log_prefix() + msg, *args, **kwargs)
+    _logger.debug('D ' + _log_prefix() + msg, *args, **kwargs)
 
 
 def sg_info(msg, *args, **kwargs):
-    _logger.info(_log_prefix() + msg, *args, **kwargs)
+    _logger.info('I ' + _log_prefix() + msg, *args, **kwargs)
 
 
 def sg_warn(msg, *args, **kwargs):
-    _logger.warn(_log_prefix() + msg, *args, **kwargs)
+    _logger.warn('W ' + _log_prefix() + msg, *args, **kwargs)
 
 
 def sg_error(msg, *args, **kwargs):
-    _logger.error(_log_prefix() + msg, *args, **kwargs)
+    _logger.error('E ' + _log_prefix() + msg, *args, **kwargs)
 
 
 def sg_fatal(msg, *args, **kwargs):
-    _logger.fatal(_log_prefix() + msg, *args, **kwargs)
+    _logger.fatal('F ' + _log_prefix() + msg, *args, **kwargs)
