@@ -16,7 +16,6 @@ __author__ = 'namju.kim@kakaocorp.com'
 #
 
 
-# noinspection PyTypeChecker
 def sg_summary_loss(tensor, prefix='losses', name=None):
     r"""Register `tensor` to summary report as `loss`
 
@@ -33,15 +32,10 @@ def sg_summary_loss(tensor, prefix='losses', name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        _scalar(name, tf.reduce_mean(tensor))
-        _histogram(name + '-h', tensor)
-    except:
-        pass
+    _scalar(name, tf.reduce_mean(tensor))
+    _histogram(name + '-h', tensor)
 
 
-# noinspection PyTypeChecker
 def sg_summary_metric(tensor, prefix='metrics', name=None):
     r"""Register `tensor` to summary report as `metric`
 
@@ -172,14 +166,12 @@ def _pretty_name(tensor):
 
 
 def _scalar(name, tensor):
-    # pylint: disable=protected-access
     if not tf.get_variable_scope().reuse and not tf.sg_get_context().reuse:
         val = gen_logging_ops._scalar_summary(name, tensor)
         tf.add_to_collection(tf.GraphKeys.SUMMARIES, val)
 
 
 def _histogram(name, tensor):
-    # pylint: disable=protected-access
     if not tf.get_variable_scope().reuse and not tf.sg_get_context().reuse:
         val = gen_logging_ops._histogram_summary(name, tensor)
         tf.add_to_collection(tf.GraphKeys.SUMMARIES, val)

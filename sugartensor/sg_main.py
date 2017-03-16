@@ -559,13 +559,14 @@ def sg_parallel(func):
         func: function to decorate
     """
     @wraps(func)
-    def wrapper(tensor, **kwargs):
+    def wrapper(**kwargs):
         r"""Manages arguments of `tf.sg_opt`.
 
         Args:
-          tensor: automatically passed by decorator
-          kwargs: optional keyword arguments
+          kwargs: keyword arguments. The wrapped function will be provided with gpu_index argument.
         """
+        # parse option
+        opt = tf.sg_opt(kwargs)
 
         # loop for all available GPUs
         res = []
@@ -577,7 +578,7 @@ def sg_parallel(func):
                     # save reuse flag
                     with sg_context(reuse=(True if i > 0 else False)):
                         # call function
-                        res.append(func(tensor, tf.sg_opt(kwargs)))
+                        res.append(func(opt * tf.sg_opt(gpu_index=i)))
 
         return res
 

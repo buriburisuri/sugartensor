@@ -7,7 +7,7 @@ from tqdm import tqdm
 from functools import wraps
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'buriburisuri@gmail.com'
 
 
 def sg_train(**kwargs):
@@ -55,12 +55,9 @@ def sg_train(**kwargs):
     # for console logging
     loss_ = opt.loss
 
-    # multiple GPU case
+    # use only first loss when multiple GPU case
     if isinstance(opt.loss, (tuple, list)):
-        # use only first loss when multiple GPU case
         loss_ = opt.loss[0]
-        # modify epoch size
-        opt.ep_size //= len(opt.loss)
 
     # define train function
     # noinspection PyUnusedLocal
@@ -197,12 +194,15 @@ def sg_optim(loss, **kwargs):
 
     # multiple GPUs case
     if isinstance(loss, (tuple, list)):
-
-        # calc gradient parallel
-        @tf.sg_parallel
-        def grad_par(loss_, opt):
-            return tf.gradients(loss_, opt.var_list)
-        gradients = grad_par(loss, var_list=var_list)
+        gradients = []
+        # loop for each GPU tower
+        for i, loss_ in enumerate(loss):
+            # specify device
+            with tf.device('/gpu:%d' % i):
+                # give new scope only to operation
+                with tf.name_scope('gpu_%d' % i):
+                    # add gradient calculation operation for each GPU tower
+                    gradients.append(tf.gradients(loss_, var_list))
 
         # averaging gradient
         gradient = []
@@ -213,8 +213,9 @@ def sg_optim(loss, **kwargs):
         gradient = tf.gradients(loss, var_list)
 
     # gradient update op
-    grad_var = [(g, v) for g, v in zip(gradient, var_list)]
-    grad_op = optim.apply_gradients(grad_var, global_step=tf.sg_global_step())
+    with tf.device('/gpu:0'):
+        grad_var = [(g, v) for g, v in zip(gradient, var_list)]
+        grad_op = optim.apply_gradients(grad_var, global_step=tf.sg_global_step())
 
     # add summary using last tower value
     for g, v in grad_var:
