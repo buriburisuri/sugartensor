@@ -199,7 +199,7 @@ def sg_optim(loss, **kwargs):
     if isinstance(loss, (tuple, list)):
 
         # calc gradient parallel
-        @tf.sg_gpu_towers
+        @tf.sg_parallel
         def grad_par(loss_, opt):
             return tf.gradients(loss_, opt.var_list)
         gradients = grad_par(loss, var_list=var_list)

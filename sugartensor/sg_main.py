@@ -553,7 +553,7 @@ def sg_queue_context(sess=None):
 # Multiple GPU tower Wrapper
 #
 
-def sg_gpu_towers(func):
+def sg_parallel(func):
     r"""Decorates function as multiple gpu support towers.
     Args:
         func: function to decorate
