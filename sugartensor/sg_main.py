@@ -259,12 +259,12 @@ def sg_layer_func(func):
                 beta = init.constant('beta', opt.dim)
                 gamma = init.constant('gamma', opt.dim, value=1)
 
-                # offset, scale parameter
-                mean_running = init.constant('mean', opt.dim)
-                variance_running = init.constant('variance', opt.dim, value=1)
-
                 # calc batch mean, variance
                 mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
+
+                # offset, scale parameter ( for inference )
+                mean_running = init.constant('mean', opt.dim, trainable=False)
+                variance_running = init.constant('variance', opt.dim, value=1, trainable=False)
 
                 # add running mean, variance to UPDATE_OP collection
                 decay = 0.99
