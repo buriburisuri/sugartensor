@@ -58,12 +58,8 @@ def sg_summary_metric(tensor, prefix='metrics', name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        _scalar(name, tf.reduce_mean(tensor))
-        _histogram(name + '-h', tensor)
-    except:
-        pass
+    _scalar(name, tf.reduce_mean(tensor))
+    _histogram(name + '-h', tensor)
 
 
 def sg_summary_gradient(tensor, gradient, prefix=None, name=None):
@@ -84,11 +80,8 @@ def sg_summary_gradient(tensor, gradient, prefix=None, name=None):
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
     # noinspection PyBroadException
-    try:
-        _scalar(name + '/grad', tf.reduce_mean(tf.abs(gradient)))
-        _histogram(name + '/grad-h', tf.abs(gradient))
-    except:
-        pass
+    _scalar(name + '/grad', tf.reduce_mean(tf.abs(gradient)))
+    _histogram(name + '/grad-h', tf.abs(gradient))
 
 
 def sg_summary_activation(tensor, prefix=None, name=None):
@@ -107,13 +100,9 @@ def sg_summary_activation(tensor, prefix=None, name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        _scalar(name + '/ratio',
-                tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
-        _histogram(name + '/ratio-h', tensor)
-    except:
-        pass
+    _scalar(name + '/ratio',
+            tf.reduce_mean(tf.cast(tf.greater(tensor, 0), tf.sg_floatx)))
+    _histogram(name + '/ratio-h', tensor)
 
 
 def sg_summary_param(tensor, prefix=None, name=None):
@@ -132,12 +121,8 @@ def sg_summary_param(tensor, prefix=None, name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        _scalar(name + '/abs', tf.reduce_mean(tf.abs(tensor)))
-        _histogram(name + '/abs-h', tf.abs(tensor))
-    except:
-        pass
+    _scalar(name + '/abs', tf.reduce_mean(tf.abs(tensor)))
+    _histogram(name + '/abs-h', tf.abs(tensor))
 
 
 def sg_summary_image(tensor, prefix=None, name=None):
@@ -156,12 +141,8 @@ def sg_summary_image(tensor, prefix=None, name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        if not tf.get_variable_scope().reuse:
-            tf.summary.image(name + '-im', tensor)
-    except:
-        pass
+    if not tf.get_variable_scope().reuse:
+        tf.summary.image(name + '-im', tensor)
 
 
 def sg_summary_audio(tensor, sample_rate=16000, prefix=None, name=None):
@@ -181,12 +162,8 @@ def sg_summary_audio(tensor, sample_rate=16000, prefix=None, name=None):
     # summary name
     name = prefix + _pretty_name(tensor) if name is None else prefix + name
     # summary statistics
-    # noinspection PyBroadException
-    try:
-        if not tf.get_variable_scope().reuse:
-            tf.summary.audio(name + '-au', tensor, sample_rate)
-    except:
-        pass
+    if not tf.get_variable_scope().reuse:
+        tf.summary.audio(name + '-au', tensor, sample_rate)
 
 
 def _pretty_name(tensor):

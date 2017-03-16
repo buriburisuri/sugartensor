@@ -46,7 +46,7 @@ def sg_train(**kwargs):
     assert opt.loss is not None, 'loss is mandatory.'
 
     # default training options
-    opt += tf.sg_opt(optim='MaxProp', lr=0.001, beta1=0.9, beta2=0.99, category='')
+    opt += tf.sg_opt(optim='MaxProp', lr=0.001, beta1=0.9, beta2=0.99, category='', ep_size=100000)
 
     # get optimizer
     train_op = sg_optim(opt.loss, optim=opt.optim, lr=0.001,
@@ -55,9 +55,12 @@ def sg_train(**kwargs):
     # for console logging
     loss_ = opt.loss
 
-    # use only first loss when multiple GPU case
+    # multiple GPU case
     if isinstance(opt.loss, (tuple, list)):
+        # use only first loss when multiple GPU case
         loss_ = opt.loss[0]
+        # modify epoch size
+        opt.ep_size //= len(opt.loss)
 
     # define train function
     # noinspection PyUnusedLocal
@@ -194,17 +197,17 @@ def sg_optim(loss, **kwargs):
 
     # multiple GPUs case
     if isinstance(loss, (tuple, list)):
+
+        # calc gradient parallel
         @tf.sg_gpu_towers
         def grad_par(loss_, opt):
             return tf.gradients(loss_, opt.var_list)
-
-        # calc gradient parallel
         gradients = grad_par(loss, var_list=var_list)
 
-        # add gradient
+        # averaging gradient
         gradient = []
         for grad in zip(*gradients):
-            gradient.append(tf.add_n(grad))
+            gradient.append(tf.add_n(grad) / len(loss))
     # single GPU case
     else:
         gradient = tf.gradients(loss, var_list)
@@ -213,7 +216,7 @@ def sg_optim(loss, **kwargs):
     grad_var = [(g, v) for g, v in zip(gradient, var_list)]
     grad_op = optim.apply_gradients(grad_var, global_step=tf.sg_global_step())
 
-    # add summary
+    # add summary using last tower value
     for g, v in grad_var:
         # exclude batch normal statics
         if 'mean' not in v.name and 'variance' not in v.name \
