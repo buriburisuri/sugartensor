@@ -52,11 +52,18 @@ def sg_train(**kwargs):
     train_op = sg_optim(opt.loss, optim=opt.optim, lr=0.001,
                         beta1=opt.beta1, beta2=opt.beta2, category=opt.category)
 
+    # for console logging
+    loss_ = opt.loss
+
+    # use only first loss when multiple GPU case
+    if isinstance(opt.loss, (tuple, list)):
+        loss_ = opt.loss[0]
+
     # define train function
     # noinspection PyUnusedLocal
     @sg_train_func
     def train_func(sess, arg):
-        return sess.run([opt.loss] + train_op)[0]
+        return sess.run([loss_, train_op])[0]
 
     # run train function
     train_func(**opt)
@@ -101,7 +108,7 @@ def sg_print(tensor_list):
         tensor_list = [tensor_list]
 
     # evaluate tensor list with queue runner
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
         sg_init(sess)
         with tf.sg_queue_context():
             res = sess.run(tensor_list)
@@ -145,7 +152,7 @@ def sg_optim(loss, **kwargs):
     r"""Applies gradients to variables.
 
     Args:
-        loss: A 0-D `Tensor` containing the value to minimize.
+        loss: A 0-D `Tensor` containing the value to minimize. list of 0-D tensor for Multiple GPU
         kwargs:
           optim: A name for optimizer. 'MaxProp' (default), 'AdaMax', 'Adam', 'RMSProp' or 'sgd'.
           lr: A Python Scalar (optional). Learning rate. Default is .001.
@@ -181,18 +188,37 @@ def sg_optim(loss, **kwargs):
     else:
         var_list = [t for t in tf.trainable_variables() if t.name.startswith(opt.category)]
 
+    #
     # calc gradient
-    gradient = optim.compute_gradients(loss, var_list=var_list)
+    #
+
+    # multiple GPUs case
+    if isinstance(loss, (tuple, list)):
+        @tf.sg_gpu_towers
+        def grad_par(loss_, opt):
+            return tf.gradients(loss_, opt.var_list)
+
+        # calc gradient parallel
+        gradients = grad_par(loss, var_list=var_list)
+
+        # add gradient
+        gradient = []
+        for grad in zip(*gradients):
+            gradient.append(tf.add_n(grad))
+    # single GPU case
+    else:
+        gradient = tf.gradients(loss, var_list)
+
+    # gradient update op
+    grad_var = [(g, v) for g, v in zip(gradient, var_list)]
+    grad_op = optim.apply_gradients(grad_var, global_step=tf.sg_global_step())
 
     # add summary
-    for v, g in zip(var_list, gradient):
+    for g, v in grad_var:
         # exclude batch normal statics
         if 'mean' not in v.name and 'variance' not in v.name \
                 and 'beta' not in v.name and 'gamma' not in v.name:
             tf.sg_summary_gradient(v, g)
-
-    # gradient update op
-    grad_op = optim.apply_gradients(gradient, global_step=tf.sg_global_step())
 
     # extra update ops within category ( for example, batch normal running stat update )
     if isinstance(opt.category, (tuple, list)):
@@ -202,12 +228,12 @@ def sg_optim(loss, **kwargs):
     else:
         update_op = [t for t in tf.get_collection(tf.GraphKeys.UPDATE_OPS) if t.name.startswith(opt.category)]
 
-    return [grad_op] + update_op
+    return tf.group(*([grad_op] + update_op))
 
 
 def sg_train_func(func):
     r""" Decorates a function `func` as sg_train_func.
-    
+
     Args:
         func: A function to decorate
     """
@@ -218,13 +244,13 @@ def sg_train_func(func):
         Args:
           **kwargs:
             lr: A Python Scalar (optional). Learning rate. Default is .001.
-    
+
             save_dir: A string. The root path to which checkpoint and log files are saved.
               Default is `asset/train`.
-            max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
-            ep_size: A positive integer. Number of Total batches in an epoch. 
-              For proper display of log. Default is 1e5.    
-    
+            max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+            ep_size: A positive integer. Number of Total batches in an epoch.
+              For proper display of log. Default is 1e5.
+
             save_interval: A Python scalar. The interval of saving checkpoint files.
               By default, for every 600 seconds, a checkpoint file is written.
             log_interval: A Python scalar. The interval of recoding logs.
@@ -233,7 +259,7 @@ def sg_train_func(func):
             keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.
 
             eval_metric: A list of tensors containing the value to evaluate. Default is [].
-    
+
             tqdm: Boolean. If True (Default), progress bars are shown. If False, a series of loss
                 will be shown on the console.
         """
@@ -340,9 +366,6 @@ def sg_train_func(func):
                            (ep - 1, sess.run(tf.sg_global_step())))
 
     return wrapper
-
-
-
 
 
 # Under construction

@@ -30,7 +30,7 @@ def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True, regularizer
                         initializer=tf.constant_initializer(value),
                         regularizer=regularizer)
     # add summary
-    if not tf.get_variable_scope().reuse and summary:
+    if summary:
         tf.sg_summary_param(x)
     return x
 
@@ -60,7 +60,7 @@ def uniform(name, shape, scale=0.05, dtype=tf.sg_floatx, summary=True, regulariz
                         initializer=tf.random_uniform_initializer(minval=-scale, maxval=scale),
                         regularizer=regularizer)
     # add summary
-    if not tf.get_variable_scope().reuse and summary:
+    if summary:
         tf.sg_summary_param(x)
     return x
 
@@ -140,7 +140,7 @@ def identity(name, dim, scale=1, dtype=tf.sg_floatx, summary=True, regularizer=N
                         initializer=tf.constant(np.eye(dim) * scale, dtype=dtype),
                         regularizer=regularizer)
     # add summary
-    if not tf.get_variable_scope().reuse and summary:
+    if summary:
         tf.sg_summary_param(x)
     return x
 
@@ -174,7 +174,7 @@ def orthogonal(name, shape, scale=1.1, dtype=tf.sg_floatx, summary=True, regular
                         initializer=tf.constant(scale * q[:shape[0], :shape[1]], dtype=dtype),
                         regularizer=regularizer)
     # add summary
-    if not tf.get_variable_scope().reuse and summary:
+    if summary:
         tf.sg_summary_param(x)
     return x
 
@@ -205,7 +205,7 @@ def external(name, value, dtype=tf.sg_floatx, summary=True, regularizer=None):
                         initializer=tf.constant(value, dtype=dtype),
                         regularizer=regularizer)
     # add summary
-    if not tf.get_variable_scope().reuse and summary:
+    if summary:
         tf.sg_summary_param(x)
     return x
 

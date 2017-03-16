@@ -3,6 +3,8 @@ import types
 from functools import wraps
 import importlib
 from contextlib import contextmanager
+from tensorflow.python.client import device_lib
+
 
 import sugartensor as tf
 
@@ -52,12 +54,33 @@ def sg_phase():
     global _phase
     return _phase
 
+#
+# available GPU nums
+#
+
+_gpus = None
+
+
+def sg_gpus():
+    r""" Gets current available GPU nums
+
+    Returns:
+      A integer : total # of GPUs available
+    """
+    global _gpus
+
+    if _gpus is None:
+        local_device_protos = device_lib.list_local_devices()
+        _gpus = len([x.name for x in local_device_protos if x.device_type == 'GPU'])
+
+    return max(_gpus, 1)
+
 
 #
 # context helpers
 #
 
-_context = tf.sg_opt()
+_context = []
 
 
 @contextmanager
@@ -91,17 +114,39 @@ def sg_context(**kwargs):
       None
     """
     global _context
+
     # set options when enter
-    _context = tf.sg_opt(kwargs)
-    if _context.name:
-        _context.context_name = _context.name
-        _context.name = None
-        with tf.variable_scope(_context.context_name):
+    context_now = tf.sg_opt(kwargs)
+    _context += [context_now]
+
+    # if named context
+    if context_now.name:
+        context_now.scope_name = context_now.name
+        context_now.name = None
+        with tf.variable_scope(context_now.scope_name):
             yield
     else:
         yield
+
     # clear options when exit
-    _context = tf.sg_opt()
+    del _context[-1]
+
+
+def sg_get_context():
+    r"""Get current context information
+
+    Returns:
+      tf.sg_opt class object which contains all context information
+    """
+
+    global _context
+
+    # merge current context
+    res = tf.sg_opt()
+    for c in _context:
+        res += c
+
+    return res
 
 
 #
@@ -124,7 +169,7 @@ def sg_sugar_func(func):
         # call sugar function
         out = func(tensor, tf.sg_opt(kwargs))
         # save node info for reuse
-        out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs)+_context, prev=tensor)
+        out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs)+sg_get_context(), prev=tensor)
         # inject reuse function
         out.sg_reuse = types.MethodType(sg_reuse, out)
         return out
@@ -167,7 +212,7 @@ def sg_layer_func(func):
         from . import sg_activation
 
         # kwargs parsing
-        opt = tf.sg_opt(kwargs) + _context
+        opt = tf.sg_opt(kwargs) + sg_get_context()
 
         # set default argument
         try:
@@ -262,11 +307,10 @@ def sg_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            if not scope.reuse:
-                tf.sg_summary_activation(out)
+            tf.sg_summary_activation(out)
 
             # save node info for reuse
-            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
+            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + sg_get_context(),
                                    prev=tensor, is_layer=True, name=opt.name)
             # inject reuse function
             out.sg_reuse = types.MethodType(sg_reuse, out)
@@ -298,7 +342,7 @@ def sg_rnn_layer_func(func):
         """
 
         # kwargs parsing
-        opt = tf.sg_opt(kwargs) + _context
+        opt = tf.sg_opt(kwargs) + sg_get_context()
 
         # set default argument
         try:
@@ -347,11 +391,10 @@ def sg_rnn_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            if scope.reuse:
-                tf.sg_summary_activation(out)
+            tf.sg_summary_activation(out)
 
             # save node info for reuse
-            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + _context,
+            out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + sg_get_context(),
                                    prev=tensor, is_layer=True, name=opt.name)
             # inject reuse function
             out.sg_reuse = types.MethodType(sg_reuse, out)
@@ -394,8 +437,8 @@ def sg_reuse(tensor, **opt):
     for node in nodes[1:]:  # exclude head node
         if node._sugar.is_layer:
             fn = tf.sg_layer_func(node._sugar.func)
-            if node._sugar.arg.context_name:
-                with tf.variable_scope(node._sugar.arg.context_name):
+            if node._sugar.arg.scope_name:
+                with tf.variable_scope(node._sugar.arg.scope_name):
                     out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
             else:
                 out = fn(out, **(node._sugar.arg + tf.sg_opt(name=node._sugar.name, reuse=True)))
@@ -504,6 +547,41 @@ def sg_queue_context(sess=None):
         coord.request_stop()
         # wait thread to exit.
         coord.join(threads)
+
+
+#
+# Multiple GPU tower Wrapper
+#
+
+def sg_gpu_towers(func):
+    r"""Decorates function as multiple gpu support towers.
+    Args:
+        func: function to decorate
+    """
+    @wraps(func)
+    def wrapper(tensor, **kwargs):
+        r"""Manages arguments of `tf.sg_opt`.
+
+        Args:
+          tensor: automatically passed by decorator
+          kwargs: optional keyword arguments
+        """
+
+        # loop for all available GPUs
+        res = []
+        for i in range(sg_gpus()):
+            # specify device
+            with tf.device('/gpu:%d' % i):
+                # give new scope only to operation
+                with tf.name_scope('gpu_%d' % i):
+                    # save reuse flag
+                    with sg_context(reuse=(True if i > 0 else False)):
+                        # call function
+                        res.append(func(tensor, tf.sg_opt(kwargs)))
+
+        return res
+
+    return wrapper
 
 
 #
