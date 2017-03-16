@@ -1,5 +1,5 @@
 FROM tensorflow/tensorflow:1.0.0-gpu
-MAINTAINER Namju Kim buriburisuri@gmail.com
+MAINTAINER Namju Kim namju.kim@kakaocorp.com
 
 # requirements
 RUN pip install --upgrade pip

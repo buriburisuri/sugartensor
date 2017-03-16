@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import tensorflow as tf
 
-__author__ = 'buriburisuri@gmail.com'
+__author__ = 'namju.kim@kakaocorp.com'
 
 
 # noinspection PyAbstractClass
@@ -61,7 +61,7 @@ class AdaMaxOptimizer(tf.train.Optimizer):
 
 # noinspection PyAbstractClass
 class MaxPropOptimizer(tf.train.Optimizer):
-    r"""Optimizer that implements the MaxProp algorithm by buriburisuri@gmail.com.
+    r"""Optimizer that implements the MaxProp algorithm by namju.kim@kakaocorp.com.
     """
     def __init__(self, learning_rate=0.001, beta2=0.999, use_locking=False, name="MaxProp"):
         super(MaxPropOptimizer, self).__init__(use_locking, name)

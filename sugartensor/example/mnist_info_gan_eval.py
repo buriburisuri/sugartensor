@@ -2,6 +2,10 @@ import sugartensor as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+__author__ = 'namju.kim@kakaocorp.com'
+
+
 # set log level to debug
 tf.sg_verbosity(10)
 

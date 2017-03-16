@@ -3,7 +3,7 @@ import six
 import collections
 
 
-__author__ = 'buriburisuri@gmail.com'
+__author__ = 'namju.kim@kakaocorp.com'
 
 
 class _Opt(collections.MutableMapping):

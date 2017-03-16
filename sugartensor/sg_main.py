@@ -9,7 +9,7 @@ from tensorflow.python.client import device_lib
 import sugartensor as tf
 
 
-__author__ = 'buriburisuri@gmail.com'
+__author__ = 'namju.kim@kakaocorp.com'
 
 
 #

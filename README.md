@@ -164,4 +164,4 @@ or [WaveNet example code](https://github.com/buriburisuri/speech-to-text-wavenet
 
 # Author
 
-Namju Kim (buriburisuri@gmail.com) at KakaoBrain Corp.
+Namju Kim (namju.kim@kakaocorp.com) at KakaoBrain Corp.

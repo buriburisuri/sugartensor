@@ -4,7 +4,7 @@ import sugartensor as tf
 import numpy as np
 
 
-__author__ = 'buriburisuri@gmail.com'
+__author__ = 'namju.kim@kakaocorp.com'
 
 
 def constant(name, shape, value=0, dtype=tf.sg_floatx, summary=True, regularizer=None, trainable=True):

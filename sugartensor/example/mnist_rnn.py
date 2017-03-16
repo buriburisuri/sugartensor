@@ -1,5 +1,9 @@
 import sugartensor as tf
 
+
+__author__ = 'namju.kim@kakaocorp.com'
+
+
 # set log level to debug
 tf.sg_verbosity(10)
 
