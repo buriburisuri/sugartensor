@@ -351,7 +351,8 @@ def sg_train_func(func):
                         batch_loss = func(sess, opt)
 
                         # loss history update
-                        if batch_loss is not None:
+                        if batch_loss is not None and \
+                                not np.isnan(batch_loss.all()) and not np.isinf(batch_loss.all()):
                             if loss is None:
                                 loss = np.mean(batch_loss)
                             else:
