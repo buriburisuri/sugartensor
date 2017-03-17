@@ -2,6 +2,7 @@
 
 Bugfixes:
     - fix a running mean and variance update rule in batch normal 
+    - fix a gru bug
 
 Features :
     - support multiple GPU support

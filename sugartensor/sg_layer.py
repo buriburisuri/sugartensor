@@ -541,9 +541,9 @@ def sg_gru(tensor, opt):
         # reset gate
         r = tf.sigmoid(ln(tf.matmul(x, w_r) + tf.matmul(hh, u_r) + (b_r if opt.bias else 0)))
         # h_hat
-        hh = tf.tanh(ln(tf.matmul(x, w_h) + tf.matmul(r * hh, u_h) + (b_h if opt.bias else 0)))
+        h_hat = tf.tanh(ln(tf.matmul(x, w_h) + tf.matmul(r * hh, u_h) + (b_h if opt.bias else 0)))
         # final output
-        y = (1. - z) * hh + z * hh
+        y = (1. - z) * h_hat + z * hh
         return y
 
     # parameter initialize
