@@ -93,7 +93,7 @@ def sg_context(**kwargs):
 
     For example, in the following example, the default value of parameter `bn` will be set to True
     in the all layers within the with block.
-    
+
     ```
     with tf.sg_context(bn=True):
         ...
@@ -131,11 +131,63 @@ def sg_context(**kwargs):
 
 
 #
+# summary function annotator
+#
+def sg_summary_func(prefix='', prettify_name=False):
+    r"""Decorates a function `func` so that it can be a summary function.
+
+    Args:
+        prefix: A `string`. A prefix to display in the tensor board web UI.
+        pretty_name: A `boolean`. Should the default name be prettified.
+        func: function to decorate
+
+    Returns:
+      A summary function.
+
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(tensor, **kwargs):
+            r"""Manages input and call to summary function.
+
+            Args:
+              tensor: A `Tensor` to log as loss
+              kwargs:
+                  prefix: A `string`. A prefix to display in the tensor board web UI.
+                  name: A `string`. A name to display in the tensor board web UI.
+                  summary: A `boolean`. If false the summary is disabled.
+            """
+            full_name = ''.join(tensor.name.split(':')[:-1])
+            pretty_name = ''.join(tensor.name.split(':')[:-1]).split('/')[-1]
+
+            # kwargs parsing
+            opt = tf.sg_opt(kwargs) + _context + tf.sg_opt(
+                prefix=prefix,
+                name=pretty_name if prettify_name else full_name,
+                summary=True
+            )
+
+            if opt.prefix != '':
+                opt.name = opt.prefix + '/' + opt.name
+
+            # noinspection PyBroadException
+            try:
+                if opt.summary:
+                    func(tensor, opt)
+            except:
+                pass
+
+        return wrapper
+
+    return decorator
+
+#
 # sugar function annotator
 #
 
 def sg_sugar_func(func):
-    r""" Decorates a function `func` so that it can be a sugar function. 
+    r""" Decorates a function `func` so that it can be a sugar function.
     Sugar function can be used in a chainable manner.
 
     Args:
@@ -172,7 +224,7 @@ def sg_layer_func(func):
     @wraps(func)
     def wrapper(tensor, **kwargs):
         r"""Manages arguments of `tf.sg_opt`.
-        
+
         Args:
           tensor: A `tensor` (automatically passed by decorator).
           kwargs:
@@ -182,10 +234,10 @@ def sg_layer_func(func):
             bn: Boolean. If True, batch normalization is applied.
             ln: Boolean. If True, layer normalization is applied.
             dout: A float of range [0, 100). A dropout rate. Set to 0 by default.
-            bias: Boolean. If True, biases are added. As a default, it is set to True 
+            bias: Boolean. If True, biases are added. As a default, it is set to True
             name: A name for the layer. As a default, the function name is assigned.
             act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
-            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope 
+            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
               as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
         """
 
@@ -394,7 +446,7 @@ def sg_rnn_layer_func(func):
 
 # noinspection PyProtectedMember
 def sg_reuse(tensor, **opt):
-    r""" Reconstruct computational graph of `tensor` so all the parameters 
+    r""" Reconstruct computational graph of `tensor` so all the parameters
     can be reused and replace its input tensor with `opt.input`.
 
     Args:
@@ -559,12 +611,12 @@ def sg_arg_def(**kwargs):
     Returns:
       None
 
-    For example, 
-    
+    For example,
+
     ```
     # Either of the following two lines will define `--n_epoch` command line argument and set its default value as 1.
-    
-    tf.sg_arg_def(n_epoch=1) 
+
+    tf.sg_arg_def(n_epoch=1)
     tf.sg_arg_def(n_epoch=(1, 'total number of epochs'))
     ```
     """
