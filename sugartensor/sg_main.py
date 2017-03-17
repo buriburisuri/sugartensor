@@ -156,6 +156,7 @@ def sg_summary_func(prefix='', prettify_name=False):
               kwargs:
                   prefix: A `string`. A prefix to display in the tensor board web UI.
                   name: A `string`. A name to display in the tensor board web UI.
+                  summary: A `boolean`. If false the summary is disabled.
             """
             full_name = ''.join(tensor.name.split(':')[:-1])
             pretty_name = ''.join(tensor.name.split(':')[:-1]).split('/')[-1]
@@ -163,7 +164,8 @@ def sg_summary_func(prefix='', prettify_name=False):
             # kwargs parsing
             opt = tf.sg_opt(kwargs) + _context + tf.sg_opt(
                 prefix=prefix,
-                name=pretty_name if prettify_name else full_name
+                name=pretty_name if prettify_name else full_name,
+                summary=True
             )
 
             if opt.prefix != '':
@@ -171,7 +173,8 @@ def sg_summary_func(prefix='', prettify_name=False):
 
             # noinspection PyBroadException
             try:
-                func(tensor, opt)
+                if opt.summary:
+                    func(tensor, opt)
             except:
                 pass
 

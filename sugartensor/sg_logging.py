@@ -23,6 +23,7 @@ def sg_summary_loss(tensor, opt):
       opt:
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
       None
@@ -41,6 +42,7 @@ def sg_summary_metric(tensor, opt):
       opt:
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
       None
@@ -59,6 +61,7 @@ def sg_summary_gradient(tensor, opt):
           gradient: A 0-D `Tensor`. A gradient to log
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
         None
@@ -78,6 +81,7 @@ def sg_summary_activation(tensor, opt):
       opt:
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
       None
@@ -96,6 +100,7 @@ def sg_summary_param(tensor):
       opt:
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
       None
@@ -113,6 +118,7 @@ def sg_summary_image(tensor, opt):
       opt:
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
         None
@@ -130,6 +136,7 @@ def sg_summary_audio(tensor):
           sample_rate : An int. Sample rate to report. Default is 16000.
           prefix: A `string`. A prefix to display in the tensor board web UI.
           name: A `string`. A name to display in the tensor board web UI.
+          summary: A `boolean`. If false the summary is disabled.
 
     Returns:
         None
