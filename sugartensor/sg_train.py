@@ -35,9 +35,9 @@ def sg_train(**kwargs):
           Otherwise (Default), the value of the stored `_learning_rate` is taken.
         save_dir: A string. The root path to which checkpoint and log files are saved.
           Default is `asset/train`.
-        max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
-        ep_size: A positive integer. Number of Total batches in an epoch. 
-          For proper display of log. Default is 1e5.    
+        max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+        ep_size: A positive integer. Number of Total batches in an epoch.
+          For proper display of log. Default is 1e5.
 
         save_interval: A Python scalar. The interval of saving checkpoint files.
           By default, for every 600 seconds, a checkpoint file is written.
@@ -49,7 +49,7 @@ def sg_train(**kwargs):
         category: Scope name or list to train
 
         tqdm: Boolean. If True (Default), progress bars are shown.
-        console_log: Boolean. If True, a series of loss will be shown 
+        console_log: Boolean. If True, a series of loss will be shown
           on the console instead of tensorboard. Default is False.
     """
     opt = tf.sg_opt(kwargs)
@@ -74,9 +74,9 @@ def sg_train(**kwargs):
 
 def sg_init(sess):
     r""" Initializes session variables.
-    
+
     Args:
-      sess: Session to initialize. 
+      sess: Session to initialize.
     """
     # initialize variables
     sess.run(tf.group(tf.global_variables_initializer(),
@@ -86,15 +86,15 @@ def sg_init(sess):
 def sg_print(tensor_list):
     r"""Simple tensor printing function for debugging.
     Prints the value, shape, and data type of each tensor in the list.
-    
+
     Args:
       tensor_list: A list/tuple of tensors or a single tensor.
-      
+
     Returns:
       The value of the tensors.
-      
+
     For example,
-    
+
     ```python
     import sugartensor as tf
     a = tf.constant([1.])
@@ -104,7 +104,7 @@ def sg_print(tensor_list):
     #              [ 2.] (1,) float32
     print(out)
     # Should print [array([ 1.], dtype=float32), array([ 2.], dtype=float32)]
-    ``` 
+    ```
     """
     # to list
     if type(tensor_list) is not list and type(tensor_list) is not tuple:
@@ -199,7 +199,7 @@ def sg_optim(loss, **kwargs):
         # exclude batch normal statics
         if 'mean' not in v.name and 'variance' not in v.name \
                 and 'beta' not in v.name and 'gamma' not in v.name:
-            tf.sg_summary_gradient(v, g)
+            tf.sg_summary_gradient(v, gradient=g)
 
     # gradient update op
     grad_op = optim.apply_gradients(gradient, global_step=tf.sg_global_step())
@@ -217,7 +217,7 @@ def sg_optim(loss, **kwargs):
 
 def sg_train_func(func):
     r""" Decorates a function `func` as sg_train_func.
-    
+
     Args:
         func: A function to decorate
     """
@@ -228,7 +228,7 @@ def sg_train_func(func):
         Args:
           **kwargs:
             lr: A Python Scalar (optional). Learning rate. Default is .001.
-    
+
             eval_metric: A list of tensors containing the value to evaluate. Default is [].
             early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.
               i. Current loss is less than .95 * previous loss.
@@ -237,19 +237,19 @@ def sg_train_func(func):
               Otherwise (Default), the value of the stored `_learning_rate` is taken.
             save_dir: A string. The root path to which checkpoint and log files are saved.
               Default is `asset/train`.
-            max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
-            ep_size: A positive integer. Number of Total batches in an epoch. 
-              For proper display of log. Default is 1e5.    
-    
+            max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+            ep_size: A positive integer. Number of Total batches in an epoch.
+              For proper display of log. Default is 1e5.
+
             save_interval: A Python scalar. The interval of saving checkpoint files.
               By default, for every 600 seconds, a checkpoint file is written.
             log_interval: A Python scalar. The interval of recoding logs.
               By default, for every 60 seconds, logging is executed.
             max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
             keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.
-    
+
             tqdm: Boolean. If True (Default), progress bars are shown.
-            console_log: Boolean. If True, a series of loss will be shown 
+            console_log: Boolean. If True, a series of loss will be shown
               on the console instead of tensorboard. Default is False.
         """
         opt = tf.sg_opt(kwargs)
