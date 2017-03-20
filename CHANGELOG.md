@@ -1,4 +1,4 @@
-## 1.0.0.2 ( 2017-02-28 )
+## 1.0.0.2 ( 2017-03-20 )
 
 Bugfixes:
     - fix a running mean and variance update rule in batch normal 
@@ -7,6 +7,7 @@ Bugfixes:
 Features :
     - support multiple GPU support
     - add regularizer related functions  
+    - add summary on/off context
 
 ## 1.0.0.1 ( 2017-02-28 )
 

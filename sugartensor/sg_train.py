@@ -373,6 +373,14 @@ def sg_train_func(func):
     return wrapper
 
 
+def sg_regularizer_loss(scale=1.0):
+    r""" Get regularizer losss
+
+    Args:
+      scale: A scalar. A weight applied to regularizer loss
+    """
+    return scale * tf.reduce_mean(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+
 # Under construction
 # def sg_tsne(tensor, meta_file='metadata.tsv', save_dir='asset/tsne'):
 #     r""" Manages arguments of `tf.sg_opt`.

@@ -277,6 +277,40 @@ def sg_to_sparse(tensor, opt):
                            dense_shape=tf.shape(tensor).sg_cast(dtype=tf.int64))
 
 
+@tf.sg_sugar_func
+def sg_log(tensor, opt):
+    r"""Log transform a dense tensor
+
+    See `tf.log()` in tensorflow.
+
+    Args:
+      tensor: A `Tensor` ( automatically given by chain )
+      opt:
+        name: If provided, replace current tensor's name.
+
+    Returns:
+        A `Tensor`.
+    """
+    return tf.log(tensor + tf.sg_eps, name=opt.name)
+
+
+@tf.sg_sugar_func
+def sg_exp(tensor, opt):
+    r"""Exponential transform a dense tensor
+
+    See `tf.exp()` in tensorflow.
+
+    Args:
+      tensor: A `Tensor` ( automatically given by chain )
+      opt:
+        name: If provided, replace current tensor's name.
+
+    Returns:
+        A `Tensor`.
+    """
+    return tf.exp(tensor, name=opt.name)
+
+
 #
 # reduce functions
 #

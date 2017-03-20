@@ -206,6 +206,8 @@ def sg_layer_func(func):
             act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
             reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope 
               as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+            regularizer:  A string. None, 'l1' or 'l2'. The default is None
+            summary: If True, summaries are added. The default is True.
         """
 
         from . import sg_initializer as init
@@ -218,7 +220,15 @@ def sg_layer_func(func):
         try:
             shape = tensor.get_shape().as_list()
             # batch normalization off, layer normalization off, dropout off
-            opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1], bn=False, ln=False, dout=0)
+            opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1],
+                             bn=False, ln=False, dout=0, summary=True)
+            if opt.regularizer == 'l1':
+                opt.regularizer = lambda x: tf.reduce_mean(tf.abs(x))
+            elif opt.regularizer == 'l2':
+                opt.regularizer = lambda x: tf.square(tf.reduce_mean(tf.square(x)))
+            else:
+                opt.regularizer = None
+
             assert not (opt.bn and opt.ln), 'one of batch normalization and layer normalization is available.'
 
             # disable bias when normalization on
@@ -339,6 +349,7 @@ def sg_rnn_layer_func(func):
               name: A name for the layer. As a default, the function name is assigned.
               reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
                 as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
+              summary: If True, summaries are added. The default is True.
         """
 
         # kwargs parsing
@@ -348,7 +359,7 @@ def sg_rnn_layer_func(func):
         try:
             shape = tensor.get_shape().as_list()
             # dropout off
-            opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1], dout=0)
+            opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1], dout=0, summary=True)
             # disable bias when normalization on
             opt += tf.sg_opt(bias=not opt.ln)
         finally:
