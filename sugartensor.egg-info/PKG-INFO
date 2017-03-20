@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: sugartensor
+Version: 1.0.0.2
+Summary: A slim tensorflow wrapper that provides syntactic sugar for tensor variables.
+Home-page: https://github.com/buriburisuri/sugartensor
+Author: Namju Kim at KakaoBrain Corp.
+Author-email: namju.kim@kakaocorp.com
+License: MIT
+Download-URL: https://github.com/buriburisuri/sugartensor/tarball/1.0.0.2
+Description: UNKNOWN
+Keywords: tensorflow,sugar,sugartensor,slim,wrapper
+Platform: UNKNOWN
