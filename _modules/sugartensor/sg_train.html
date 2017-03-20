@@ -1,63 +1,171 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sugartensor.sg_train &mdash; SugarTensor 1.0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>sugartensor.sg_train &#8212; SugarTensor 1.0.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="SugarTensor 1.0.0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> SugarTensor
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sugartensor.html">sugartensor package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SugarTensor</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>sugartensor.sg_train</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for sugartensor.sg_train</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 <span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="c1"># noinspection PyPackageRequirements</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
-<span class="kn">from</span> <span class="nn">tensorflow.contrib.tensorboard.plugins</span> <span class="k">import</span> <span class="n">projector</span>
 
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
-
-
-<span class="c1"># global learning rate</span>
-<span class="n">_learning_rate</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="sg_train"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_train.sg_train">[docs]</a><span class="k">def</span> <span class="nf">sg_train</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -65,18 +173,12 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">      **kwargs:</span>
-<span class="sd">        optim: A name for optimizer. &#39;MaxProp&#39; (default), &#39;AdaMax&#39;, &#39;Adam&#39;, or &#39;sgd&#39;.</span>
+<span class="sd">        optim: A name for optimizer. &#39;MaxProp&#39; (default), &#39;AdaMax&#39;, &#39;Adam&#39;, &#39;RMSProp&#39; or &#39;sgd&#39;.</span>
 <span class="sd">        loss: A 0-D `Tensor` containing the value to minimize.</span>
 <span class="sd">        lr: A Python Scalar (optional). Learning rate. Default is .001.</span>
 <span class="sd">        beta1: A Python Scalar (optional). Default is .9.</span>
 <span class="sd">        beta2: A Python Scalar (optional). Default is .99.</span>
 
-<span class="sd">        eval_metric: A list of tensors containing the value to evaluate. Default is [].</span>
-<span class="sd">        early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.</span>
-<span class="sd">          i. Current loss is less than .95 * previous loss.</span>
-<span class="sd">          ii. Current learning rate is less than 5e-6.</span>
-<span class="sd">        lr_reset: Boolean. If True, learning rate is set to opt.lr. when training restarts.</span>
-<span class="sd">          Otherwise (Default), the value of the stored `_learning_rate` is taken.</span>
 <span class="sd">        save_dir: A string. The root path to which checkpoint and log files are saved.</span>
 <span class="sd">          Default is `asset/train`.</span>
 <span class="sd">        max_ep: A positive integer. Maximum number of epochs. Default is 1000.    </span>
@@ -92,25 +194,34 @@
 
 <span class="sd">        category: Scope name or list to train</span>
 
-<span class="sd">        tqdm: Boolean. If True (Default), progress bars are shown.</span>
-<span class="sd">        console_log: Boolean. If True, a series of loss will be shown </span>
-<span class="sd">          on the console instead of tensorboard. Default is False.</span>
+<span class="sd">        eval_metric: A list of tensors containing the value to evaluate. Default is [].</span>
+
+<span class="sd">        tqdm: Boolean. If True (Default), progress bars are shown. If False, a series of loss</span>
+<span class="sd">            will be shown on the console.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;loss is mandatory.&#39;</span>
 
     <span class="c1"># default training options</span>
-    <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">optim</span><span class="o">=</span><span class="s1">&#39;MaxProp&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">beta1</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">beta2</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">optim</span><span class="o">=</span><span class="s1">&#39;MaxProp&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">beta1</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">beta2</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ep_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 
     <span class="c1"># get optimizer</span>
-    <span class="n">train_op</span> <span class="o">=</span> <span class="n">sg_optim</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">optim</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">optim</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">_learning_rate</span><span class="p">,</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">sg_optim</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">optim</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">optim</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
                         <span class="n">beta1</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">beta2</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+
+    <span class="c1"># for console logging</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">loss</span>
+
+    <span class="c1"># use only first loss when multiple GPU case</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="n">loss_</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">loss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># define train function</span>
     <span class="c1"># noinspection PyUnusedLocal</span>
     <span class="nd">@sg_train_func</span>
     <span class="k">def</span> <span class="nf">train_func</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">opt</span><span class="o">.</span><span class="n">loss</span><span class="p">]</span> <span class="o">+</span> <span class="n">train_op</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">loss_</span><span class="p">,</span> <span class="n">train_op</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># run train function</span>
     <span class="n">train_func</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">)</span></div>
@@ -155,7 +266,7 @@
         <span class="n">tensor_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensor_list</span><span class="p">]</span>
 
     <span class="c1"># evaluate tensor list with queue runner</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">allow_soft_placement</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
         <span class="n">sg_init</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_queue_context</span><span class="p">():</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tensor_list</span><span class="p">)</span>
@@ -199,9 +310,9 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Applies gradients to variables.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        loss: A 0-D `Tensor` containing the value to minimize.</span>
+<span class="sd">        loss: A 0-D `Tensor` containing the value to minimize. list of 0-D tensor for Multiple GPU</span>
 <span class="sd">        kwargs:</span>
-<span class="sd">          optim: A name for optimizer. &#39;MaxProp&#39; (default), &#39;AdaMax&#39;, &#39;Adam&#39;, or &#39;sgd&#39;.</span>
+<span class="sd">          optim: A name for optimizer. &#39;MaxProp&#39; (default), &#39;AdaMax&#39;, &#39;Adam&#39;, &#39;RMSProp&#39; or &#39;sgd&#39;.</span>
 <span class="sd">          lr: A Python Scalar (optional). Learning rate. Default is .001.</span>
 <span class="sd">          beta1: A Python Scalar (optional). Default is .9.</span>
 <span class="sd">          beta2: A Python Scalar (optional). Default is .99.</span>
@@ -235,18 +346,41 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">var_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">()</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">category</span><span class="p">)]</span>
 
+    <span class="c1">#</span>
     <span class="c1"># calc gradient</span>
-    <span class="n">gradient</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">var_list</span><span class="p">)</span>
+    <span class="c1">#</span>
 
-    <span class="c1"># add summary</span>
-    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_list</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
+    <span class="c1"># multiple GPUs case</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="n">gradients</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># loop for each GPU tower</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">loss_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loss</span><span class="p">):</span>
+            <span class="c1"># specify device</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/gpu:</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">):</span>
+                <span class="c1"># give new scope only to operation</span>
+                <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;gpu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">):</span>
+                    <span class="c1"># add gradient calculation operation for each GPU tower</span>
+                    <span class="n">gradients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">loss_</span><span class="p">,</span> <span class="n">var_list</span><span class="p">))</span>
+
+        <span class="c1"># averaging gradient</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">grad</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">gradients</span><span class="p">):</span>
+            <span class="n">gradient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+    <span class="c1"># single GPU case</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">var_list</span><span class="p">)</span>
+
+    <span class="c1"># gradient update op</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/gpu:0&#39;</span><span class="p">):</span>
+        <span class="n">grad_var</span> <span class="o">=</span> <span class="p">[(</span><span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">var_list</span><span class="p">)]</span>
+        <span class="n">grad_op</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="n">grad_var</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())</span>
+
+    <span class="c1"># add summary using last tower value</span>
+    <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">grad_var</span><span class="p">:</span>
         <span class="c1"># exclude batch normal statics</span>
         <span class="k">if</span> <span class="s1">&#39;mean&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="s1">&#39;variance&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> \
                 <span class="ow">and</span> <span class="s1">&#39;beta&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="s1">&#39;gamma&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_gradient</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
-
-    <span class="c1"># gradient update op</span>
-    <span class="n">grad_op</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())</span>
 
     <span class="c1"># extra update ops within category ( for example, batch normal running stat update )</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
@@ -256,12 +390,12 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">update_op</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">UPDATE_OPS</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">category</span><span class="p">)]</span>
 
-    <span class="k">return</span> <span class="p">[</span><span class="n">grad_op</span><span class="p">]</span> <span class="o">+</span> <span class="n">update_op</span></div>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="n">grad_op</span><span class="p">]</span> <span class="o">+</span> <span class="n">update_op</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="sg_train_func"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_train.sg_train_func">[docs]</a><span class="k">def</span> <span class="nf">sg_train_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Decorates a function `func` as sg_train_func.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        func: A function to decorate</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -272,29 +406,24 @@
 <span class="sd">        Args:</span>
 <span class="sd">          **kwargs:</span>
 <span class="sd">            lr: A Python Scalar (optional). Learning rate. Default is .001.</span>
-<span class="sd">    </span>
-<span class="sd">            eval_metric: A list of tensors containing the value to evaluate. Default is [].</span>
-<span class="sd">            early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.</span>
-<span class="sd">              i. Current loss is less than .95 * previous loss.</span>
-<span class="sd">              ii. Current learning rate is less than 5e-6.</span>
-<span class="sd">            lr_reset: Boolean. If True, learning rate is set to opt.lr. when training restarts.</span>
-<span class="sd">              Otherwise (Default), the value of the stored `_learning_rate` is taken.</span>
+
 <span class="sd">            save_dir: A string. The root path to which checkpoint and log files are saved.</span>
 <span class="sd">              Default is `asset/train`.</span>
-<span class="sd">            max_ep: A positive integer. Maximum number of epochs. Default is 1000.    </span>
-<span class="sd">            ep_size: A positive integer. Number of Total batches in an epoch. </span>
-<span class="sd">              For proper display of log. Default is 1e5.    </span>
-<span class="sd">    </span>
+<span class="sd">            max_ep: A positive integer. Maximum number of epochs. Default is 1000.</span>
+<span class="sd">            ep_size: A positive integer. Number of Total batches in an epoch.</span>
+<span class="sd">              For proper display of log. Default is 1e5.</span>
+
 <span class="sd">            save_interval: A Python scalar. The interval of saving checkpoint files.</span>
 <span class="sd">              By default, for every 600 seconds, a checkpoint file is written.</span>
 <span class="sd">            log_interval: A Python scalar. The interval of recoding logs.</span>
 <span class="sd">              By default, for every 60 seconds, logging is executed.</span>
 <span class="sd">            max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.</span>
 <span class="sd">            keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.</span>
-<span class="sd">    </span>
-<span class="sd">            tqdm: Boolean. If True (Default), progress bars are shown.</span>
-<span class="sd">            console_log: Boolean. If True, a series of loss will be shown </span>
-<span class="sd">              on the console instead of tensorboard. Default is False.</span>
+
+<span class="sd">            eval_metric: A list of tensors containing the value to evaluate. Default is [].</span>
+
+<span class="sd">            tqdm: Boolean. If True (Default), progress bars are shown. If False, a series of loss</span>
+<span class="sd">                will be shown on the console.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -303,170 +432,112 @@
                          <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;asset/train&#39;</span><span class="p">,</span>
                          <span class="n">max_ep</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">ep_size</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
                          <span class="n">save_interval</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
-                         <span class="n">early_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lr_reset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                          <span class="n">eval_metric</span><span class="o">=</span><span class="p">[],</span>
                          <span class="n">max_keep</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">keep_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="n">tqdm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">console_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                         <span class="n">tqdm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="c1"># make directory if not exist</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span><span class="p">)</span>
-
-        <span class="c1"># find last checkpoint</span>
-        <span class="n">last_file</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">latest_checkpoint</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">last_file</span><span class="p">:</span>
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">start_ep</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">last_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">start_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">last_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">start_ep</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">start_step</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># training epoch and loss</span>
+        <span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="c1"># checkpoint saver</span>
         <span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">(</span><span class="n">max_to_keep</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">max_keep</span><span class="p">,</span>
                                <span class="n">keep_checkpoint_every_n_hours</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">keep_interval</span><span class="p">)</span>
 
-        <span class="c1"># summary writer</span>
-        <span class="n">summary_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">())</span>
-
-        <span class="c1"># add learning rate summary</span>
-        <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;learning_r&#39;</span><span class="p">,</span> <span class="n">_learning_rate</span><span class="p">)</span>
-
-        <span class="c1"># add evaluation metric summary</span>
+        <span class="c1"># add evaluation summary</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">opt</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">:</span>
             <span class="n">tf</span><span class="o">.</span><span class="n">sg_summary_metric</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-        <span class="c1"># summary op</span>
-        <span class="n">summary_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">merge_all</span><span class="p">()</span>
+        <span class="c1"># summary writer</span>
+        <span class="n">log_dir</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">+</span> <span class="s1">&#39;/run-</span><span class="si">%02d%02d</span><span class="s1">-</span><span class="si">%02d%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">summary_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">log_dir</span><span class="p">)</span>
+
+        <span class="c1"># console logging function</span>
+        <span class="k">def</span> <span class="nf">console_log</span><span class="p">(</span><span class="n">sess_</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">epoch</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Epoch[</span><span class="si">%03d</span><span class="s1">:gs=</span><span class="si">%d</span><span class="s1">] - loss = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">sess_</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()),</span>
+                            <span class="p">(</span><span class="s1">&#39;NA&#39;</span> <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%8.6f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">loss</span><span class="p">)))</span>
+
+        <span class="c1"># create supervisor</span>
+        <span class="n">sv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Supervisor</span><span class="p">(</span><span class="n">logdir</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span><span class="p">,</span>
+                                 <span class="n">saver</span><span class="o">=</span><span class="n">saver</span><span class="p">,</span>
+                                 <span class="n">save_model_secs</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">save_interval</span><span class="p">,</span>
+                                 <span class="n">summary_writer</span><span class="o">=</span><span class="n">summary_writer</span><span class="p">,</span>
+                                 <span class="n">save_summaries_secs</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">log_interval</span><span class="p">,</span>
+                                 <span class="n">global_step</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">(),</span>
+                                 <span class="n">local_init_op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_phase</span><span class="p">()</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
 
         <span class="c1"># create session</span>
-        <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">sess</span><span class="p">:</span>
-            <span class="n">sess</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">sess</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># session with multiple GPU support</span>
-            <span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">allow_soft_placement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_device_placement</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="c1"># initialize variables</span>
-        <span class="n">sg_init</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">sv</span><span class="o">.</span><span class="n">managed_session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">allow_soft_placement</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
 
-        <span class="c1"># restore last checkpoint</span>
-        <span class="k">if</span> <span class="n">last_file</span><span class="p">:</span>
-            <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">last_file</span><span class="p">)</span>
+            <span class="c1"># console logging loop</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">tqdm</span><span class="p">:</span>
+                <span class="n">sv</span><span class="o">.</span><span class="n">loop</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">log_interval</span><span class="p">,</span> <span class="n">console_log</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="p">))</span>
 
-        <span class="c1"># set learning rate</span>
-        <span class="k">if</span> <span class="n">start_ep</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">opt</span><span class="o">.</span><span class="n">lr_reset</span><span class="p">:</span>
-            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_learning_rate</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">lr</span><span class="p">))</span>
+            <span class="c1"># get start epoch</span>
+            <span class="n">_step</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())</span>
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">_step</span> <span class="o">//</span> <span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span>
 
-        <span class="c1"># logging</span>
-        <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;Training started from epoch[</span><span class="si">%03d</span><span class="s1">]-step[</span><span class="si">%d</span><span class="s1">].&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start_ep</span><span class="p">,</span> <span class="n">start_step</span><span class="p">))</span>
+            <span class="c1"># check if already finished</span>
+            <span class="k">if</span> <span class="n">ep</span> <span class="o">&lt;=</span> <span class="n">opt</span><span class="o">.</span><span class="n">max_ep</span><span class="p">:</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># start data queue runner</span>
-            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_queue_context</span><span class="p">(</span><span class="n">sess</span><span class="p">):</span>
-
-                <span class="c1"># set session mode to train</span>
-                <span class="n">tf</span><span class="o">.</span><span class="n">sg_set_train</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
-
-                <span class="c1"># loss history for learning rate decay</span>
-                <span class="n">loss</span><span class="p">,</span> <span class="n">loss_prev</span><span class="p">,</span> <span class="n">early_stopped</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
-
-                <span class="c1"># time stamp for saving and logging</span>
-                <span class="n">last_saved</span> <span class="o">=</span> <span class="n">last_logged</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="c1"># logging</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;Training started from epoch[</span><span class="si">%03d</span><span class="s1">]-step[</span><span class="si">%d</span><span class="s1">].&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">_step</span><span class="p">))</span>
 
                 <span class="c1"># epoch loop</span>
-                <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_ep</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">max_ep</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">max_ep</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
 
-                    <span class="c1"># show progressbar</span>
+                    <span class="c1"># update epoch info</span>
+                    <span class="n">start_step</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())</span> <span class="o">%</span> <span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span>
+                    <span class="n">epoch</span> <span class="o">=</span> <span class="n">ep</span>
+
+                    <span class="c1"># create progressbar iterator</span>
                     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">tqdm</span><span class="p">:</span>
-                        <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                        <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start_step</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">start_step</span><span class="p">,</span>
+                                        <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span><span class="p">)</span>
+                        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_step</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">ep_size</span><span class="p">)</span>
 
                     <span class="c1"># batch loop</span>
                     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+
+                        <span class="c1"># exit loop</span>
+                        <span class="k">if</span> <span class="n">sv</span><span class="o">.</span><span class="n">should_stop</span><span class="p">():</span>
+                            <span class="k">break</span>
 
                         <span class="c1"># call train function</span>
                         <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
 
                         <span class="c1"># loss history update</span>
-                        <span class="k">if</span> <span class="n">batch_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">batch_loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
+                                <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">batch_loss</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">batch_loss</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
                             <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                                 <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">*</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
 
-                        <span class="c1"># saving</span>
-                        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_saved</span> <span class="o">&gt;</span> <span class="n">opt</span><span class="o">.</span><span class="n">save_interval</span><span class="p">:</span>
-                            <span class="n">last_saved</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">+</span> <span class="s1">&#39;/model-</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ep</span><span class="p">,</span>
-                                       <span class="n">write_meta_graph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                       <span class="n">global_step</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()))</span>
-
-                        <span class="c1"># logging</span>
-                        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_logged</span> <span class="o">&gt;</span> <span class="n">opt</span><span class="o">.</span><span class="n">log_interval</span><span class="p">:</span>
-                            <span class="n">last_logged</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-                            <span class="c1"># set session mode to infer</span>
-                            <span class="n">tf</span><span class="o">.</span><span class="n">sg_set_infer</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
-
-                            <span class="c1"># run evaluation op</span>
-                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                                <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">eval_metric</span><span class="p">)</span>
-
-                            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">console_log</span><span class="p">:</span>   <span class="c1"># console logging</span>
-                                <span class="c1"># log epoch information</span>
-                                <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Epoch[</span><span class="si">%03d</span><span class="s1">:lr=</span><span class="si">%7.5f</span><span class="s1">:gs=</span><span class="si">%d</span><span class="s1">] - loss = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-                                           <span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_learning_rate</span><span class="p">),</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()),</span>
-                                            <span class="p">(</span><span class="s1">&#39;NA&#39;</span> <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%8.6f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">loss</span><span class="p">)))</span>
-                            <span class="k">else</span><span class="p">:</span>   <span class="c1"># tensorboard logging</span>
-                                <span class="c1"># run logging op</span>
-                                <span class="n">summary_writer</span><span class="o">.</span><span class="n">add_summary</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">summary_op</span><span class="p">),</span>
-                                                           <span class="n">global_step</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()))</span>
-
-                            <span class="c1"># learning rate decay</span>
-                            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">early_stop</span> <span class="ow">and</span> <span class="n">loss_prev</span><span class="p">:</span>
-                                <span class="c1"># if loss stalling</span>
-                                <span class="k">if</span> <span class="n">loss</span> <span class="o">&gt;=</span> <span class="mf">0.95</span> <span class="o">*</span> <span class="n">loss_prev</span><span class="p">:</span>
-                                    <span class="c1"># early stopping</span>
-                                    <span class="n">current_lr</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_learning_rate</span><span class="p">)</span>
-                                    <span class="k">if</span> <span class="n">current_lr</span> <span class="o">&lt;</span> <span class="mf">5e-6</span><span class="p">:</span>
-                                        <span class="n">early_stopped</span> <span class="o">=</span> <span class="kc">True</span>
-                                        <span class="k">break</span>
-                                    <span class="k">else</span><span class="p">:</span>
-                                        <span class="c1"># decrease learning rate by half</span>
-                                        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_learning_rate</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">current_lr</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span>
-
-                            <span class="c1"># update loss history</span>
-                            <span class="n">loss_prev</span> <span class="o">=</span> <span class="n">loss</span>
-
-                            <span class="c1"># revert session mode to train</span>
-                            <span class="n">tf</span><span class="o">.</span><span class="n">sg_set_train</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
-
                     <span class="c1"># log epoch information</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">console_log</span><span class="p">:</span>
-                        <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Epoch[</span><span class="si">%03d</span><span class="s1">:lr=</span><span class="si">%7.5f</span><span class="s1">:gs=</span><span class="si">%d</span><span class="s1">] - loss = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-                                   <span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">_learning_rate</span><span class="p">),</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()),</span>
-                                    <span class="p">(</span><span class="s1">&#39;NA&#39;</span> <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%8.6f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">loss</span><span class="p">)))</span>
+                    <span class="n">console_log</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
 
-                    <span class="k">if</span> <span class="n">early_stopped</span><span class="p">:</span>
-                        <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Early stopped ( no loss progress ).&#39;</span><span class="p">)</span>
-                        <span class="k">break</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="c1"># save last epoch</span>
-            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">+</span> <span class="s1">&#39;/model-</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">ep</span><span class="p">,</span>
-                       <span class="n">write_meta_graph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                       <span class="n">global_step</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()))</span>
+                <span class="c1"># save last version</span>
+                <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">+</span> <span class="s1">&#39;/model.ckpt&#39;</span><span class="p">,</span> <span class="n">global_step</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">()))</span>
 
-            <span class="c1"># set session mode to infer</span>
-            <span class="n">tf</span><span class="o">.</span><span class="n">sg_set_infer</span><span class="p">(</span><span class="n">sess</span><span class="p">)</span>
-
-            <span class="c1"># logging</span>
-            <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;Training finished at epoch[</span><span class="si">%d</span><span class="s1">]-step[</span><span class="si">%d</span><span class="s1">].&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())))</span>
-
-            <span class="c1"># close session</span>
-            <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">sess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="c1"># logging</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;Training finished at epoch[</span><span class="si">%d</span><span class="s1">]-step[</span><span class="si">%d</span><span class="s1">].&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">sg_info</span><span class="p">(</span><span class="s1">&#39;Training already finished at epoch[</span><span class="si">%d</span><span class="s1">]-step[</span><span class="si">%d</span><span class="s1">].&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">ep</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_global_step</span><span class="p">())))</span>
 
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
+
+<div class="viewcode-block" id="sg_regularizer_loss"><a class="viewcode-back" href="../../sugartensor.html#sugartensor.sg_train.sg_regularizer_loss">[docs]</a><span class="k">def</span> <span class="nf">sg_regularizer_loss</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Get regularizer losss</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      scale: A scalar. A weight applied to regularizer loss</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">REGULARIZATION_LOSSES</span><span class="p">))</span></div>
 
 <span class="c1"># Under construction</span>
 <span class="c1"># def sg_tsne(tensor, meta_file=&#39;metadata.tsv&#39;, save_dir=&#39;asset/tsne&#39;):</span>
@@ -509,44 +580,66 @@
 <span class="c1">#     sess.close()</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Namju Kim.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Namju Kim.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
-      
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

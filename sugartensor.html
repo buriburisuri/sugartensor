@@ -1,46 +1,177 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sugartensor package &mdash; SugarTensor 1.0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>sugartensor package &#8212; SugarTensor 1.0.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to SugarTensor’s documentation!" href="index.html" />
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="SugarTensor 1.0.0.2 documentation" href="index.html"/>
+        <link rel="prev" title="Welcome to SugarTensor’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> SugarTensor
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sugartensor package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_activation">sugartensor.sg_activation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_data">sugartensor.sg_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_initializer">sugartensor.sg_initializer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_layer">sugartensor.sg_layer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_logging">sugartensor.sg_logging module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_loss">sugartensor.sg_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_main">sugartensor.sg_main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_metric">sugartensor.sg_metric module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_net">sugartensor.sg_net module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_optimize">sugartensor.sg_optimize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_queue">sugartensor.sg_queue module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_train">sugartensor.sg_train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_transform">sugartensor.sg_transform module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor.sg_util">sugartensor.sg_util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sugartensor">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SugarTensor</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>sugartensor package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/sugartensor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="sugartensor-package">
 <h1>sugartensor package<a class="headerlink" href="#sugartensor-package" title="Permalink to this headline">¶</a></h1>
@@ -125,7 +256,7 @@ opt:</p>
 <span id="sugartensor-sg-initializer-module"></span><h2>sugartensor.sg_initializer module<a class="headerlink" href="#module-sugartensor.sg_initializer" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="sugartensor.sg_initializer.constant">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">constant</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>value=0</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#constant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.constant" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">constant</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>value=0</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#constant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.constant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a tensor variable of which initial values are <cite>value</cite> and shape is <cite>shape</cite>.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -137,8 +268,12 @@ shape: A tuple/list of integers or an integer.</p>
 <dt>value: A Python scalar. All elements of the initialized variable</dt>
 <dd>will be set to this value. Default is 0.</dd>
 </dl>
-<p class="last">dtype: The data type. Only floating point types are supported. Default is float32.
-summary: If True, add this constant to tensor board summary.</p>
+<p>dtype: The data type. Only floating point types are supported. Default is float32.
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
 </dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>.</dd>
@@ -147,7 +282,7 @@ summary: If True, add this constant to tensor board summary.</p>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.external">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">external</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#external"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.external" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">external</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#external"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.external" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a tensor variable of which initial values are <cite>value</cite>.</p>
 <p>For example,</p>
 <p><code class="docutils literal"><span class="pre">`</span>
@@ -156,10 +291,15 @@ summary: If True, add this constant to tensor board summary.</p>
 <span class="pre">`</span></code></p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>name: The name of new variable.
+<dd><p class="first">name: The name of new variable.
 value: A constant value (or list) of output type <cite>dtype</cite>.
 dtype: The type of the elements of the resulting tensor.
-summary: If True, add this constant to tensor board summary.</dd>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
+</dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>. Has the same contents as <cite>value</cite> of <cite>dtype</cite>.</dd>
 </dl>
@@ -167,15 +307,20 @@ summary: If True, add this constant to tensor board summary.</dd>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.glorot_uniform">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">glorot_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#glorot_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.glorot_uniform" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">glorot_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#glorot_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.glorot_uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>See [Glorot &amp; Bengio. 2010.](<a class="reference external" href="http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf">http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf</a>)</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>name: The name of new variable
+<dd><p class="first">name: The name of new variable
 shape: A tuple/list of integers.
 scale: A Python scalar. Scale to initialize. Default is 1.
 dtype: The data type. Default is float32.
-summary: If True, add this constant to tensor board summary.</dd>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
+</dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>.</dd>
 </dl>
@@ -183,15 +328,20 @@ summary: If True, add this constant to tensor board summary.</dd>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.he_uniform">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">he_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#he_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.he_uniform" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">he_uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#he_uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.he_uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>See [He et al. 2015](<a class="reference external" href="http://arxiv.org/pdf/1502.01852v1.pdf">http://arxiv.org/pdf/1502.01852v1.pdf</a>)</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>name: The name of new variable
+<dd><p class="first">name: The name of new variable
 shape: A tuple/list of integers.
 scale: A Python scalar. Scale to initialize. Default is 1.
 dtype: The data type. Default is float32.
-summary: If True, add this constant to tensor board summary.</dd>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
+</dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>.</dd>
 </dl>
@@ -199,7 +349,7 @@ summary: If True, add this constant to tensor board summary.</dd>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.identity">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">identity</code><span class="sig-paren">(</span><em>name</em>, <em>dim</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.identity" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">identity</code><span class="sig-paren">(</span><em>name</em>, <em>dim</em>, <em>scale=1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.identity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a tensor variable of which initial values are of
 an identity matrix.</p>
 <p>Note that the default value of <cite>scale</cite> (=0.05) is different from 
@@ -214,11 +364,16 @@ identity(&#8220;identity&#8221;, 3, 2) =&gt;
 <p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>name: The name of new variable.
+<dd><p class="first">name: The name of new variable.
 dim: An int. The size of the first and second dimension of the output tensor.
 scale: A Python scalar. The value on the diagonal.
 dtype: The type of the elements of the resulting tensor.
-summary: If True, add this constant to tensor board summary.</dd>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
+</dd>
 <dt>Returns:</dt>
 <dd>A 2-D <cite>Variable</cite>.</dd>
 </dl>
@@ -226,17 +381,22 @@ summary: If True, add this constant to tensor board summary.</dd>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.orthogonal">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">orthogonal</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1.1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#orthogonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.orthogonal" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">orthogonal</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=1.1</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#orthogonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.orthogonal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a tensor variable of which initial values are of
 an orthogonal ndarray.</p>
 <p>See [Saxe et al. 2014.](<a class="reference external" href="http://arxiv.org/pdf/1312.6120.pdf">http://arxiv.org/pdf/1312.6120.pdf</a>)</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>name: The name of new variable.
+<dd><p class="first">name: The name of new variable.
 shape: A tuple/list of integers. 
 scale: A Python scalar.
 dtype: Either float32 or float64.
-summary: If True, add this constant to tensor board summary.</dd>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
+</dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>.</dd>
 </dl>
@@ -244,7 +404,7 @@ summary: If True, add this constant to tensor board summary.</dd>
 
 <dl class="function">
 <dt id="sugartensor.sg_initializer.uniform">
-<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=0.05</em>, <em>dtype=tf.float32</em>, <em>summary=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.uniform" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sugartensor.sg_initializer.</code><code class="descname">uniform</code><span class="sig-paren">(</span><em>name</em>, <em>shape</em>, <em>scale=0.05</em>, <em>dtype=tf.float32</em>, <em>summary=True</em>, <em>regularizer=None</em>, <em>trainable=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_initializer.html#uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_initializer.uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a tensor variable of which initial values are 
 random numbers based on uniform distribution.</p>
 <p>Note that the default value of <cite>scale</cite> (=0.05) is different from 
@@ -255,9 +415,13 @@ the min/max values (=0.0, 1.0) of tf.random_uniform_initializer.</p>
 shape: A tuple/list of integers or an integer.</p>
 <blockquote>
 <div>If shape is an integer, it&#8217;s converted to a list.</div></blockquote>
-<p class="last">scale: A Python scalar. All initial values should be in range <cite>[-scale, scale)</cite>. Default is .05.
+<p>scale: A Python scalar. All initial values should be in range <cite>[-scale, scale)</cite>. Default is .05.
 dtype: The data type. Only floating point types are supported. Default is float32.
-summary: If True, add this constant to tensor board summary.</p>
+summary: If True, add this constant to tensor board summary.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p class="last">trainable: If True, add this constant to trainable collection. Default is True.</p>
 </dd>
 <dt>Returns:</dt>
 <dd>A <cite>Variable</cite>.</dd>
@@ -286,7 +450,11 @@ If not specified, (3, 3) is set automatically.</dd>
 <p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
-bias: Boolean. If True, biases are added.</p>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -314,7 +482,11 @@ opt:</p>
 <p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
-bias: Boolean. If True, biases are added.</p>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -363,7 +535,11 @@ Default value is [1, 1, 1, 1].</dd>
 <p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>. 
-bias: Boolean. If True, biases are added.</p>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -389,7 +565,11 @@ opt:</p>
 <p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
-bias: Boolean. If True, biases are added.</p>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -406,9 +586,14 @@ bias: Boolean. If True, biases are added.</p>
 <dd><p class="first">tensor: A 2-D tensor (automatically passed by decorator).
 opt:</p>
 <blockquote class="last">
-<div>in_dim: An <cite>integer</cite>. The size of input dimension.
+<div><p>in_dim: An <cite>integer</cite>. The size of input dimension.
 dim: An <cite>integer</cite>. The size of output dimension.
-bias: Boolean. If True, biases are added.</div></blockquote>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt>
 <dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
@@ -429,7 +614,8 @@ emb: A 2-D array (optional).</p>
 Note that its first row is filled with 0&#8217;s associated with padding.</div></blockquote>
 <p class="last">in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
-voca_size: A positive integer. The size of vocabulary.</p>
+voca_size: A positive integer. The size of vocabulary.
+summary: If True, summaries are added. The default is True.</p>
 </dd>
 <dt>Returns:</dt>
 <dd>A 2-D <cite>Tensor</cite> of float32.</dd>
@@ -460,7 +646,11 @@ Default value is [1, 1, 1, 1].</dd>
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
 bias: Boolean. If True, biases are added.
-factor: factor to multiply shape by. Default is 2.</p>
+factor: factor to multiply shape by. Default is 2.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -487,6 +677,7 @@ mask: Boolean 2-D <cite>Tensor</cite> or None(default).</p>
 <blockquote>
 <div>For false elements values are excluded from the calculation.
 As a result, the outputs for the locations become 0.</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -514,6 +705,7 @@ mask: Boolean 2-D <cite>Tensor</cite> or None(default).</p>
 <blockquote>
 <div>For false elements values are excluded from the calculation.
 As a result, the outputs for the locations become 0.</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -541,6 +733,7 @@ mask: Boolean 2-D <cite>Tensor</cite> or None(default).</p>
 <blockquote>
 <div>For false elements values are excluded from the calculation.
 As a result, the outputs for the locations become 0.</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -571,7 +764,11 @@ Default value is [1, 2, 2, 1].</dd>
 <p>in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>. 
-bias: Boolean. If True, biases are added.</p>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
 </div></blockquote>
 </dd>
 <dt>Returns:</dt>
@@ -588,12 +785,17 @@ bias: Boolean. If True, biases are added.</p>
 <dd><p class="first">tensor: A 3-D <cite>Tensor</cite> (automatically passed by decorator).
 opt:</p>
 <blockquote class="last">
-<div>size:  A positive <cite>integer</cite> representing <cite>[kernel width]</cite>. As a default it is set to 4
+<div><p>size:  A positive <cite>integer</cite> representing <cite>[kernel width]</cite>. As a default it is set to 4
 stride: A positive <cite>integer</cite> representing stride dimension. As a default it is set to 2
 in_dim: A positive <cite>integer</cite>. The size of input dimension.
 dim: A positive <cite>integer</cite>. The size of output dimension.
 pad: Either <cite>SAME</cite> (Default) or <cite>VALID</cite>.
-bias: Boolean. If True, biases are added.</div></blockquote>
+bias: Boolean. If True, biases are added.
+regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</p>
+<blockquote>
+<div>will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</div></blockquote>
+<p>summary: If True, summaries are added. The default is True.</p>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt>
 <dd>A <cite>Tensor</cite> with the same type as <cite>tensor</cite>.</dd>
@@ -963,12 +1165,32 @@ reuse: <cite>True</cite> or <cite>None</cite>; if <cite>True</cite>, we go into 
 </dd></dl>
 
 <dl class="function">
+<dt id="sugartensor.sg_main.sg_get_context">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_get_context</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_get_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_get_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current context information</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>tf.sg_opt class object which contains all context information</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="sugartensor.sg_main.sg_global_step">
 <code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_global_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_global_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_global_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets global step count</p>
 <dl class="docutils">
 <dt>Returns:</dt>
 <dd>A 0-D <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_main.sg_gpus">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_gpus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_gpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_gpus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets current available GPU nums</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A integer : total # of GPUs available</dd>
 </dl>
 </dd></dl>
 
@@ -1024,6 +1246,15 @@ name: A name for the placeholder.</dd>
 </dd></dl>
 
 <dl class="function">
+<dt id="sugartensor.sg_main.sg_parallel">
+<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_parallel</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates function as multiple gpu support towers.
+Args:</p>
+<blockquote>
+<div>func: function to decorate</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="sugartensor.sg_main.sg_phase">
 <code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_phase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_phase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets current training phase</p>
@@ -1069,30 +1300,6 @@ can be reused and replace its input tensor with <cite>opt.input</cite>.</p>
 Args:</p>
 <blockquote>
 <div>func: function to decorate</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="sugartensor.sg_main.sg_set_infer">
-<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_set_infer</code><span class="sig-paren">(</span><em>sess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_set_infer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_set_infer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets current phase as inference mode</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>sess: session to work</dd>
-<dt>Returns:</dt>
-<dd>None</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="sugartensor.sg_main.sg_set_train">
-<code class="descclassname">sugartensor.sg_main.</code><code class="descname">sg_set_train</code><span class="sig-paren">(</span><em>sess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_main.html#sg_set_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_main.sg_set_train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set current phase as training mode</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>sess: session to work</dd>
-<dt>Returns:</dt>
-<dd>None</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">
@@ -1447,7 +1654,7 @@ See [Kingma et. al., 2014](<a class="reference external" href="http://arxiv.org/
 <dt id="sugartensor.sg_optimize.MaxPropOptimizer">
 <em class="property">class </em><code class="descclassname">sugartensor.sg_optimize.</code><code class="descname">MaxPropOptimizer</code><span class="sig-paren">(</span><em>learning_rate=0.001</em>, <em>beta2=0.999</em>, <em>use_locking=False</em>, <em>name='MaxProp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_optimize.html#MaxPropOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_optimize.MaxPropOptimizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tensorflow.python.training.optimizer.Optimizer</span></code></p>
-<p>Optimizer that implements the MaxProp algorithm by <a class="reference external" href="mailto:buriburisuri&#37;&#52;&#48;gmail&#46;com">buriburisuri<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
+<p>Optimizer that implements the MaxProp algorithm by <a class="reference external" href="mailto:namju&#46;kim&#37;&#52;&#48;kakaocorp&#46;com">namju<span>&#46;</span>kim<span>&#64;</span>kakaocorp<span>&#46;</span>com</a>.</p>
 </dd></dl>
 
 </div>
@@ -1482,10 +1689,10 @@ See [Kingma et. al., 2014](<a class="reference external" href="http://arxiv.org/
 <dd><p>Applies gradients to variables.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">loss: A 0-D <cite>Tensor</cite> containing the value to minimize.
+<dd><p class="first">loss: A 0-D <cite>Tensor</cite> containing the value to minimize. list of 0-D tensor for Multiple GPU
 kwargs:</p>
 <blockquote class="last">
-<div><p>optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, or &#8216;sgd&#8217;.
+<div><p>optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, &#8216;RMSProp&#8217; or &#8216;sgd&#8217;.
 lr: A Python Scalar (optional). Learning rate. Default is .001.
 beta1: A Python Scalar (optional). Default is .9.
 beta2: A Python Scalar (optional). Default is .99.
@@ -1524,6 +1731,16 @@ Prints the value, shape, and data type of each tensor in the list.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="sugartensor.sg_train.sg_regularizer_loss">
+<code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_regularizer_loss</code><span class="sig-paren">(</span><em>scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_regularizer_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_regularizer_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get regularizer losss</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>scale: A scalar. A weight applied to regularizer loss</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="sugartensor.sg_train.sg_restore">
 <code class="descclassname">sugartensor.sg_train.</code><code class="descname">sg_restore</code><span class="sig-paren">(</span><em>sess</em>, <em>save_path</em>, <em>category=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_train.html#sg_restore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_train.sg_restore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restores previously saved variables.</p>
@@ -1544,22 +1761,12 @@ category: A <cite>String</cite> to filter variables starts with given category.<
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt><a href="#id49"><span class="problematic" id="id50">**</span></a>kwargs:</dt>
-<dd><p class="first">optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, or &#8216;sgd&#8217;.
+<dd><p class="first">optim: A name for optimizer. &#8216;MaxProp&#8217; (default), &#8216;AdaMax&#8217;, &#8216;Adam&#8217;, &#8216;RMSProp&#8217; or &#8216;sgd&#8217;.
 loss: A 0-D <cite>Tensor</cite> containing the value to minimize.
 lr: A Python Scalar (optional). Learning rate. Default is .001.
 beta1: A Python Scalar (optional). Default is .9.
 beta2: A Python Scalar (optional). Default is .99.</p>
-<p>eval_metric: A list of tensors containing the value to evaluate. Default is [].
-early_stop: Boolean. If True (default), the training should stop when the following two conditions are met.</p>
-<blockquote>
-<div><ol class="lowerroman simple">
-<li>Current loss is less than .95 * previous loss.</li>
-<li>Current learning rate is less than 5e-6.</li>
-</ol>
-</div></blockquote>
 <dl class="docutils">
-<dt>lr_reset: Boolean. If True, learning rate is set to opt.lr. when training restarts.</dt>
-<dd>Otherwise (Default), the value of the stored <cite>_learning_rate</cite> is taken.</dd>
 <dt>save_dir: A string. The root path to which checkpoint and log files are saved.</dt>
 <dd>Default is <cite>asset/train</cite>.</dd>
 </dl>
@@ -1576,10 +1783,11 @@ ep_size: A positive integer. Number of Total batches in an epoch.</p>
 <p>max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
 keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.</p>
 <p>category: Scope name or list to train</p>
-<p>tqdm: Boolean. If True (Default), progress bars are shown.
-console_log: Boolean. If True, a series of loss will be shown</p>
-<blockquote class="last">
-<div>on the console instead of tensorboard. Default is False.</div></blockquote>
+<p>eval_metric: A list of tensors containing the value to evaluate. Default is [].</p>
+<dl class="last docutils">
+<dt>tqdm: Boolean. If True (Default), progress bars are shown. If False, a series of loss</dt>
+<dd>will be shown on the console.</dd>
+</dl>
 </dd>
 </dl>
 </dd>
@@ -1715,6 +1923,23 @@ name: If provided, replace current tensor&#8217;s name.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="sugartensor.sg_transform.sg_exp">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_exp</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponential transform a dense tensor</p>
+<p>See <cite>tf.exp()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> ( automatically given by chain )
+opt:</p>
+<blockquote class="last">
+<div>name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="sugartensor.sg_transform.sg_expand_dims">
 <code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_expand_dims</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_expand_dims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_expand_dims" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inserts a new axis.</p>
@@ -1814,6 +2039,23 @@ name : If provided, it replaces current tensor&#8217;s name.</div></blockquote>
 </dd>
 <dt>Returns:</dt>
 <dd>A tensor</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sugartensor.sg_transform.sg_log">
+<code class="descclassname">sugartensor.sg_transform.</code><code class="descname">sg_log</code><span class="sig-paren">(</span><em>tensor</em>, <em>opt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sugartensor/sg_transform.html#sg_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sugartensor.sg_transform.sg_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log transform a dense tensor</p>
+<p>See <cite>tf.log()</cite> in tensorflow.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">tensor: A <cite>Tensor</cite> ( automatically given by chain )
+opt:</p>
+<blockquote class="last">
+<div>name: If provided, replace current tensor&#8217;s name.</div></blockquote>
+</dd>
+<dt>Returns:</dt>
+<dd>A <cite>Tensor</cite>.</dd>
 </dl>
 </dd></dl>
 
@@ -2138,76 +2380,73 @@ name: If provided, replace current tensor&#8217;s name.</div></blockquote>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to SugarTensor’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Namju Kim.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">sugartensor package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_activation">sugartensor.sg_activation module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_data">sugartensor.sg_data module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_initializer">sugartensor.sg_initializer module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_layer">sugartensor.sg_layer module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_logging">sugartensor.sg_logging module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_loss">sugartensor.sg_loss module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_main">sugartensor.sg_main module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_metric">sugartensor.sg_metric module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_net">sugartensor.sg_net module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_optimize">sugartensor.sg_optimize module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_queue">sugartensor.sg_queue module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_train">sugartensor.sg_train module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_transform">sugartensor.sg_transform module</a></li>
-<li><a class="reference internal" href="#module-sugartensor.sg_util">sugartensor.sg_util module</a></li>
-<li><a class="reference internal" href="#module-sugartensor">Module contents</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to SugarTensor&#8217;s documentation!</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/sugartensor.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Namju Kim.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
-      
-      |
-      <a href="_sources/sugartensor.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

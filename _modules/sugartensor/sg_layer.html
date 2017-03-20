@@ -1,52 +1,166 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sugartensor.sg_layer &mdash; SugarTensor 1.0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>sugartensor.sg_layer &#8212; SugarTensor 1.0.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="SugarTensor 1.0.0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> SugarTensor
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sugartensor.html">sugartensor package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SugarTensor</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>sugartensor.sg_layer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for sugartensor.sg_layer</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">sugartensor</span> <span class="k">as</span> <span class="nn">tf</span>
 
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;buriburisuri@gmail.com&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;namju.kim@kakaocorp.com&#39;</span>
 
 
 <span class="c1">#</span>
@@ -83,13 +197,18 @@
 <span class="sd">        in_dim: An `integer`. The size of input dimension.</span>
 <span class="sd">        dim: An `integer`. The size of output dimension.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">      </span>
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># parameter initialize</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># apply transform</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
@@ -116,6 +235,9 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`. </span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
@@ -127,8 +249,9 @@
     <span class="n">opt</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span>
 
     <span class="c1"># parameter initialize</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># apply convolution</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
@@ -151,7 +274,10 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
-<span class="sd">      </span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -159,8 +285,9 @@
     <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="s1">&#39;SAME&#39;</span><span class="p">)</span>
 
     <span class="c1"># parameter tf.sg_initializer</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># apply convolution</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv1d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
@@ -184,7 +311,10 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
-<span class="sd">            </span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -193,8 +323,9 @@
     <span class="n">opt</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">]</span>
 
     <span class="c1"># parameter tf.sg_initializer</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># apply convolution</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">atrous_conv2d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
@@ -219,7 +350,10 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
-<span class="sd">            </span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -227,8 +361,9 @@
     <span class="n">opt</span> <span class="o">+=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_opt</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">causal</span> <span class="k">else</span> <span class="mi">3</span><span class="p">),</span> <span class="n">rate</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="s1">&#39;SAME&#39;</span><span class="p">)</span>
 
     <span class="c1"># parameter tf.sg_initializer</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">causal</span><span class="p">:</span>
         <span class="c1"># pre-padding for causality</span>
@@ -269,7 +404,10 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`. </span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
-<span class="sd">            </span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -280,8 +418,9 @@
     <span class="n">opt</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span>
 
     <span class="c1"># parameter tf.sg_initializer</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># tedious shape handling for conv2d_transpose</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
@@ -314,6 +453,9 @@
 <span class="sd">        dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
@@ -324,8 +466,9 @@
     <span class="n">opt</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># parameter tf.sg_initializer</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># make 4-D tensor</span>
     <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">sg_expand_dims</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -372,6 +515,9 @@
 <span class="sd">        pad: Either `SAME` (Default) or `VALID`.</span>
 <span class="sd">        bias: Boolean. If True, biases are added.</span>
 <span class="sd">        factor: factor to multiply shape by. Default is 2.</span>
+<span class="sd">        regularizer:  A (Tensor -&gt; Tensor or None) function; the result of applying it on a newly created variable</span>
+<span class="sd">          will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same type as `tensor`.</span>
@@ -383,8 +529,9 @@
     <span class="n">opt</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">opt</span><span class="o">.</span><span class="n">stride</span>
 
     <span class="c1"># parameter initialize</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span> <span class="o">*</span> <span class="n">opt</span><span class="o">.</span><span class="n">factor</span> <span class="o">*</span> <span class="n">opt</span><span class="o">.</span><span class="n">factor</span><span class="p">))</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span> <span class="o">*</span> <span class="n">opt</span><span class="o">.</span><span class="n">factor</span> <span class="o">*</span> <span class="n">opt</span><span class="o">.</span><span class="n">factor</span><span class="p">),</span>
+                                     <span class="n">regularizer</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">regularizer</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span>
 
     <span class="c1"># apply convolution</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
@@ -411,7 +558,8 @@
 <span class="sd">      in_dim: A positive `integer`. The size of input dimension.</span>
 <span class="sd">      dim: A positive `integer`. The size of output dimension.</span>
 <span class="sd">      voca_size: A positive integer. The size of vocabulary.</span>
-<span class="sd">      </span>
+<span class="sd">      summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A 2-D `Tensor` of float32.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -422,10 +570,10 @@
         <span class="c1"># initialize embedding matrix</span>
         <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">voca_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;voca_size is mandatory.&#39;</span>
         <span class="k">assert</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;dim is mandatory.&#39;</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">voca_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">he_uniform</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">voca_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># use given embedding matrix</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">external</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">emb</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">external</span><span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">emb</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># 1st row should be zero and not be updated by backprop because of zero padding.</span>
     <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">sg_floatx</span><span class="p">),</span> <span class="n">w</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
@@ -442,7 +590,7 @@
 <span class="sd">      x: A `Tensor`.</span>
 <span class="sd">      gamma: A constant `Tensor`. Scale parameter. Default is 1.</span>
 <span class="sd">      beta: A constant `Tensor`. Offset parameter. Default is 0.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor` with the same shape as `x`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -472,6 +620,7 @@
 <span class="sd">        mask: Boolean 2-D `Tensor` or None(default).</span>
 <span class="sd">            For false elements values are excluded from the calculation.</span>
 <span class="sd">            As a result, the outputs for the locations become 0.</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].</span>
@@ -488,16 +637,16 @@
         <span class="k">return</span> <span class="n">y</span>
 
     <span class="c1"># parameter initialize</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># layer normalization parameters</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">:</span>
         <span class="c1"># offset, scale parameter</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># initial state</span>
     <span class="n">init_h</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
@@ -550,6 +699,7 @@
 <span class="sd">        mask: Boolean 2-D `Tensor` or None(default).</span>
 <span class="sd">            For false elements values are excluded from the calculation.</span>
 <span class="sd">            As a result, the outputs for the locations become 0.</span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].</span>
@@ -567,28 +717,28 @@
         <span class="c1"># reset gate</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">ln</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w_r</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">hh</span><span class="p">,</span> <span class="n">u_r</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">b_r</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
         <span class="c1"># h_hat</span>
-        <span class="n">hh</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">ln</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w_h</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">hh</span><span class="p">,</span> <span class="n">u_h</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">b_h</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="n">h_hat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">ln</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w_h</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">hh</span><span class="p">,</span> <span class="n">u_h</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">b_h</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)))</span>
         <span class="c1"># final output</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">hh</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">hh</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">h_hat</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">hh</span>
         <span class="k">return</span> <span class="n">y</span>
 
     <span class="c1"># parameter initialize</span>
-    <span class="n">w_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_z&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_z&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">w_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_r&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_r&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">w_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_h&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_h&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">w_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_z&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_z&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">w_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_r&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_r&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">w_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_h&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_h&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
-        <span class="n">b_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_z&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">b_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_r&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">b_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_h&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">b_z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_z&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">b_r</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_r&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">b_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_h&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># layer normalization parameters</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">:</span>
         <span class="c1"># offset, scale parameter</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># initial state</span>
     <span class="n">init_h</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
@@ -642,7 +792,8 @@
 <span class="sd">        mask: Boolean 2-D `Tensor` or None(default).</span>
 <span class="sd">            For false elements values are excluded from the calculation.</span>
 <span class="sd">            As a result, the outputs for the locations become 0.</span>
-<span class="sd">    </span>
+<span class="sd">        summary: If True, summaries are added. The default is True.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">      A `Tensor`. If last_only is True, the output tensor has shape [batch size, dim].</span>
 <span class="sd">      Otherwise, [batch size, time steps, dim].</span>
@@ -668,25 +819,25 @@
         <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">cell</span>
 
     <span class="c1"># parameter initialize</span>
-    <span class="n">w_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_i&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_i&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">w_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_f&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_f&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">w_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_o&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_o&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-    <span class="n">w_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_c&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-    <span class="n">u_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_c&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">w_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_i&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_i&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">w_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_f&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_f&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">w_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_o&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_o&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">w_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="s1">&#39;W_c&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">opt</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">u_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="s1">&#39;U_c&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">bias</span><span class="p">:</span>
-        <span class="n">b_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_i&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">b_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_f&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">b_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_o&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">b_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_c&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">b_i</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_i&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">b_f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_f&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">b_o</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_o&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">b_c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;b_c&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># layer normalization parameters</span>
     <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">ln</span><span class="p">:</span>
         <span class="c1"># offset, scale parameter</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sg_initializer</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
 
     <span class="c1"># initial state</span>
     <span class="n">init_h</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="k">if</span> <span class="n">opt</span><span class="o">.</span><span class="n">init_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
@@ -723,44 +874,66 @@
             <span class="k">return</span> <span class="n">out</span></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Namju Kim.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Namju Kim.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
-      
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>
