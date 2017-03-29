@@ -90,7 +90,7 @@ def sg_context(**kwargs):
 
     For example, in the following example, the default value of parameter `bn` will be set to True
     in the all layers within the with block.
-    
+
     ```
     with tf.sg_context(bn=True):
         ...
@@ -154,7 +154,7 @@ def sg_get_context():
 #
 
 def sg_sugar_func(func):
-    r""" Decorates a function `func` so that it can be a sugar function. 
+    r""" Decorates a function `func` so that it can be a sugar function.
     Sugar function can be used in a chainable manner.
 
     Args:
@@ -191,7 +191,7 @@ def sg_layer_func(func):
     @wraps(func)
     def wrapper(tensor, **kwargs):
         r"""Manages arguments of `tf.sg_opt`.
-        
+
         Args:
           tensor: A `tensor` (automatically passed by decorator).
           kwargs:
@@ -201,10 +201,10 @@ def sg_layer_func(func):
             bn: Boolean. If True, batch normalization is applied.
             ln: Boolean. If True, layer normalization is applied.
             dout: A float of range [0, 100). A dropout rate. Set to 0 by default.
-            bias: Boolean. If True, biases are added. As a default, it is set to True 
+            bias: Boolean. If True, biases are added. As a default, it is set to True
             name: A name for the layer. As a default, the function name is assigned.
             act: A name of activation function. e.g., `sigmoid`, `tanh`, etc.
-            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope 
+            reuse: `True` or `None`; if `True`, we go into reuse mode for this `layer` scope
               as well as all sub-scopes; if `None`, we just inherit the parent scope reuse.
             regularizer:  A string. None, 'l1' or 'l2'. The default is None
             summary: If True, summaries are added. The default is True.
@@ -266,15 +266,15 @@ def sg_layer_func(func):
             # apply batch normalization
             if opt.bn:
                 # offset, scale parameter
-                beta = init.constant('beta', opt.dim)
-                gamma = init.constant('gamma', opt.dim, value=1)
+                beta = init.constant('beta', opt.dim, summary=opt.summary)
+                gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary)
 
                 # calc batch mean, variance
                 mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
 
                 # offset, scale parameter ( for inference )
-                mean_running = init.constant('mean', opt.dim, trainable=False)
-                variance_running = init.constant('variance', opt.dim, value=1, trainable=False)
+                mean_running = init.constant('mean', opt.dim, trainable=False, summary=opt.summary)
+                variance_running = init.constant('variance', opt.dim, value=1, trainable=False, summary=opt.summary)
 
                 # add running mean, variance to UPDATE_OP collection
                 decay = 0.99
@@ -292,8 +292,8 @@ def sg_layer_func(func):
             # apply layer normalization
             if opt.ln:
                 # offset, scale parameter
-                beta = init.constant('beta', opt.dim)
-                gamma = init.constant('gamma', opt.dim, value=1)
+                beta = init.constant('beta', opt.dim, summary=opt.summary)
+                gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary)
 
                 # calc layer mean, variance for final axis
                 mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
@@ -317,7 +317,8 @@ def sg_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            tf.sg_summary_activation(out)
+            if opt.summary:
+                tf.sg_summary_activation(out)
 
             # save node info for reuse
             out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + sg_get_context(),
@@ -402,7 +403,8 @@ def sg_rnn_layer_func(func):
             out = tf.identity(out, 'out')
 
             # add final output summary
-            tf.sg_summary_activation(out)
+            if opt.summary:
+                tf.sg_summary_activation(out)
 
             # save node info for reuse
             out._sugar = tf.sg_opt(func=func, arg=tf.sg_opt(kwargs) + sg_get_context(),
@@ -422,7 +424,7 @@ def sg_rnn_layer_func(func):
 
 # noinspection PyProtectedMember
 def sg_reuse(tensor, **opt):
-    r""" Reconstruct computational graph of `tensor` so all the parameters 
+    r""" Reconstruct computational graph of `tensor` so all the parameters
     can be reused and replace its input tensor with `opt.input`.
 
     Args:
@@ -623,12 +625,12 @@ def sg_arg_def(**kwargs):
     Returns:
       None
 
-    For example, 
-    
+    For example,
+
     ```
     # Either of the following two lines will define `--n_epoch` command line argument and set its default value as 1.
-    
-    tf.sg_arg_def(n_epoch=1) 
+
+    tf.sg_arg_def(n_epoch=1)
     tf.sg_arg_def(n_epoch=(1, 'total number of epochs'))
     ```
     """
