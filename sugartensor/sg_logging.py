@@ -8,7 +8,7 @@ import re
 from tensorflow.python.ops import gen_logging_ops
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 #

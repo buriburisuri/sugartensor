@@ -83,6 +83,6 @@ python mnist_conv.py
 
 # Author
 
-Namju Kim (namju.kim@kakaocorp.com) at KakaoBrain Corp.
+Namju Kim (namju.kim@kakaobrain.com) at KakaoBrain Corp.
 
 

@@ -2,7 +2,7 @@ import sugartensor as tf
 import numpy as np
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 # set log level to debug
@@ -142,8 +142,8 @@ train_gen = tf.sg_optim(loss_g + loss_c + loss_con, lr=0.001, category='generato
 # def alternate training func
 @tf.sg_train_func
 def alt_train(sess, opt):
-    l_disc = sess.run([loss_d] + train_disc)[0]  # training discriminator
-    l_gen = sess.run([loss_g] + train_gen)[0]  # training generator
+    l_disc = sess.run([loss_d, train_disc])[0]  # training discriminator
+    l_gen = sess.run([loss_g, train_gen])[0]  # training generator
     return np.mean(l_disc) + np.mean(l_gen)
 
 # do training

@@ -5,7 +5,7 @@ import threading
 from tensorflow.python.platform import tf_logging as logging
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 def sg_producer_func(func):

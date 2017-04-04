@@ -2,7 +2,7 @@ import sugartensor as tf
 import matplotlib.pyplot as plt
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 # set log level to debug

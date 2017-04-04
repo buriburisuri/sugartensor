@@ -8,7 +8,7 @@ setup(
     version=__version__,
     description='A slim tensorflow wrapper that provides syntactic sugar for tensor variables.',
     author='Namju Kim at KakaoBrain Corp.',
-    author_email='namju.kim@kakaocorp.com',
+    author_email='namju.kim@kakaobrain.com',
     url='https://github.com/buriburisuri/sugartensor',
     download_url='https://github.com/buriburisuri/sugartensor/tarball/' + __version__,
     license='MIT',

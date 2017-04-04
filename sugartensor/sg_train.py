@@ -7,7 +7,7 @@ from tqdm import tqdm
 from functools import wraps
 
 
-__author__ = 'buriburisuri@gmail.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 def sg_train(**kwargs):

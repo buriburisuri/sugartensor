@@ -211,4 +211,4 @@ tf.sg_train(loss=get_loss(input=inputs, target=labels), ep_size=data.train.num_b
 
 # Author
 
-Namju Kim (namju.kim@kakaocorp.com) at KakaoBrain Corp.
+Namju Kim (namju.kim@kakaobrain.com) at KakaoBrain Corp.

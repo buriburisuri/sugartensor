@@ -15,7 +15,7 @@ from . import sg_initializer
 from ._version import __version__
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 #

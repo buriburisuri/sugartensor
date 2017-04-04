@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import sugartensor as tf
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 @tf.sg_sugar_func

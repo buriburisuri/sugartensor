@@ -4,7 +4,7 @@ import sugartensor as tf
 import numpy as np
 
 
-__author__ = 'namju.kim@kakaocorp.com'
+__author__ = 'namju.kim@kakaobrain.com'
 
 
 #
