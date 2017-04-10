@@ -200,6 +200,9 @@ def sg_layer_func(func):
             dim: An integer. The size of output dimension. Has the same value as in_dim by default.
             bn: Boolean. If True, batch normalization is applied.
             ln: Boolean. If True, layer normalization is applied.
+            scale: If true, multiple by a trainable gamma variable. When the activation is
+              linear (relu included), this can be disabled because it can be implicitly
+              learned by the next layer. The default is True.
             dout: A float of range [0, 100). A dropout rate. Set to 0 by default.
             bias: Boolean. If True, biases are added. As a default, it is set to True
             name: A name for the layer. As a default, the function name is assigned.
@@ -221,7 +224,7 @@ def sg_layer_func(func):
             shape = tensor.get_shape().as_list()
             # batch normalization off, layer normalization off, dropout off
             opt += tf.sg_opt(shape=shape, in_dim=shape[-1], dim=shape[-1],
-                             bn=False, ln=False, dout=0, summary=True)
+                             bn=False, ln=False, dout=0, summary=True, scale=True)
             if opt.regularizer == 'l1':
                 opt.regularizer = lambda x: tf.reduce_mean(tf.abs(x))
             elif opt.regularizer == 'l2':
@@ -262,38 +265,58 @@ def sg_layer_func(func):
 
             # call layer function
             out = func(tensor, opt)
+            out_shape = out.get_shape()
 
             # apply batch normalization
             if opt.bn:
-                # offset, scale parameter
                 beta = init.constant('beta', opt.dim, summary=opt.summary)
-                gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary)
-
-                # calc batch mean, variance
-                mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
+                gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary, trainable=opt.scale)
 
                 # offset, scale parameter ( for inference )
                 mean_running = init.constant('mean', opt.dim, trainable=False, summary=opt.summary)
                 variance_running = init.constant('variance', opt.dim, value=1, trainable=False, summary=opt.summary)
 
-                # add running mean, variance to UPDATE_OP collection
+                # use fused batch norm if ndims in [2, 3, 4]
+                if out_shape.ndims in [2, 3, 4]:
+                    # add HW dims if necessary, fused_batch_norm requires shape to be NHWC
+                    if out_shape.ndims == 2:
+                        out = tf.expand_dims(out, axis=1)
+                        out = tf.expand_dims(out, axis=2)
+                    elif out_shape.ndims == 3:
+                        out = tf.expand_dims(out, axis=2)
+
+                    fused_eps = tf.sg_eps if tf.sg_eps > 1e-5 else 1e-5
+                    out, mean, variance = tf.cond(
+                        _phase,
+                        lambda: tf.nn.fused_batch_norm(out, gamma, beta, epsilon=fused_eps),
+                        lambda: tf.nn.fused_batch_norm(out, gamma, beta, mean=mean_running, variance=variance_running, epsilon=fused_eps, is_training=False),
+                    )
+
+                    # restore original shape if HW dims was added
+                    if out_shape.ndims == 2:
+                        out = tf.squeeze(out, axis=[1, 2])
+                    elif out_shape.ndims == 3:
+                        out = tf.squeeze(out, axis=2)
+
+                # fallback to naive batch norm
+                else:
+                    mean, variance = tf.nn.moments(out, axes=list(range(len(out.get_shape()) - 1)))
+                    out = tf.cond(
+                        _phase,
+                        lambda: tf.nn.batch_normalization(out, mean, variance, beta, gamma, tf.sg_eps),
+                        lambda: tf.nn.batch_normalization(out, mean_running, variance_running, beta, gamma, tf.sg_eps)
+                    )
+
                 decay = 0.99
                 tf.add_to_collection(tf.GraphKeys.UPDATE_OPS, mean_running.assign(mean_running * decay + mean * (1 - decay)))
                 tf.add_to_collection(tf.GraphKeys.UPDATE_OPS, variance_running.assign(variance_running * decay + variance * (1 - decay)))
-
-                # select mean, variance by training phase
-                m, v = tf.cond(_phase,
-                               lambda: (mean, variance),  # batch mean, variance
-                               lambda: (mean_running, variance_running))  # saved mean, variance
-
-                # apply batch normalization
-                out = tf.nn.batch_normalization(out, m, v, beta, gamma, tf.sg_eps)
 
             # apply layer normalization
             if opt.ln:
                 # offset, scale parameter
                 beta = init.constant('beta', opt.dim, summary=opt.summary)
-                gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary)
+                if opt.scale:
+                    gamma = init.constant('gamma', opt.dim, value=1, summary=opt.summary)
 
                 # calc layer mean, variance for final axis
                 mean, variance = tf.nn.moments(out, axes=[len(out.get_shape()) - 1], keep_dims=True)
@@ -301,7 +324,10 @@ def sg_layer_func(func):
                 # apply normalization
                 out = (out - mean) / tf.sqrt(variance + tf.sg_eps)
                 # apply parameter
-                out = gamma * out + beta
+                if opt.scale:
+                    out = gamma * out + beta
+                else:
+                    out = out + beta
 
             # apply activation
             if opt.act:
