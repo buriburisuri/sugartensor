@@ -144,7 +144,7 @@ def sg_get_context():
     # merge current context
     res = tf.sg_opt()
     for c in _context:
-        res += c
+        res *= c
 
     return res
 
