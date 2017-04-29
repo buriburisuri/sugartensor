@@ -5,9 +5,21 @@ import numpy as np
 import time
 from tqdm import tqdm
 from functools import wraps
+from tensorflow.python.client import timeline as tf_timeline
 
 
 __author__ = 'namju.kim@kakaobrain.com'
+
+
+class _ProfileState:
+    def __init__(self, profile=None):
+        self.iterations = 0
+        self.want_iterations = profile
+
+    def next_iteration(self):
+        will_profile = (self.iterations == self.want_iterations)
+        self.iterations += 1
+        return will_profile
 
 
 def sg_train(**kwargs):
@@ -23,9 +35,9 @@ def sg_train(**kwargs):
 
         save_dir: A string. The root path to which checkpoint and log files are saved.
           Default is `asset/train`.
-        max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
-        ep_size: A positive integer. Number of Total batches in an epoch. 
-          For proper display of log. Default is 1e5.    
+        max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+        ep_size: A positive integer. Number of Total batches in an epoch.
+          For proper display of log. Default is 1e5.
 
         save_interval: A Python scalar. The interval of saving checkpoint files.
           By default, for every 600 seconds, a checkpoint file is written.
@@ -33,6 +45,8 @@ def sg_train(**kwargs):
           By default, for every 60 seconds, logging is executed.
         max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
         keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.
+        profile: A Python integer, specifiying the iteration for which the profiler
+            should run.
 
         category: Scope name or list to train
 
@@ -59,11 +73,30 @@ def sg_train(**kwargs):
     if isinstance(opt.loss, (tuple, list)):
         loss_ = opt.loss[0]
 
+    # get ...
+    profile_state = _ProfileState(profile=opt.profile)
+
     # define train function
     # noinspection PyUnusedLocal
     @sg_train_func
     def train_func(sess, arg):
-        return sess.run([loss_, train_op])[0]
+        will_profile = profile_state.next_iteration()
+        if will_profile:
+            options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            run_metadata = tf.RunMetadata()
+
+            loss_value = sess.run([loss_, train_op],
+                                  options=options,
+                                  run_metadata=run_metadata)[0]
+
+            tl = tf_timeline.Timeline(run_metadata.step_stats)
+            ctf = tl.generate_chrome_trace_format()
+            with open(os.path.join(opt.save_dir, 'timeline.json'), 'w') as fd:
+                print(ctf, file=fd)
+        else:
+            loss_value = sess.run([loss_, train_op])[0]
+
+        return loss_value
 
     # run train function
     train_func(**opt)
@@ -71,9 +104,9 @@ def sg_train(**kwargs):
 
 def sg_init(sess):
     r""" Initializes session variables.
-    
+
     Args:
-      sess: Session to initialize. 
+      sess: Session to initialize.
     """
     # initialize variables
     sess.run(tf.group(tf.global_variables_initializer(),
@@ -83,15 +116,15 @@ def sg_init(sess):
 def sg_print(tensor_list):
     r"""Simple tensor printing function for debugging.
     Prints the value, shape, and data type of each tensor in the list.
-    
+
     Args:
       tensor_list: A list/tuple of tensors or a single tensor.
-      
+
     Returns:
       The value of the tensors.
-      
+
     For example,
-    
+
     ```python
     import sugartensor as tf
     a = tf.constant([1.])
@@ -101,7 +134,7 @@ def sg_print(tensor_list):
     #              [ 2.] (1,) float32
     print(out)
     # Should print [array([ 1.], dtype=float32), array([ 2.], dtype=float32)]
-    ``` 
+    ```
     """
     # to list
     if type(tensor_list) is not list and type(tensor_list) is not tuple:
