@@ -14,7 +14,7 @@ __author__ = 'namju.kim@kakaobrain.com'
 @tf.sg_layer_func
 def sg_bypass(tensor, opt):
     r"""Returns the input tensor itself.
-    
+
     Args:
       tensor: A `Tensor` (automatically passed by decorator).
       opt:
@@ -32,7 +32,7 @@ def sg_bypass(tensor, opt):
 @tf.sg_layer_func
 def sg_dense(tensor, opt):
     r"""Applies a full connection.
-    
+
     Args:
       tensor: A 2-D tensor (automatically passed by decorator).
       opt:
@@ -43,7 +43,7 @@ def sg_dense(tensor, opt):
           will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
         summary: If True, summaries are added. The default is True.
 
-      
+
     Returns:
       A `Tensor` with the same type as `tensor`.
     """
@@ -61,7 +61,7 @@ def sg_dense(tensor, opt):
 @tf.sg_layer_func
 def sg_conv(tensor, opt):
     r"""Applies a 2-D convolution.
-    
+
     Args:
       tensor: A 4-D `Tensor` (automatically passed by decorator).
       opt:
@@ -75,7 +75,7 @@ def sg_conv(tensor, opt):
           Default value is [1, 1, 1, 1].
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
-        pad: Either `SAME` (Default) or `VALID`. 
+        pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
         regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
           will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
@@ -104,7 +104,7 @@ def sg_conv(tensor, opt):
 @tf.sg_layer_func
 def sg_conv1d(tensor, opt):
     r"""Applies a 1-D convolution.
-    
+
     Args:
       tensor: A 3-D `Tensor` (automatically passed by decorator).
       opt:
@@ -140,7 +140,7 @@ def sg_conv1d(tensor, opt):
 @tf.sg_layer_func
 def sg_aconv(tensor, opt):
     r"""Applies a 2-D atrous (or dilated) convolution.
-    
+
     Args:
       tensor: A 4-D `Tensor` (automatically passed by decorator).
       opt:
@@ -178,14 +178,14 @@ def sg_aconv(tensor, opt):
 @tf.sg_layer_func
 def sg_aconv1d(tensor, opt):
     r"""Applies 1-D atrous (or dilated) convolution.
-    
+
     Args:
       tensor: A 3-D `Tensor` (automatically passed by decorator).
       opt:
         causal: Boolean. If True, zeros are padded before the time axis such that
           each activation unit doesn't have receptive neurons beyond the equivalent time step.
         size: A positive `integer` representing `[kernel width]`. As a default it is set to 2
-          if causal is True, 3 otherwise. 
+          if causal is True, 3 otherwise.
         rate: A positive `integer`. The stride with which we sample input values across
           the `height` and `width` dimensions. Default is 1.
         in_dim: A positive `integer`. The size of input dimension.
@@ -230,7 +230,7 @@ def sg_aconv1d(tensor, opt):
 @tf.sg_layer_func
 def sg_upconv(tensor, opt):
     r"""Applies a up convolution (or convolution transpose).
-    
+
     Args:
       tensor: A 4-D `Tensor` (automatically passed by decorator).
       opt:
@@ -244,7 +244,7 @@ def sg_upconv(tensor, opt):
           Default value is [1, 2, 2, 1].
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
-        pad: Either `SAME` (Default) or `VALID`. 
+        pad: Either `SAME` (Default) or `VALID`.
         bias: Boolean. If True, biases are added.
         regularizer:  A (Tensor -> Tensor or None) function; the result of applying it on a newly created variable
           will be added to the collection tf.GraphKeys.REGULARIZATION_LOSSES and can be used for regularization
@@ -390,11 +390,11 @@ def sg_espcn(tensor, opt):
 
 def sg_emb(**kwargs):
     r"""Returns a look-up table for embedding.
-    
+
     kwargs:
       name: A name for the layer.
-      emb: A 2-D array (optional). 
-        If None, the resulting tensor should have the shape of 
+      emb: A 2-D array (optional).
+        If None, the resulting tensor should have the shape of
         `[vocabulary size, embedding dimension size]`.
         Note that its first row is filled with 0's associated with padding.
       in_dim: A positive `integer`. The size of input dimension.
@@ -405,20 +405,21 @@ def sg_emb(**kwargs):
     Returns:
       A 2-D `Tensor` of float32.
     """
-    opt = tf.sg_opt(kwargs)
+    opt = tf.sg_opt(kwargs) + tf.sg_get_context()
     assert opt.name is not None, 'name is mandatory.'
 
-    if opt.emb is None:
-        # initialize embedding matrix
-        assert opt.voca_size is not None, 'voca_size is mandatory.'
-        assert opt.dim is not None, 'dim is mandatory.'
-        w = tf.sg_initializer.he_uniform(opt.name, (opt.voca_size - 1, opt.dim), summary=opt.summary)
-    else:
-        # use given embedding matrix
-        w = tf.sg_initializer.external(opt.name, value=opt.emb, summary=opt.summary)
+    with tf.variable_scope(opt.name, reuse=opt.reuse) as scope:
+        if opt.emb is None:
+            # initialize embedding matrix
+            assert opt.voca_size is not None, 'voca_size is mandatory.'
+            assert opt.dim is not None, 'dim is mandatory.'
+            w = tf.sg_initializer.he_uniform(opt.name, (opt.voca_size - 1, opt.dim), summary=opt.summary)
+        else:
+            # use given embedding matrix
+            w = tf.sg_initializer.external(opt.name, value=opt.emb, summary=opt.summary)
 
-    # 1st row should be zero and not be updated by backprop because of zero padding.
-    emb = tf.concat([tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w], 0)
+        # 1st row should be zero and not be updated by backprop because of zero padding.
+        emb = tf.concat([tf.zeros((1, opt.dim), dtype=tf.sg_floatx), w], 0)
 
     return emb
 
@@ -427,7 +428,7 @@ def sg_emb(**kwargs):
 def _ln_rnn(x, gamma, beta):
     r"""Applies layer normalization.
     Normalizes the last dimension of the tensor `x`.
-    
+
     Args:
       x: A `Tensor`.
       gamma: A constant `Tensor`. Scale parameter. Default is 1.
@@ -449,14 +450,14 @@ def _ln_rnn(x, gamma, beta):
 @tf.sg_rnn_layer_func
 def sg_rnn(tensor, opt):
     r"""Applies a simple rnn.
-    
+
     Args:
       tensor: A 3-D `Tensor` (automatically passed by decorator).
       opt:
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
         bias: Boolean. If True, biases are added.
-        ln: Boolean. If True, layer normalization is applied.   
+        ln: Boolean. If True, layer normalization is applied.
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
         mask: Boolean 2-D `Tensor` or None(default).
@@ -528,14 +529,14 @@ def sg_rnn(tensor, opt):
 @tf.sg_rnn_layer_func
 def sg_gru(tensor, opt):
     r"""Applies a GRU.
-    
+
     Args:
       tensor: A 3-D `Tensor` (automatically passed by decorator).
       opt:
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
         bias: Boolean. If True, biases are added.
-        ln: Boolean. If True, layer normalization is applied.   
+        ln: Boolean. If True, layer normalization is applied.
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
         mask: Boolean 2-D `Tensor` or None(default).
@@ -628,7 +629,7 @@ def sg_lstm(tensor, opt):
         in_dim: A positive `integer`. The size of input dimension.
         dim: A positive `integer`. The size of output dimension.
         bias: Boolean. If True, biases are added.
-        ln: Boolean. If True, layer normalization is applied.   
+        ln: Boolean. If True, layer normalization is applied.
         init_state: A 2-D `Tensor`. If None, the initial state is set to zeros.
         last_only: Boolean. If True, the outputs in the last time step are returned.
         mask: Boolean 2-D `Tensor` or None(default).
