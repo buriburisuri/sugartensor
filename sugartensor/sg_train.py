@@ -23,9 +23,9 @@ def sg_train(**kwargs):
 
         save_dir: A string. The root path to which checkpoint and log files are saved.
           Default is `asset/train`.
-        max_ep: A positive integer. Maximum number of epochs. Default is 1000.    
-        ep_size: A positive integer. Number of Total batches in an epoch. 
-          For proper display of log. Default is 1e5.    
+        max_ep: A positive integer. Maximum number of epochs. Default is 1000.
+        ep_size: A positive integer. Number of Total batches in an epoch.
+          For proper display of log. Default is 1e5.
 
         save_interval: A Python scalar. The interval of saving checkpoint files.
           By default, for every 600 seconds, a checkpoint file is written.
@@ -71,9 +71,9 @@ def sg_train(**kwargs):
 
 def sg_init(sess):
     r""" Initializes session variables.
-    
+
     Args:
-      sess: Session to initialize. 
+      sess: Session to initialize.
     """
     # initialize variables
     sess.run(tf.group(tf.global_variables_initializer(),
@@ -83,15 +83,15 @@ def sg_init(sess):
 def sg_print(tensor_list):
     r"""Simple tensor printing function for debugging.
     Prints the value, shape, and data type of each tensor in the list.
-    
+
     Args:
       tensor_list: A list/tuple of tensors or a single tensor.
-      
+
     Returns:
       The value of the tensors.
-      
+
     For example,
-    
+
     ```python
     import sugartensor as tf
     a = tf.constant([1.])
@@ -101,7 +101,7 @@ def sg_print(tensor_list):
     #              [ 2.] (1,) float32
     print(out)
     # Should print [array([ 1.], dtype=float32), array([ 2.], dtype=float32)]
-    ``` 
+    ```
     """
     # to list
     if type(tensor_list) is not list and type(tensor_list) is not tuple:
@@ -262,6 +262,8 @@ def sg_train_func(func):
             max_keep: A positive integer. Maximum number of recent checkpoints to keep. Default is 5.
             keep_interval: A Python scalar. How often to keep checkpoints. Default is 1 hour.
 
+            config: session config object to use. Default tf.ConfigProto(allow_soft_placement=True).
+
             eval_metric: A list of tensors containing the value to evaluate. Default is [].
 
             tqdm: Boolean. If True (Default), progress bars are shown. If False, a series of loss
@@ -276,7 +278,8 @@ def sg_train_func(func):
                          save_interval=600, log_interval=60,
                          eval_metric=[],
                          max_keep=5, keep_interval=1,
-                         tqdm=True)
+                         tqdm=True,
+                         config=tf.ConfigProto(allow_soft_placement=True))
 
         # training epoch and loss
         epoch, loss = -1, None
@@ -310,7 +313,7 @@ def sg_train_func(func):
                                  local_init_op=tf.sg_phase().assign(True))
 
         # create session
-        with sv.managed_session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
+        with sv.managed_session(config=opt.config) as sess:
 
             # console logging loop
             if not opt.tqdm:
