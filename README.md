@@ -35,7 +35,7 @@ See [SugarTensor's official API documentation]( https://buriburisuri.github.io/s
 
 ## Quick start
 
-###Imports
+### Imports
 
 <pre><code>import sugartensor as tf   # no need of 'import tensorflow'</code></pre>
 
@@ -50,30 +50,30 @@ to avoid name space chaos. :-)
   
 Inspired by prettytensor library, we support chainable object syntax for all sugar functions. This should improve productivity and readability. Look at the following snippet.
 
-<pre><code>
+```python
 logit = (tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE))
          .sg_dense(dim=400, act='relu', bn=True)
          .sg_dense(dim=200, act='relu', bn=True)
          .sg_dense(dim=10))
-</code></pre>
+```
  
 ### All returned objects are tensors.
 
 In the above snippet, all values returned by sugar functions are pure tensorflow's tensor variables/constants. So, the following example is completely legal.
 
-<pre><code>
+```python
 ph = tf.placeholder(tf.float32, shape=(BATCH_SIZE, DATA_SIZE)   # <-- this is a tensor 
 ph = ph.sg_dense(dim=400, act='relu', bn=True)   # <-- this is a tensor
 ph = ph * 100 + 10  # <-- this is ok.
 ph = tf.reshape(ph, (-1, 20, 20, 1)).conv(dim=30)   # <-- all tensorflow's function can be applied and chained.
-</code></pre>
+```
 
 ### Practical DRY (Don't repeat yourself) functions for deep learning researchers
   
 We provide pre-defined powerful training and report functions for practical developers.
 The following code is a full mnist training module with saver, report and early stopping support.
 
-<pre><code>
+```python
 # -*- coding: utf-8 -*-
 import sugartensor as tf
 
@@ -99,7 +99,7 @@ acc = (logit.sg_reuse(input=data.valid.image).sg_softmax()
 
 # train
 tf.sg_train(loss=loss, eval_metric=[acc], ep_size=data.train.num_batch)
-</code></pre>
+```
 
 You can check all statistics through the tensorboard's web interface like the following.
 
@@ -114,7 +114,7 @@ You can check all statistics through the tensorboard's web interface like the fo
 </p>  
 
 If you want to write another more complex training module without repeating saver, report, or whatever, you can do that like the following.
-<pre><code>
+```python
 # def alternate training func
 @tf.sg_train_func   # <-- sugar annotator for training function wrapping
 def alt_train(sess, opt):
@@ -124,7 +124,7 @@ def alt_train(sess, opt):
     
 # do training
 alt_train(log_interval=10, ep_size=data.train.num_batch, early_stop=False, save_dir='asset/train/gan')    
-</code></pre>
+```
 
 Please see the example codes in the 'sugartensor/example/' directory.
 
@@ -132,7 +132,7 @@ Please see the example codes in the 'sugartensor/example/' directory.
 
 You can add your own custom layer functions like the following code snippet.
 
-```
+```python
 # residual block
 @tf.sg_sugar_func
 def sg_res_block(tensor, opt):
@@ -167,7 +167,7 @@ or [WaveNet example code](https://github.com/buriburisuri/speech-to-text-wavenet
 
 You can train your model with multiple GPUs using sg_parallel decorator as follow:
 
-```
+```python
 # batch size
 batch_size = 128
 
